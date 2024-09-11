@@ -1,0 +1,36 @@
+<div class="container-fluid p-2">
+  <div class="">
+    <div class="col-md-12">
+      <input type="text" placeholder="Search guest" class="form-control">
+    </div>
+    <div class="row pt-2 pb-2 pe-0">
+      <div class="col-md-8">
+        <h2 class="heading">All Guest(s)</h2>
+      </div>
+      <div class="col-md-4 text-end pe-2" *ngIf="showFullList">
+        <a class="btn btn-primary btn-sm border-0 hover:bg-[#60a5fa]" (click)="onAdd()" [routerLink]="['add-guest']">Add
+          New Guest</a>
+      </div>
+    </div>
+  </div>
+  <div class=" pe-2" style=" min-height: 65vh; height: 70vh;overflow-y: scroll;overflow-x:hidden;">
+    <div class="flex-row" *ngIf="showFullList">
+      <ul class="list-group pb-2">
+        @for (guest of guests! | paginate: { itemsPerPage: 3,
+        currentPage: p ,totalItems: guests?.length};; track $index) {
+        <app-guest-list [guestDetails]="guest"></app-guest-list>
+        }
+
+      </ul>
+      @if(guests==null) {
+      <app-no-records-found [message]="message"></app-no-records-found>
+      }
+      <nav aria-label="Page navigation example pt-2" *ngIf="guests">
+        <ul class="pagination justify-content-end">
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </ul>
+      </nav>
+    </div>
+    <router-outlet *ngIf="!showFullList"></router-outlet>
+  </div>
+</div>

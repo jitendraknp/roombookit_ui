@@ -1,13 +1,24 @@
+import { NgOptimizedImage } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-
-@Component({
+import { NgHttpLoaderModule } from 'ng-http-loader';
+import { ToastrModule } from 'ngx-toastr';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { FooterComponent } from './shared/footer/footer/footer.component';
+@Component( {
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [
+    RouterOutlet,
+    NgHttpLoaderModule,
+    ToastrModule,
+    NgOptimizedImage,
+    NgxPaginationModule,
+    FooterComponent
+  ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
-})
+  styleUrls: ['./app.component.css']
+} )
 export class AppComponent {
-  title = 'roombookit_ui';
+  title = 'Book Room';
 }

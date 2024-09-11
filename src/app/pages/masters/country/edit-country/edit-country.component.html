@@ -1,0 +1,36 @@
+<form [formGroup]="editCountryForm" (ngSubmit)="onSubmit()">
+    <div class="card border-0 shadow-lg">
+        <div class="card-header  d-flex justify-content-between align-items-center bg-primary bg-gradient text-white">
+            <h3 class="card-title">Edit Room</h3>
+            <!-- Close Button -->
+            <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="onClose()"></button>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="row">
+                    <div class="mb-3 col-md-8 col-12">
+                        <label for="countryName" class="form-label">Country Name</label>
+                        <input type="text" class="form-control" id="countryName" formControlName="Name"
+                            placeholder="Country Name" />
+                    </div>
+                    <div class="mb-3 col-md-4 col-12">
+                        <label for="countryCode" class="form-label">Code</label>
+                        <input type="text" class="form-control" id="countryCode" formControlName="Code"
+                            placeholder="Code" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class=" input-group mb-3">
+                        <div class="input-group-text">
+                            <input class="form-check-input mt-0" type="checkbox" formControlName="Is_Active">
+                        </div>
+                        <input type="text" class="form-control" [value]="activeValue" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <button type="submit" class="btn btn-primary btn-sm" [disabled]="!editCountryForm.valid">Update</button>
+        </div>
+    </div>
+</form>

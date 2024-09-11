@@ -1,0 +1,35 @@
+<div class="container-fluid p-0 v-h-98">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12 col">
+          <input type="text" placeholder="Search country" class="form-control">
+        </div>
+      </div>
+      <div class="row pt-4 pb-2">
+        <div class="col-md-6">
+          <h2 class="heading">All Countries</h2>
+        </div>
+        <div class="col-md-6 text-end">
+          <a class="btn btn-outline-primary btn-sm  btn-add-new-contact shadow-lg" [routerLink]="['add']">
+            <ion-icon name="person-add-sharp"></ion-icon> Add Country</a>
+        </div>
+      </div>
+    </div>
+    <div class="row pe-0">
+      <div class="col-md-8 pe-0">
+        <ul class="list-group pb-2">
+          @for(item of countries; track $index) {
+          <app-card-list [cardDetails]="item" (onIsActive)="onActiveClicked(item)"></app-card-list>
+          }
+          @if(countries.length==0) {
+          <app-no-records-found></app-no-records-found>
+          }
+        </ul>
+      </div>
+      <div class="col-md-4 pe-0 ps-1">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

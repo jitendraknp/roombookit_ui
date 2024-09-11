@@ -1,0 +1,16 @@
+.form-control:focus {
+    box-shadow: none !important;
+}
+
+.disabled-button {
+    background-color: grey;
+    color: white;
+    cursor: not-allowed;
+}
+
+/* Styles for the enabled button */
+.enabled-button {
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+}

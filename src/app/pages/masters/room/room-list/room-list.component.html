@@ -1,0 +1,45 @@
+<li class=" list-group-item d-flex justify-content-between align-items-start border-0  shadow-lg  mb-2 rounded">
+    <!-- @defer(){ -->
+    <div class="container li-container">
+        <div class="row col-md-3 li-item">
+            <span class=" d-flex justify-content-center text-info">Room No</span>
+            <span class="d-flex justify-content-center">{{cardDetails?.RoomNo| uppercase}}</span>
+        </div>
+        <div class="row col-md-3 col li-item">
+            <span class="d-flex justify-content-center text-info">Floor No</span>
+            <span class="d-flex justify-content-center">{{cardDetails?.FloorNo}}</span>
+        </div>
+        <div class="row col-md-3 co li-iteml">
+            <span class="d-flex justify-content-center text-info">Capacity</span>
+            <span class="d-flex justify-content-center">{{cardDetails?.Capacity}}</span>
+        </div>
+        <div class="row col-md-3 col li-item">
+            <span class="d-flex justify-content-center text-info">Type</span>
+            <span class="d-flex justify-content-center">{{cardDetails?.Type=='1'? 'AC':'Non AC'}}</span>
+        </div>
+        <div class="row col-md-3 col li-item">
+            <span class="d-flex justify-content-center text-info">Rent / Night</span>
+            <span class="d-flex justify-content-center">{{cardDetails?.RentPerNight}}</span>
+        </div>
+    </div>
+    <div class="d-flex col-md-3 text-end">
+        <div class="col gy-3 col-md-4 text-end">
+            <span
+                [ngClass]="{'btn-outline-success': cardDetails?.IsActive, 'btn-outline-danger': !cardDetails?.IsActive}"
+                class="btn btn-sm shadow-lg">
+                @if(cardDetails?.IsActive){
+                <i class="bi bi-check2"></i>
+                } @else {
+                <i class="bi bi-file-earmark-x"></i>
+                }
+            </span>
+        </div>
+        <div class="col gy-3 col-md-4 text-center">
+            <a class="btn btn-sm  btn-outline-primary shadow-lg" [routerLink]="['edit',cardDetails?.Id]"><i
+                    class="bi bi-pencil-fill"></i> </a>
+        </div>
+        <div class="col gy-3 col-md-4 text-start">
+            <a class="btn btn-sm  btn-outline-danger shadow-lg"><i class="bi bi-trash"></i> </a>
+        </div>
+    </div>
+</li>

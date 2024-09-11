@@ -1,0 +1,45 @@
+<form [formGroup]="guestForm">
+  <div class="card shadow-lg border-0">
+    <div class="card-header  d-flex justify-between p-2 bg-slate-300">
+      <p class="text-blue-500"> Guest : {{recordNo +1}}</p>
+
+      <!-- <button type="button" class="btn btn-sm btn-close" aria-label="Close" ></button> -->
+      <ion-icon name="trash-outline" class="text-red-800 cursor-pointer opacity-100 hover:opacity-50 "
+        (click)="onDelete()"></ion-icon>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="firstName" [ngClass]="'form-label'">First Name</label>
+          <input type="text" [ngClass]="'form-control form-control-sm'" id="firstName" placeholder="First Name"
+            formControlName="FirstName" />
+        </div>
+        <div class="col-md-6">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input type="text" class="form-control form-control-sm" id="lastName" placeholder="Last Name"
+            formControlName="LastName" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label for="Gender" class="form-label">Gender</label>
+          <ng-select appearance="outline" placeholder="Gender" id="Gender" class="custom" notFoundText="No items found"
+            formControlName="Gender">
+            <ng-option value="MALE">MALE</ng-option>
+            <ng-option value="FEMALE">FEMALE</ng-option>
+            <ng-option value="TRANSGENDER">TRANSGENDER</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-6">
+          <label for="age" class="form-label">Age</label>
+          <input type="text" class="form-control form-control-sm" id="age" placeholder="Age" formControlName="Age" />
+        </div>
+      </div>
+    </div>
+    <!-- <div class="text-xs card-footer py-1 text-end">
+      <button class="btn btn-sm btn-primary">
+        <ion-icon class="w-4" name="save-outline"></ion-icon> Save
+      </button>
+    </div> -->
+  </div>
+</form>

@@ -1,9 +1,57 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
-
+import { ApplicationConfig, importProvidersFrom, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { PreloadAllModules, provideRouter, withComponentInputBinding, withHashLocation, withPreloading, withRouterConfig } from '@angular/router';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 import { routes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
-
+import { provideClientHydration, withEventReplay, withHttpTransferCacheOptions } from '@angular/platform-browser';
+import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideNgxWebstorage, withLocalStorage, withNgxWebstorageConfig, withSessionStorage } from 'ngx-webstorage';
+import { ToastrService, provideToastr } from 'ngx-toastr';
+import { authInterceptor } from './auth/auth.interceptor';
+import { loggingInterceptor } from './_helpers/logging.interceptor';
+import { AuthGuardService } from './authentication/services/auth-guard.service';
+import { AuthService } from './authentication/services/auth.service';
+import { StorageService } from './_services/storage.service';
+import { ServerErrorsInterceptor } from './_helpers/server_error/server-errors.interceptor';
+import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
+import { provideIonicAngular } from '@ionic/angular/standalone';
+import { provideAnimations } from '@angular/platform-browser/animations';
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration()]
+  providers: [
+    provideAnimations(),
+    AuthGuardService,
+    AuthService,
+    provideToastr({
+      preventDuplicates: true
+    }),
+    importProvidersFrom(NgHttpLoaderModule.forRoot()),
+    provideExperimentalZonelessChangeDetection(),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor, loggingInterceptor])),
+    provideRouter(routes, withComponentInputBinding(), withPreloading(PreloadAllModules), withRouterConfig({ onSameUrlNavigation: 'reload' })),
+    // provideClientHydration(withHttpTransferCacheOptions({
+    //   includePostRequests: true
+    // }), withEventReplay()),
+    provideHttpClient(),
+    provideAnimationsAsync(),
+    provideNgxWebstorage(
+      withNgxWebstorageConfig({ separator: ':', caseSensitive: true }),
+      withLocalStorage(),
+      withSessionStorage()
+    ),
+    provideHttpClient(withInterceptorsFromDi()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ServerErrorsInterceptor,
+      multi: true
+    },
+    {
+      provide: JWT_OPTIONS,
+      useValue: JWT_OPTIONS
+    },
+    JwtHelperService,
+    StorageService,
+    ToastrService,
+    provideIonicAngular({})
+  ]
 };
+

@@ -1,0 +1,89 @@
+<!-- Sidebar  -->
+<nav id="sidebar" class="shadow-lg rounded">
+  <div class="sidebar-header">
+    <h3 class="d-flex">
+      <img class="img-fluid" src="/image/bookkaro-logo.ico" />
+      <span class="img-fluid">Book Karlo</span>
+    </h3>
+  </div>
+
+  <ul class="list-unstyled components nav">
+    @for(m of menuDTO; track m.Id){
+    @if(m.Childs.length==0 ){
+    <li class="nav-item nav-profile border-bottom">
+      <a [routerLink]="[m.Location]" class="">
+        <!-- <ion-icon name="home-outline"></ion-icon> -->
+        <i class="material-icons">{{m.IconName}}</i><span>{{m.Name}}</span></a>
+    </li>
+    }
+    @else {
+    <li class="nav-item dropdown border-bottom">
+      <a href="javascript:void(0);" id="{{m.Id}}" (click)="toggleCollapse()" data-toggle="collapse"
+        data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">
+        <i class="material-icons">{{m.IconName}}</i><span>{{m.Name}}</span></a>
+      <ul class="dropdown-menu" [ngClass]="{ 'collapse': isMenuCollapsed, 'show': !isMenuCollapsed }"
+        class="collapse menu lst-style-none ps-4">
+        @for(c of m.Childs; track c.Id){
+        <li [attr.id]="c.Id" class="pl-8">
+          <a id="{{c.Id}}" [routerLink]="[c.Location]" routerLinkActive="active-link"
+            class="dropdown-item pt-1 pb-1">{{c.Name}}</a>
+        </li>
+        }
+      </ul>
+    </li>
+    }
+    }
+  </ul>
+
+</nav>
+<!-- Page Content  -->
+<div id="content">
+  <div class="top-navbar fixed-top">
+    <div class="navbar navbar-expand-lg p-0">
+      <div class="container-fluid d-flex">
+        <button type="button" id="sidebarCollapse" class="d-xl-block d-lg-block d-md-mone d-none">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+          </svg>
+        </button>
+        <p class="text-white"> Dashboard
+          <span class="italic"> ({{hotelName}})</span>
+        </p>
+        <button class="d-inline-block d-lg-none ml-auto more-button" type="button" data-toggle="collapse"
+          data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="material-icons">more_vert</span>
+        </button>
+
+        <div class="collapse navbar-collapse d-lg-block d-xl-block d-sm-none d-md-none d-none"
+          id="navbarSupportedContent">
+          <div ngbDropdown display="dynamic" placement="bottom-end" container="body">
+            <button type="button" class="btn btn-outline-warning shadow-lg btn-sm" id="userProfileMenu"
+              ngbDropdownToggle>
+              <span class="heading">
+                <img class="avatar  avatar-sm" src="/image/employee.jpg" />
+              </span>
+            </button>
+            <div ngbDropdownMenu="userProfileMenu">
+              <a ngbDropdownItem class="btn btn-info btn-sm"><ion-icon name="person-outline"></ion-icon>
+                Profile</a>
+              <a ngbDropdownItem class="btn btn-info btn-sm"><ion-icon name="settings-outline"></ion-icon>
+                Account Settings</a>
+              <a ngbDropdownItem [routerLink]="['logout']" class="btn btn-info btn-sm"><ion-icon
+                  name="log-out-outline"></ion-icon>
+                LogOut</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="main-content pe-1 pb-4 ps-1">
+    <div class="container-fluid cf ps-0">
+      <router-outlet></router-outlet>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

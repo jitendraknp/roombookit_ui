@@ -1,0 +1,7 @@
+.li-container {
+    display: flex;
+}
+
+li-item {
+    flex-wrap: wrap;
+}

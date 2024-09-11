@@ -1,0 +1,72 @@
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+  <div class="card border-0 shadow-lg m-0">
+    <div class="card-header  d-flex justify-content-between align-items-center bg-primary bg-gradient text-white">
+      <p class="uppercase text-sm">Add User</p>
+      <ion-icon name="close" class="cursor-pointer" (click)="onClose()"></ion-icon>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12">
+          <label for="firstName" class="form-label">First Name</label>
+          <input type="text" class="form-control form-control-sm" id="firstName" formControlName="FirstName"
+            placeholder="First Name" />
+        </div>
+        <div class="col-12">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input type="text" class="form-control form-control-sm" id="lastName" formControlName="LastName"
+            placeholder="Last Name" />
+        </div>
+        <div class="col-6 col-sm-12 col-xs-12">
+          <label for="mobileNo" class="form-label">Mobile No</label>
+          <input type="text" class="form-control form-control-sm" id="mobileNo" formControlName="MobileNo"
+            placeholder="Mobile No" />
+        </div>
+        <div class="col-6 col-sm-12 col-xs-12">
+          <label for="empCode" class="form-label">Emp Code</label>
+          <input type="text" class="form-control form-control-sm" id="empCode" formControlName="EmpCode"
+            placeholder="Emp Code" />
+        </div>
+        <div class="col-12">
+          <label for="email" class="form-label">Email</label>
+          <input type="text" class="form-control form-control-sm" id="email" formControlName="Email"
+            placeholder="Email" />
+        </div>
+        <div class="col-5 col-sm-12 col-xs-12">
+          <label for="gender" class="form-label">Gender</label>
+          <ng-select appearance="outline" placeholder="Gender" class="custom" id="gender" formControlName="Gender"
+            notFoundText="No items found">
+            <ng-option value="MALE">MALE</ng-option>
+            <ng-option value="FEMALE">FEMALE</ng-option>
+            <ng-option value="TRANSGENDER">TRANSGENDER</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-7 col-sm-12 col-xs-12">
+          <label for="role" class="form-label">Role</label>
+          <ng-select appearance="outline" placeholder="Select Role" class="custom" formControlName="RoleId"
+            notFoundText="No items found">
+            <ng-option value="F6F7563A-D4F7-4BF4-8A00-75155A551346">ADMIN</ng-option>
+            <ng-option value="1E1EADFE-3372-4A5B-BBC9-247858160BEF">MANAGER</ng-option>
+            <ng-option value="ED8A05CF-28DE-46BF-B2F6-0199C7CE79AD">SUPERADMIN</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-12">
+          <label for="userName" class="form-label">User Name</label>
+          <input type="text" class="form-control form-control-sm" id="userName" formControlName="UserName"
+            placeholder="User Name" />
+
+        </div>
+        <div class="col-12">
+          <label for="password" class="form-label">Password</label>
+          <input type="text" class="form-control form-control-sm" id="password" formControlName="Password"
+            placeholder="Password" />
+        </div>
+        <div class="col-12">
+          <app-address formGroupName="userForm"></app-address>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-end p-2">
+      <button type="submit" class="btn btn-primary shadow-lg btn-sm" (click)="onSubmit()">Add</button>
+    </div>
+  </div>
+</form>

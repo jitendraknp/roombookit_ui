@@ -1,0 +1,56 @@
+<div class="container profile-page pe-0 ps-0">
+    <div class="card profile-header bg-gradient-light">
+        <div class="body row pb-1">
+            <div class="col-lg-3 col-md-3 col-xs-12 col-sm-4">
+                <div class="profile-image float-md-right"> <img src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                        alt="">
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-9 col-xs-12 col-sm-8">
+                <div class="social-icon d-flex  justify-content-end ps-2">
+                    <!-- <a class="d-inline" title="Twitter" [routerLink]="['edit',users.Id]"><ion-icon
+                            name="eye-sharp"></ion-icon></a> -->
+                    <a class="d-inline" title="Twitter" href="javascript:void(0);"
+                        [routerLink]="['edit',users.Id]"><ion-icon name="create-sharp"></ion-icon></a>
+                    <a class="d-inline" title="Twitter" href="javascript:void(0);"><ion-icon name="trash-sharp"
+                            class="ion-icon-danger"></ion-icon></a>
+                </div>
+                <ng-container>
+                    <h4 class="mt-0 mb-0 text-primary">{{users.FirstName}} {{users.LastName}} ({{users.EmpCode}})</h4>
+                    <p class="text-muted">{{users.Address}}</p>
+                    <p class="text-muted pb-2">{{users.Cities?.Name}}, {{users.States?.Name}}, {{users.Countries?.Name}}
+                        - {{users.PinCode}}
+                    </p>
+                    <div class="d-flex">
+                        <div class="d-inline pe-2">
+                            <p class="text-muted"><ion-icon name="call"></ion-icon> {{users.MobileNo}}</p>
+                        </div>
+                        <div class="d-inline">
+                            <p class="job_post text-muted"><ion-icon name="mail"></ion-icon> {{users.Email}}</p>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="col-md-12">
+                <div class="d-flex  justify-between">
+                    <div class="d-inline">
+                        <span class="d-inline italic">{{users.Roles}}</span>
+                    </div>
+                    <div class="d-inline">
+                        <p class="social-icon  mb-0 pt-2 ">
+                            <a title="Twitter" href="javascript:void(0);">
+                                <ion-icon name="logo-twitter"></ion-icon>
+                            </a>
+                            <a title="Facebook" href="javascript:void(0);">
+                                <ion-icon name="logo-facebook"></ion-icon>
+                            </a>
+                            <a title="Instagram" href="javascript:void(0);">
+                                <ion-icon name="logo-instagram"></ion-icon>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

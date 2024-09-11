@@ -1,0 +1,4 @@
+ .card-body {
+     height: 65vh !important;
+     overflow-y: scroll !important;
+ }

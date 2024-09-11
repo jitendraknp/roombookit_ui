@@ -1,0 +1,21 @@
+<div class="card shadow-lg d-flex">
+    @if (showHeader){
+    <div class="card-header bg-info text-white d-flex p-2">
+        <mat-icon> {{iconName}}</mat-icon>
+        <h6 class="card-title">{{cardName}}</h6>
+    </div>
+    }
+    <div class="card-body text-center border-warning">
+        <p class="card-text  fw-bold fs-6">{{cardDetails?.Name | uppercase}}</p>
+        <p class="card-text text-muted fw-bold">{{cardDetails?.Code}}</p>
+        <span class="text-success text-end">{{cardDetails?.Is_Active==true?'Active':'In Active'}}</span>
+    </div>
+    <div class="card-footer text-end shadow-lg p-1">
+        @if(!forEditOnly){
+        <a href="#" class="btn btn-sm btn-success" routerLink="{{path}}">View</a>
+        }
+        @else{
+        <a href="#" class="btn btn-sm btn-warning" routerLink="{{path}}">Edit</a>
+        }
+    </div>
+</div>

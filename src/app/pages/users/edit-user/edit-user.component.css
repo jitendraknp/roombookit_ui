@@ -1,0 +1,28 @@
+ .card-body {
+     height: 65vh !important;
+     overflow-y: scroll !important;
+ }
+
+ ::-webkit-scrollbar {
+     width: 5px;
+ }
+
+ ::-webkit-scrollbar-track {
+     background: rgb(34, 18, 217);
+     border-radius: 10px;
+ }
+
+ ::-webkit-scrollbar-thumb {
+     background: rgb(136, 136, 136);
+     border-radius: 10px;
+ }
+
+ ::-webkit-scrollbar-thumb:hover {
+     background: rgb(100, 100, 100);
+     border-radius: 10px;
+ }
+
+ ::-webkit-scrollbar-thumb:active {
+     background: rgb(68, 68, 68);
+     border-radius: 10px;
+ }

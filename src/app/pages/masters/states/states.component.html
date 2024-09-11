@@ -1,0 +1,44 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <input type="text" placeholder="Search state" class="form-control">
+      </div>
+      <div class="row pt-4 pb-2">
+        <div class="col-md-6">
+          <h2 class="heading">All States</h2>
+        </div>
+        <div class="col-md-6 text-end">
+          <a class="btn btn-outline-primary btn-sm  btn-add-new-contact shadow-lg" [routerLink]="['add']">
+            <ion-icon name="person-add-sharp"></ion-icon> Add State</a>
+        </div>
+      </div>
+    </div>
+    <div class="row pe-0">
+      <div class="col-md-9 pe-0">
+        @defer(when states.length==0){
+        <ul class="list-group  pb-2">
+          @for (item of states | paginate: { itemsPerPage: 5,
+          currentPage: p ,totalItems: states.length}; track $index) {
+          <app-state-list [stateDetail]="item"></app-state-list>
+          }
+          @if(states.length==0) {
+          <app-no-records-found [message]="message"></app-no-records-found>
+          }
+        </ul>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-end">
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          </ul>
+        </nav>
+        }
+        @error {
+        <app-no-records-found message="Failed to load data"></app-no-records-found>
+        }
+      </div>
+      <div class="col-md-3 pe-0 ps-1">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

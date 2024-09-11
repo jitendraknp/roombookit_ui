@@ -1,0 +1,36 @@
+<form [formGroup]="stateForm" (ngSubmit)="onSubmit()">
+    <div class="card border-0 shadow-lg m-0">
+        <div class="card-header  d-flex justify-content-between align-items-center bg-primary bg-gradient text-white">
+            <h3 class="card-title">Add New State</h3>
+            <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="onClose()"></button>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="mb3 col-12 col-md-12">
+                    <label for="stateName" class="form-label">State Name</label>
+                    <input type="text" class="form-control" id="stateName" formControlName="Name"
+                        placeholder="State Name" />
+                </div>
+                <div class="mb3 col-md-6 col-12 pt-4">
+                    <label for="stateCode" class="form-label">State Code</label>
+                    <input type="text" class="form-control" id="stateCode" formControlName="Code"
+                        placeholder="State Code" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-12 pb-2">
+                    <label for="countryId" class="form-label">Country</label>
+                    <ng-select appearance="outline" placeholder="Select Country" class="custom" id="countryId"
+                        formControlName="CountryId" (change)="onCityChange($event)" notFoundText="No items found">
+                        @for(country of countries; track country.Id) {
+                        <ng-option [value]="country.Id">{{country.Name}} ({{country.Code}})</ng-option>
+                        }
+                    </ng-select>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <button type="submit" class="btn btn-primary shadow-lg" (click)="onSubmit()">Add</button>
+        </div>
+    </div>
+</form>

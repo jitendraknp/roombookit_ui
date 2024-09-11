@@ -1,0 +1,25 @@
+<div class="container-fluid" style="background: transparent;">
+    <div class="card shadow-lg" style="margin-bottom: 80px !important;">
+        <div class="card-header  bg-info text-white d-flex">
+            <mat-icon> layers</mat-icon>
+            <h5 class="card-title pr-2">Masters</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @for (item of items; track item.id) {
+                <div class="col-md-3 col-xs-12 col-lg-4 pb-4">
+                    @defer () {
+                    <app-bookit-cards [cardName]="item.title" [iconName]="item.icon" [path]="item.path"
+                        [ngClass]="'c-w mt-4'"></app-bookit-cards>
+                    }
+                    @loading (after 10ms; minimum 1s) {
+                    <div class="spinner-border  text-info" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+<form [formGroup]="roomForm" (ngSubmit)="onSubmit()">
+  <div class="card border-0 shadow-lg">
+    <div class="card-header  d-flex justify-content-between align-items-center bg-primary bg-gradient text-white">
+      <p class="uppercase text-sm">Add User</p>
+      <ion-icon name="close" class="cursor-pointer" (click)="onClose()"></ion-icon>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="mb-3 col-md-6">
+          <label for="roomNo" class="form-label">Room No</label>
+          <input type="text" class="form-control form-control-sm" id="roomNo" formControlName="roomNo"
+            placeholder="Room No" />
+        </div>
+        <div class="mb-3 col-md-6">
+          <label for="floorNo" class="form-label">Floor No</label>
+          <input type="number" class="form-control form-control-sm" id="floorNo" formControlName="floorNo"
+            placeholder="Floor No" />
+        </div>
+        <div class="mb-3 col-md-6">
+          <label for="type" class="form-label">Type</label>
+          <ng-select appearance="outline" placeholder="Select Type" class="custom" formControlName="type"
+            notFoundText="No items found">
+            <ng-option value="0">AC</ng-option>
+            <ng-option value="1">Non AC</ng-option>
+          </ng-select>
+        </div>
+        <div class="mb-3 col-md-6">
+          <label for="capacity" class="form-label">Capacity</label>
+          <input type="number" class="form-control form-control-sm" id="capacity" formControlName="capacity"
+            placeholder="Capacity" />
+        </div>
+        <div class="mb-3 col-md-6">
+          <label for="rentperNight" class="form-label">Rate/Night</label>
+          <input type="number" class="form-control form-control-sm" id="rentperNight" formControlName="rentperNight"
+            placeholder="Rate/Night" />
+        </div>
+        <div class="mb-3 col-md-6">
+          <label for="isDiscountApplicable" class="form-label">Discount</label>
+          <div class="input-group">
+            <div class="input-group-text">
+              <input class="form-check-input mt-0" type="checkbox" formControlName="isDiscountApplicable"
+                aria-label="Checkbox for following text input" />
+            </div>
+            <input type="text" class="form-control form-control-sm" id="isDiscountApplicable"
+              formControlName="discountValue" placeholder="Discount Applicable" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-end">
+      <button type="submit" class="btn btn-primary btn-sm" [disabled]="!roomForm.valid">Add</button>
+    </div>
+  </div>
+</form>

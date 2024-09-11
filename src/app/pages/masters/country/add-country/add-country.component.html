@@ -1,0 +1,24 @@
+<form [formGroup]="countryForm" (ngSubmit)="onSubmit()">
+  <div class="card border-0 shadow-lg m-0">
+    <div class="card-header  d-flex justify-content-between align-items-center bg-primary bg-gradient text-white">
+      <p class="uppercase text-sm">Add Country</p>
+      <ion-icon name="close" class="cursor-pointer" (click)="onClose()"></ion-icon>
+      <!-- <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="onClose()"></button> -->
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="mb-3 col-md-12 col-12 col-sm-12 col-xs-12 col-lg-12  col-xl-12 ">
+          <label for="countryName" class="form-label">Country Name</label>
+          <input type="text" class="form-control" id="countryName" formControlName="Name" placeholder="Country Name" />
+        </div>
+        <div class="mb-3 col-md-12 col-12 col-sm-12 col-xs-12  col-lg-12  col-xl-12">
+          <label for="countryCode" class="form-label">Code</label>
+          <input type="text" class="form-control" id="countryCode" formControlName="Code" placeholder="Code" />
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-end">
+      <button type="submit" class="btn btn-primary btn-sm" [disabled]="!countryForm.valid">Add</button>
+    </div>
+  </div>
+</form>
