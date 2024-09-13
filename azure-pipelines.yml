@@ -16,7 +16,7 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm install -g @angular/cli --force
-    npm install
+    npm install -g @angular/cli 
+    npm install --force
     ng build --prod
   displayName: 'npm install and build'
