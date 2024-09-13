@@ -49,7 +49,7 @@
             <div class="col-md-6 col-6 text-end">
               <!-- <input type="submit" class="border-0 btn btn-primary btn-sm" value="Log In" /> -->
               <p-button label="Log In" [size]="'small'" icon="pi pi-sign-in" [iconPos]="'right'"
-                type="submit"></p-button>
+                [disabled]="!loginForm.valid" type="submit"></p-button>
             </div>
 
           </div>

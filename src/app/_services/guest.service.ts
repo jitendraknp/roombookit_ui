@@ -39,6 +39,6 @@ export class GuestService {
     return this.httpClient.post<ApiResponse>( `${ URL }save/identification-details`, data, this.httpOptions );
   }
   generateInvoice ( id: string ) {
-    return this.httpClient.get( `${ URL }generate-invoice/{id}`, { responseType: 'blob' } );
+    return this.httpClient.get( `${ URL }generate-invoice/${ id }`, { responseType: 'blob' } );
   }
 }

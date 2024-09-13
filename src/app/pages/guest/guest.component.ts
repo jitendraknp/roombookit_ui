@@ -55,6 +55,8 @@ export class GuestComponent implements OnInit, OnDestroy {
       this.showFullList = true;
       if ( data.Data === null )
         this.message = data.Message;
+      console.log( 'this.showFullList ' );
     } );
   }
+
 }

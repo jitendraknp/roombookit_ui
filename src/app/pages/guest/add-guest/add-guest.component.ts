@@ -174,6 +174,7 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
       EmailId: this.newGuestForm.controls.EmailId.value!,
       MobileNo: this.newGuestForm.controls.MobileNo.value!,
       Address: this.newGuestForm.controls.Address.value!,
+      HotelId: "5c953e70-73fe-46cf-0267-08dcb3aa275e",
       CityId: this.newGuestForm.controls.CityId.value!,
       StateId: this.newGuestForm.controls.StateId.value!,
       CountryId: this.newGuestForm.controls.CountryId.value!,

@@ -91,7 +91,7 @@ export const routes: Routes = [
           {
             path: 'list',
             loadComponent: () => import( './pages/users/list-user/list-user.component' ).then( m => m.ListUserComponent ),
-
+            resolve: { user: userListResolver },
           },
           {
             path: 'edit/:user-id',
@@ -127,7 +127,7 @@ export const routes: Routes = [
         resolve: { data: guestDataResolver },
         // component: GuestComponent,
         loadComponent: () => import( './pages/guest/guest.component' ).then( m => m.GuestComponent ).finally( () => {
-          console.log( 'Guest Component Loaded' );
+          console.log( ' list loaded 1' );
         } ),
         children: [
           {
@@ -141,7 +141,10 @@ export const routes: Routes = [
           },
           {
             path: 'list',
-            loadComponent: () => import( './pages/guest/guest-list/guest-list.component' ).then( m => m.GuestListComponent ),
+            loadComponent: () => import( './pages/guest/guest-list/guest-list.component' ).then( m => m.GuestListComponent ).finally( () => {
+              console.log( ' list loaded)' );
+            } ),
+            resolve: { user: guestDataResolver },
           }
         ]
       },

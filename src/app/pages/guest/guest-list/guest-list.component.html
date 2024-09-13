@@ -2,45 +2,54 @@
   <div class="card profile-header bg-gradient-light m-0">
     <div class="body row pb-1">
       <div class="col-lg-3 col-md-3 col-xs-12 col-sm-4">
-        <div class="profile-image float-md-right"> <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
+        <div class="profile-image float-md-right py-1">
+          <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
         </div>
       </div>
       <div class="col-lg-9 col-md-9 col-xs-12 col-sm-8">
-        <div class="social-icon d-flex  justify-content-end ps-2">
-          <!-- <a class="d-inline" title="Twitter" [routerLink]="['edit',users.Id]"><ion-icon
-                            name="eye-sharp"></ion-icon></a> -->
-          <a class="d-inline" title="Twitter" href="javascript:void(0);"
-            [routerLink]="['edit',guestDetails?.Id]"><ion-icon name="create-sharp" class="text-sky-700"></ion-icon></a>
-          <a class="d-inline" title="Twitter" href="javascript:void(0);"><ion-icon name="trash-sharp"
-              class="ion-icon-danger"></ion-icon></a>
-        </div>
+
         <ng-container>
-          <p class="mt-0 mb-0 text-primary">{{guestDetails?.FirstName}} {{guestDetails?.LastName}}</p>
-          <p class="text-muted">{{guestDetails?.Address}}</p>
-          <p class="text-muted pb-2">{{guestDetails?.City?.Name}}, {{guestDetails?.State?.Name}},
+          <div class="flex flex-row justify-between">
+            <p class="mt-0 mb-0 text-primary  font-semibold text-sm">
+              {{guestDetails?.FirstName}} {{guestDetails?.LastName}}
+            </p>
+            <div class="social-icon d-flex  justify-content-end ps-2">
+              <a class="d-inline" title="Twitter" href="javascript:void(0);" [routerLink]="['edit',guestDetails?.Id]">
+                <ion-icon name="create-sharp" class="text-sky-700"></ion-icon>
+              </a>
+              <a class="d-inline" title="Twitter" href="javascript:void(0);">
+                <ion-icon name="trash-sharp" class="ion-icon-danger"></ion-icon>
+              </a>
+            </div>
+          </div>
+
+          <p class="text-muted text-sm">{{guestDetails?.Address}}</p>
+          <p class="text-muted pb-2  text-sm">{{guestDetails?.City?.Name}}, {{guestDetails?.State?.Name}},
             {{guestDetails?.Coutntry?.Name}}
           </p>
           <div class="d-flex">
             <div class="d-inline pe-2">
-              <p class="text-muted"><ion-icon name="call"></ion-icon> {{guestDetails?.MobileNo}}</p>
-            </div>
-            <div class="d-inline">
-              <p class="job_post text-muted"><ion-icon name="mail"></ion-icon> {{guestDetails?.EmailId}}
+              <p class="text-muted text-sm">
+                <ion-icon name="call"></ion-icon>
+                {{guestDetails?.MobileNo}}
               </p>
+            </div>
+            @if(guestDetails?.EmailId!=null){
+            <div class="d-inline">
+              <p class="job_post text-muted text-sm"><ion-icon name="mail"></ion-icon> {{guestDetails?.EmailId}}
+              </p>
+            </div>
+            }
+            <div class="ml-auto flex-1 flex items-center justify-end">
+              <p-button icon="pi pi-print"
+                styleClass="size-2  text-xs font-medium hover:bg-primary/90 text-primary-foreground"
+                [pTooltip]="'Print invoice'" [tooltipPosition]="'top'" variant="transparent"
+                [tooltipStyleClass]="'text-xs'" (onClick)="printInvoice(guestDetails?.Id)">
+              </p-button>
             </div>
           </div>
         </ng-container>
       </div>
-      <!-- <div class="col-md-12">
-        <div class="d-flex  justify-between">
-          <div class="d-inline">
-
-          </div>
-          <div class="d-inline">
-
-          </div>
-        </div>
-      </div> -->
     </div>
   </div>
 </div>

@@ -8,7 +8,8 @@ import { LoginModel } from '../../models/login';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ApiResponse } from '../../models/response';
 import { ToastrService } from 'ngx-toastr';
-
+import { environment } from '../../../environments/environment';
+const URL = `${ environment.api.baseUrl }Users/`;
 const USERS = [
   new User( '1', 'mahesh', 'm123', 'ADMIN' ),
   new User( '2', 'krishna', 'k123', 'USER' )
@@ -26,7 +27,7 @@ export class AuthService {
   private loggedInUser = {} as User;
   httpClient = inject( HttpClient );
   private toastrService = inject( ToastrService );
-  baseUrl = 'http://localhost:21309/api/users';
+  // baseUrl = 'http://localhost:21309/api/users';
 
   constructor(
     private storageService: StorageService,
@@ -38,7 +39,7 @@ export class AuthService {
       username: this.rsaHelper.encryptWithPublicKey( user.username ),
       password: this.rsaHelper.encryptWithPublicKey( user.password ),
     };
-    return this.httpClient.post<ApiResponse>( `${ this.baseUrl }/rsa-login`, encUser ).pipe( shareReplay(), retry( 0 ), catchError( this.handleError ) );
+    return this.httpClient.post<ApiResponse>( `${ URL }rsa-login`, encUser ).pipe( shareReplay(), retry( 0 ), catchError( this.handleError ) );
   }
   getAllUsers () {
     return usersObservable;
@@ -80,7 +81,7 @@ export class AuthService {
   isLogOut$!: Observable<boolean>;
   isLogOut!: Observable<boolean>;
   private logout (): Observable<boolean> {
-    return this.httpClient.post<boolean>( `${ this.baseUrl }/logout`, null );
+    return this.httpClient.post<boolean>( `${ URL }logout`, null );
   }
   private handleError ( error: HttpErrorResponse ) {
 

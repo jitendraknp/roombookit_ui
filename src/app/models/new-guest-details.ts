@@ -9,6 +9,7 @@ export interface NewGuestDetails {
   Gender: string;
   Address: string;
   PinCode?: string;
+  HotelId: string;
   CityId: string;
   StateId: string;
   CountryId: string;
