@@ -22,6 +22,9 @@ export class GuestService {
   getAllGuest (): Observable<ApiResponse> {
     return this.httpClient.get<ApiResponse>( `${ URL }all`, this.httpOptions );
   }
+  getDetailsByGuestId ( id: string ): Observable<ApiResponse> {
+    return this.httpClient.get<ApiResponse>( `${ URL }${ id }/id`, this.httpOptions );
+  }
   saveGuest ( data: any ): Observable<ApiResponse> {
     return this.httpClient.post<ApiResponse>( `${ URL }save/guest`, data, this.httpOptions );
   }

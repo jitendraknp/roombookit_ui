@@ -4,35 +4,35 @@
     <input type="text" class="form-control form-control-sm" id="address" formControlName="Address"
       placeholder="Address" />
   </div>
-  <div class="col-6 col-6 pb-2 col-sm-6 col-xs-12">
+  <div class="col-md-12 col-sm-6 col-xs-12">
     <label for="city" class="form-label">City</label>
-    <ng-select appearance="outline" placeholder="Select City" class="custom" formControlName="CityId"
+    <ng-select appearance="outline" placeholder="Select City" class="text-sm" formControlName="CityId"
       (change)="onCityChange($event)" notFoundText="No items found">
       @for(city of cities; track city.Id) {
       <ng-option [value]="city.Id">{{city.Name}} ({{city.Code}})</ng-option>
       }
     </ng-select>
   </div>
-  <div class="col-6 col-6 pb-2 col-sm-6 col-xs-12">
+  <div class="col-md-12 col-sm-6 col-xs-12">
     <label for="stateId" class="form-label">State</label>
-    <ng-select appearance="outline" placeholder="Select State" id="stateId" class="custom" formControlName="StateId"
+    <ng-select appearance="outline" placeholder="Select State" id="stateId" class="text-sm" formControlName="StateId"
       notFoundText="No items found">
       @for(state of states; track state.Id) {
       <ng-option [value]="state.Id">{{state.Name}} ({{state.Code}})</ng-option>
       }
     </ng-select>
   </div>
-  <div class="col-6 col-6 pb-2 col-sm-6 col-xs-12">
+  <div class="col-6 col-md-12 col-sm-6 col-xs-12">
     <label for="countryId" class="form-label">Country</label>
-    <ng-select appearance="outline" placeholder="Select Country" id="countryId" class="custom"
+    <ng-select appearance="outline" placeholder="Select Country" id="countryId" class="text-sm"
       formControlName="CountryId" notFoundText="No items found">
       @for(country of countries; track country.Id) {
       <ng-option [value]="country.Id">{{country.Name}} ({{country.Code}})</ng-option>
       }
     </ng-select>
   </div>
-  <div class="col-6 col-6 pb-2 col-sm-6 col-xs-12">
-    <label for="pinCode" class="form-label">PinCode</label>
+  <div class="col-6 col-6 col-sm-6 col-xs-12">
+    <label for="pinCode" class="form-label">Pincode</label>
     <input type="text" class="form-control form-control-sm" id="pinCode" formControlName="PinCode"
       placeholder="PinCode" />
   </div>

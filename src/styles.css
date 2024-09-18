@@ -5,11 +5,14 @@
 @import "@danielmoncada/angular-datetime-picker/assets/style/picker.min.css";
 @import "@ng-select/ng-select/themes/default.theme.css";
 @import 'ngx-toastr/toastr';
-@import 'tailwindcss/tailwind.css';
-@import 'tailwindcss/base.css';
-@import 'tailwindcss/utilities.css';
-@import 'tailwindcss/variants.css';
-
+@import "../node_modules/primeng/resources/themes/lara-light-blue/theme.css";
+@import "../node_modules/primeng/resources/primeng.css";
+@import "../node_modules/primeicons/primeicons.css";
+@import '../node_modules/tailwindcss/tailwind.css';
+@import '../node_modules/tailwindcss/base.css';
+@import '../node_modules/tailwindcss/utilities.css';
+@import '../node_modules/tailwindcss/variants.css';
+@layer bootstrap-reboot, primeng;
 
 /* * { */
   /* margin: 0;
@@ -24,9 +27,10 @@
  /* font-family: Roboto, "Helvetica Neue", sans-serif !important; */
 /* } */
 /* html, body { height: 100%; } */
-body {
+ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif !important;
+  /* font-size: 0.9rem !important; */
   background-color: white !important;
 }
 
@@ -66,7 +70,19 @@ body {
   right: 0;
   height: 100%;
 }
-
+.p-dialog .p-dialog-footer button {
+    margin: 0 0.5rem 0 0 !important;
+    width: auto !important;
+}
+.p-button.p-button-sm {
+    font-size: 0.875rem !important;
+    padding: 0.4375rem 0.875rem !important;
+}
+.p-button.p-button-outlined {
+    background-color: transparent !important;
+    color: #3B82F6 !important;
+    border: 1px solid !important;
+}
 /*
 .card.bg-blue-gradient {
   background: -webkit-gradient(linear, left top, right top, from(#065efd), color-stop(#3169fd), to(#6f79fc));
@@ -1111,6 +1127,7 @@ CONTACT MODAL VIEW
     width: 100%;
   }
 
+
   .page-people-directory .contact-top-bar .btn-add-new-contact {
     margin-bottom: 10px;
     display: block;
@@ -1140,3 +1157,4 @@ CONTACT MODAL VIEW
 .v-h-98{
   height: 98vh;
 }
+

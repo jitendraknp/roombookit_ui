@@ -26,6 +26,12 @@ export interface NewGuestDetails {
   GSTPercentage: number;
   IncGST: number;
   PaymentMode: string;
+  Company?: string;
+  GSTIN?: string;
+  CompanyAddress?: string;
+  Comments?: string;
+  Print_CD?: boolean;
+  Print_Comments?: boolean;
   ExcGST: number;
   AmountPaid: number;
   BalanceAmount: number;

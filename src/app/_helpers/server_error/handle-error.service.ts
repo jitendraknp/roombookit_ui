@@ -1,25 +1,26 @@
-import { Injectable, inject } from "@angular/core";
+import { Inject, Injectable, inject } from "@angular/core";
 import { HttpErrorResponse } from "@angular/common/http";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
 import { AuthService } from "../../authentication/services/auth.service";
-
+import { MessageService } from 'primeng/api';
 @Injectable( {
-  providedIn: 'root'
+  providedIn: 'root',
+
 } )
 export class HandleErrorService {
-
-  constructor( private toastrs: ToastrService, private authService: AuthService, private router: Router ) { }
+  constructor( private toastrs: ToastrService, private authService: AuthService, private router: Router, private messageService: MessageService ) { }
   // Handling HTTP Errors using Toaster
   public handleError ( err: HttpErrorResponse ) {
     let errorMessage: string;
     if ( err.error instanceof ErrorEvent ) {
-      console.log( err );
+
       // A client-side or network error occurred. Handle it accordingly.
       errorMessage = `An error occurred: ${ err.error.message }`;
     } else {
       // The backend returned an unsuccessful response code.
       // The backend returned an unsuccessful response code.
+
       switch ( err.status ) {
         case 400:
           errorMessage = "Bad Request.";
@@ -53,6 +54,8 @@ export class HandleErrorService {
       }
     }
     console.log( errorMessage );
+    this.messageService.add( { severity: 'error', summary: 'Error', detail: 'Message Content' } );
+
     this.toastrs.error( errorMessage );
     if ( err.status === 401 ) {
       this.router.navigate( ['login'], {

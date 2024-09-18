@@ -5,6 +5,8 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FooterComponent } from './shared/footer/footer/footer.component';
+import { ToastModule } from 'primeng/toast';
+
 @Component( {
   selector: 'app-root',
   standalone: true,
@@ -14,8 +16,10 @@ import { FooterComponent } from './shared/footer/footer/footer.component';
     ToastrModule,
     NgOptimizedImage,
     NgxPaginationModule,
-    FooterComponent
+    FooterComponent,
+    ToastModule
   ],
+
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 } )

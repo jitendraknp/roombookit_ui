@@ -1,11 +1,26 @@
-.add-guest-card-height {
-  /* min-height: 75vh; */
-  /* overflow-y: scroll; */
-}
 
-ion-icon {
+.p-dialog .p-dialog-footer button {
+    margin: 0 0.5rem 0 0 !important;
+    width: auto !important;
+}
+.p-button.p-button-sm {
+    font-size: 0.875rem !important;
+    padding: 0.4375rem 0.875rem !important;
+}
+/* ion-icon {
   color: white;
   /* color: #039BE5; */
+p-button {
+    margin: 0 !important;
+    display: inline-flex !important;
+    cursor: pointer !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    align-items: center !important;
+    vertical-align: bottom !important;
+    text-align: center !important;
+    overflow: hidden !important;
+    position: relative !important;
 }
 
 .custom-tooltip {

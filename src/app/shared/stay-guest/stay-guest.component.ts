@@ -16,7 +16,7 @@ import { RoomRentRequest } from '../../models/room-rent-request';
 import { GuestBaseEntity } from '../../models/guest-base';
 import { IonicModule } from '@ionic/angular';
 import { IonAccordion } from '@ionic/angular/standalone';
-import { MessageService } from '../../_services/message.service';
+import { CustomMessageService } from '../../_services/custom-message.service';
 import { ButtonModule } from 'primeng/button';
 const ONE_DAY = 24 * 60 * 60 * 1000;
 @Component( {
@@ -40,8 +40,12 @@ const ONE_DAY = 24 * 60 * 60 * 1000;
   providers: [DatePipe]
 } )
 export class StayGuestComponent implements OnInit, AfterContentChecked, OnDestroy {
+  onChange ( $event: any ) {
+    console.log( $event );
+  }
   @Input() guestList: GuestBaseEntity[] = [];
   @Input() public form!: FormGroup;
+
   onRoomChange ( $event: string ) {
 
     if ( $event == '' || $event == undefined ) {
@@ -86,7 +90,7 @@ export class StayGuestComponent implements OnInit, AfterContentChecked, OnDestro
   // @Input() public form!= FormGroup;
   stayGuestForm = new FormGroup( {
     GuestId: new FormControl( null ),
-    CheckInDate: new FormControl<string>( '', [Validators.required] ),
+    CheckInDate: new FormControl<Date>( new Date(), [Validators.required] ),
     CheckOutDate: new FormControl<string>( '', [Validators.required] ),
     RoomNoId: new FormControl( null, [Validators.required] ),
     NoOfGuests: new FormControl<number>( { value: 1, disabled: true }, [Validators.required] ),
@@ -94,8 +98,8 @@ export class StayGuestComponent implements OnInit, AfterContentChecked, OnDestro
     NoOfChildren: new FormControl<number>( 0, [Validators.required] ),
     RatePerNight: new FormControl<number>( { value: 0, disabled: true } ),
     Discount: new FormControl<number>( { value: 0, disabled: true } ),
-    TotalAmount: new FormControl<number>( { value: 0, disabled: true }, [Validators.required] ),
-    NoOfDays: new FormControl<number>( { value: 0, disabled: true } )
+    TotalAmount: new FormControl<number>( 0 ),
+    NoOfDays: new FormControl<number>( 0 )
   } );
   protected selectedDates: [Date, Date] = [
     new Date( Date.now() - ONE_DAY ),
@@ -107,12 +111,13 @@ export class StayGuestComponent implements OnInit, AfterContentChecked, OnDestro
   roomService = inject( RoomService );
   room$!: Observable<ApiResponse | any>;
   public min = new Date();
+  public minCheckOutDate: Date = new Date();
 
   constructor(
     protected cdr: ChangeDetectorRef,
     private toastrService: ToastrService,
     private guestService: GuestService,
-    private messageService: MessageService,
+    private messageService: CustomMessageService,
     private datePipe: DatePipe,
     private formBuilder: FormBuilder, ) {
 
@@ -181,4 +186,17 @@ export class StayGuestComponent implements OnInit, AfterContentChecked, OnDestro
       }
     } );
   }
+  selectedChanged ( event: any ) {
+    console.log( 'selectedChanged' );
+    console.log( event );
+    this.minCheckOutDate = event.value;
+    console.log( this.minCheckOutDate );
+  }
+  myFilter ( d: any ) {
+    this.minCheckOutDate = d;
+    console.log( d );
+    const day = d.getDay();
+    // Prevent Saturday and Sunday from being selected.
+    return day !== 0 && day !== 6;
+  };
 }

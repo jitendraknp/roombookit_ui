@@ -1,88 +1,155 @@
+<p-toast />
+<p-confirmDialog />
+
 <form [formGroup]="newGuestForm" (submit)="onSubmit()">
+  <div class="flex flex-row w-full justify-between border border-gray-300 shadow-sm px-2 py-2 border-top-rounded">
+    <p class="text-1xl font-semibold">Add New Guest</p>
+    <a href="javascript:void(0)" (click)="confirm($event)" class="cursor:pointer ml-auto" pTooltip="Cancel"
+      tooltipPosition="top" [tooltipStyleClass]="'text-xs'">
+      <i class="pi pi-times" style="color: red"></i>
+    </a>
+  </div>
   <p-stepper class="card" [linear]="true" [(activeStep)]="active">
     <p-stepperPanel header="Guest Details">
       <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
         <div class="flex flex-column h-12rem">
           <div class="border-0   surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-
             <div class="d-flex flex-row  flex-sm-column flex-xs-column flex-md-row flex-lg-row ">
-              <div>
-                <div class="card shadow-lg border-0 p-0">
-                  <div class="card-header bg-[#60a5fa] bg-gradient text-white ps-2">
-                    <p class="uppercase text-sm">Personal Details</p>
-                  </div>
-                  <div class="card-body p-0">
-                    <!-- <div class="col-6"> -->
-                    <div class="row pb-2 p-2">
-                      <div class="col-md-6 pb-2">
-                        <label for="firstName" class="form-label">First Name</label>
-                        <input type="text" class="form-control form-control-sm" id="firstName"
-                          formControlName="FirstName" placeholder="First Name" />
-                      </div>
-                      <div class="col-md-6  pb-2">
-                        <label for="lastName" class="form-label">Last Name</label>
-                        <input type="text" class="form-control form-control-sm" id="lastName" formControlName="LastName"
-                          placeholder="Last Name" />
-                      </div>
-                      <div class="col-md-6  pb-2">
-                        <label for="emailId" class="form-label">Email</label>
-                        <input type="email" class="form-control form-control-sm" id="emailId" formControlName="EmailId"
-                          placeholder="Email" />
-                      </div>
-                      <div class="col-6 pb-2 d-inline">
-                        <label for="Gender" class="form-label">Gender</label>
-                        <ng-select appearance="outline" placeholder="Gender" id="Gender" class="custom"
-                          formControlName="Gender" notFoundText="No items found">
-                          <ng-option value="MALE">MALE</ng-option>
-                          <ng-option value="FEMALE">FEMALE</ng-option>
-                          <ng-option value="TRANSGENDER">TRANSGENDER</ng-option>
-                        </ng-select>
-                      </div>
-
-                      <div class="d-flex justify-content-between ">
-                        <div class="col-md-6 col-sm-12    d-inline ">
-                          <label for="mobileNo" class="form-label">Mobile No</label>
-                          <input type="text" class="form-control form-control-sm" id="mobileNo"
-                            formControlName="MobileNo" placeholder="Mobile No" />
+              <div class="card shadow-lg border-0 p-0 flex-1">
+                <div class="card-header bg-[#60a5fa] bg-gradient text-white ps-2">
+                  <p class="uppercase text-sm">Personal Details</p>
+                </div>
+                <div class="card-body p-0">
+                  <!-- <div class="col-6"> -->
+                  <div class="row pb-2 p-2">
+                    <div class="col-md-12 pb-2 pe-2 ps-2">
+                      <div class="card border-1 p-0">
+                        <div class="card-header  d-flex justify-between p-2 py-1 bg-slate-300">
+                          <p class="text-blue-500 text-sm"> Guest Company Details</p>
                         </div>
-                        <div class="justify-content-between content-end">
-                          <!-- <p-button label="More" icon="pi pi-plus-circle" styleClass="bg-blue-500/60"
-                            severity="secondary" (click)="addGuest()" size="small" /> -->
-                          <button type="button"
-                            class="bg-gray-300 hover:bg-gray-400 text-sm text-gray-800 font-semibold  py-2 px-2 rounded inline-flex items-center"
-                            (click)="addGuest()">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
-                              class="size-4">
-                              <path
-                                d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" />
-                            </svg>
-                            More</button>
-                        </div>
-                      </div>
-                      <div class="row divide-y pt-2 mb-2">
-                        <form [formGroup]="moreGuestForm">
-                          <div formArrayName="guests"
-                            [ngClass]="{'ng-invalid': 'remove-invalid','ng-valid': 'remove-invalid'}">
-                            <div *ngFor="let user of guests.controls; let i = index" [formGroupName]="i"
-                              class="justify-between mb-2">
-                              <app-more-guest [guestForm]="user" [recordNo]=i
-                                (removeUser)="removeUser(i)"></app-more-guest>
+                        <div class="card-body p-1">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="company" class="form-label">Company</label>
+                              <input type="text" class="form-control form-control-sm" id="company"
+                                formControlName="Company" placeholder="Company Name" />
+                            </div>
+                            <div class="col-md-6">
+                              <label for="companyGSTIN" class="form-label">GSTIN</label>
+                              <input type="text" class="form-control form-control-sm" id="companyGSTIN"
+                                formControlName="CompanyGSTIN" placeholder="Company GSTIN" />
+                            </div>
+                            <div class="col-12">
+                              <label for="companyAddress" class="form-label">Company Address</label>
+                              <input type="text" class="form-control form-control-sm" id="companyAddress"
+                                formControlName="CompanyAddress" placeholder="Company Address" />
                             </div>
                           </div>
-                        </form>
-
+                        </div>
                       </div>
                     </div>
-                    <!-- </div> -->
+
+
+
+                    <div class="col-md-6">
+                      <label for="firstName" class="form-label">First Name</label>
+                      <input type="text" class="form-control form-control-sm" id="firstName" formControlName="FirstName"
+                        placeholder="First Name" />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="lastName" class="form-label">Last Name</label>
+                      <input type="text" class="form-control form-control-sm" id="lastName" formControlName="LastName"
+                        placeholder="Last Name" />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="emailId" class="form-label">Email</label>
+                      <input type="email" class="form-control form-control-sm" id="emailId" formControlName="EmailId"
+                        placeholder="Email" />
+                    </div>
+                    <div class="col-6 d-inline">
+                      <label for="Gender" class="form-label">Gender</label>
+                      <ng-select appearance="outline" placeholder="Gender" id="Gender" class="custom"
+                        formControlName="Gender" notFoundText="No items found">
+                        <ng-option value="MALE">MALE</ng-option>
+                        <ng-option value="FEMALE">FEMALE</ng-option>
+                        <ng-option value="TRANSGENDER">TRANSGENDER</ng-option>
+                      </ng-select>
+                    </div>
+                    <div class="d-flex justify-content-between ">
+                      <div class="col-md-6 col-sm-12    d-inline ">
+                        <label for="mobileNo" class="form-label">Mobile No</label>
+                        <input type="text" class="form-control form-control-sm" id="mobileNo" formControlName="MobileNo"
+                          placeholder="Mobile No" />
+                      </div>
+                      <div class="justify-content-between content-end">
+                        <!-- <p-button label="More" icon="pi pi-plus-circle" styleClass="bg-blue-500/60"
+                            severity="secondary" (click)="addGuest()" size="small" /> -->
+                        <button type="button"
+                          class="bg-gray-300 hover:bg-gray-400 text-sm text-gray-800 font-semibold  py-2 px-2 rounded inline-flex items-center gap-2"
+                          (click)="addGuest()">
+                          <i class="pi pi-plus font-semibold text-xs" style="color: var(--primary-color)"></i>
+                          <p class="font-sm">Member</p>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="flex flex-col py-1 ">
+                      <form [formGroup]="moreGuestForm" class="pe-0 w-fill">
+                        <div formArrayName="guests"
+                          [ngClass]="{'ng-invalid': 'remove-invalid','ng-valid': 'remove-invalid'}">
+                          <div *ngFor="let user of guests.controls; let i = index" [formGroupName]="i"
+                            class="justify-between mb-2">
+                            <app-more-guest [guestForm]="user" [recordNo]=i
+                              (removeUser)="removeUser(i)"></app-more-guest>
+                          </div>
+                        </div>
+                      </form>
+
+                    </div>
+
                   </div>
+                  <!-- </div> -->
                 </div>
               </div>
-              <div class="card shadow-lg border-0 p-0 ms-2">
+              <div class="card shadow-lg border-0 p-0 ms-2 flex-1">
                 <div class="card-header  bg-[#60a5fa] bg-gradient text-white ps-2">
                   <p class="uppercase text-sm">Contact Details</p>
                 </div>
-                <div class="card-body p-2">
+                <div class="card-body p-2 pt-0">
                   <app-address [form]="newGuestForm"> </app-address>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-row">
+            <div class="flex flex-column py-2 pe-2 flex-grow-1">
+              <div class="card">
+                <div class="card-header bg-[#60a5fa] bg-gradient text-white">
+                  <p class="text-sm font-semibold">Comments</p>
+                </div>
+                <div class="card-body p-1  bg-blue-100">
+                  <textarea pInputTextarea rows="w" variant="outlined" class="form-control form-control-sm"
+                    formControlName="Comments" id="comments" placeholder="Comments / Remarks"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-column  py-2 align-items-end">
+              <div class="card">
+                <div class="card-header bg-[#60a5fa] bg-gradient text-white">
+                  <p class="text-sm font-semibold">Invoice Printing Option(s)</p>
+                </div>
+                <div class="card-body bg-blue-100">
+                  <div class="flex flex-row gap-3 text-sm font-semibold">
+                    <p class="gap-2">
+                      <p-checkbox value="Company Details" class="me-2" inputId="cd" variant="filled" [binary]="true"
+                        formControlName="Print_CD" />
+                      <label for="cd">Company Details</label>
+                    </p>
+                    <p class="gap-2">
+                      <p-checkbox value="Comments" inputId="comment" class="me-2" variant="filled" [binary]="true"
+                        formControlName="Print_Comments" />
+                      <label for="comment">Comments</label>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -90,8 +157,6 @@
         </div>
         <div class="row align-content-end justify-around text-end pt-2 pb-2">
           <div class="col-10 text-end">
-            <!-- <button label="Save" type="submit" icon="pi pi-save" iconPos="left" size="small" pButton pRipple
-              (onClick)="nextCallback.emit()"></button> -->
           </div>
           <div class="col-2 text-end">
             <p-button label="Continue" icon="pi pi-arrow-right" iconPos="right" size="small" [raised]="true"
@@ -123,8 +188,8 @@
             </div>
           </div>
         </div>
-        <div class="flex pt-4 justify-content-between">
-          <p-button severity="secondary" pRipple label="Back" [size]="'small'" icon="pi pi-arrow-left"
+        <div class="flex pt-4 flex-row justify-content-end">
+          <p-button severity="secondary" pRipple label="Back" [size]="'small'" icon="pi pi-arrow-left" class="pe-2"
             (onClick)="prevCallback.emit()" />
           <p-button label="Continue" [size]="'small'" [raised]="true" icon="pi pi-arrow-right" iconPos="right"
             (onClick)="nextCallback.emit()" />
@@ -146,7 +211,7 @@
             </div>
           </div>
         </div>
-        <div class="flex pt-4 justify-content-between">
+        <div class="flex justify-content-end flex-wrap gap-2 py-2">
           <p-button label="Back" icon="pi pi-arrow-left" size="small" (onClick)="prevCallback.emit()" />
           <p-button label="Save" icon="pi pi-save" size="small" type="submit" [loading]="loading" [raised]="true" />
           <p-button label="Generate" icon="pi pi-receipt" size="small" (onClick)="generateInvoice()" [loading]="loading"
@@ -155,4 +220,5 @@
       </ng-template>
     </p-stepperPanel>
   </p-stepper>
+
 </form>

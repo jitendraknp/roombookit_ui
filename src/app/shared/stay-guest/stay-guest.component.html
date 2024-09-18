@@ -1,12 +1,14 @@
 <form class="row" [formGroup]="form">
   <div class="col-md-6 col-12 pb-2">
+    <!-- (dateTimeChange)="selectedChanged($event)"   [min]="min"-->
     <label for="checkInDate" class="form-label">Check In Date</label>
-    <input [min]="min" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" class="form-control form-control-sm"
+    <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" class="form-control form-control-sm"
       formControlName="CheckInDate" aria-owns="owl-dt-picker-0">
     <owl-date-time #dt1 aria-owns="owl-dt-picker-1" [hour12Timer]="false"></owl-date-time>
   </div>
   <div class="col-md-6 col-6 pb-2">
     <label for="checkOutDate" class="form-label">Check Out Date</label>
+    <!-- [min]="minCheckOutDate" -->
     <input [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" class="form-control form-control-sm"
       formControlName="CheckOutDate" aria-owns="owl-dt-picker-4">
     <owl-date-time #dt2 aria-owns="owl-dt-picker-5"></owl-date-time>

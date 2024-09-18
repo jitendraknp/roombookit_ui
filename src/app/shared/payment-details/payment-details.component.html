@@ -13,20 +13,22 @@
     <label for="gstRate" class="form-label">GST Rate</label>
     <ng-select appearance="outline" placeholder="Select GST Rate" id="gstRate" class="custom"
       formControlName="GSTPercentage" notFoundText="No items found">
-      <ng-option [value]="'1'">0%</ng-option>
-      <ng-option [value]="'5'">5%</ng-option>
-      <ng-option [value]="'12'" selected>12%</ng-option>
-      <ng-option [value]="'18'">18%</ng-option>
-      <ng-option [value]="'28'">28%</ng-option>
+      <ng-option [value]="1">0%</ng-option>
+      <ng-option [value]="5">5%</ng-option>
+      <ng-option [value]="12" selected>12%</ng-option>
+      <ng-option [value]="18">18%</ng-option>
+      <ng-option [value]="28">28%</ng-option>
     </ng-select>
   </div>
   <div class="col-md-6 col-6 pb-2">
     <label for="advancePayment" class="form-label">Payment Mode</label>
     <ng-select appearance="outline" placeholder="Payment Mode" id="paymentMode" class="custom"
       formControlName="PaymentMode" notFoundText="No items found">
-      <ng-option [value]="1" selected>Online</ng-option>
-      <ng-option [value]="2">Cash</ng-option>
-      <ng-option [value]="3">Card</ng-option>
+      <ng-option [value]="1" selected>Cash</ng-option>
+      <ng-option [value]="2">Credit Card</ng-option>
+      <ng-option [value]="3">Debit Card</ng-option>
+      <ng-option [value]="4">Net Banking</ng-option>
+      <ng-option [value]="5">UPI</ng-option>
     </ng-select>
   </div>
   <div class="col-md-6 col-6 pb-2">

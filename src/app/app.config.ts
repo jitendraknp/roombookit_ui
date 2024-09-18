@@ -16,29 +16,35 @@ import { ServerErrorsInterceptor } from './_helpers/server_error/server-errors.i
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { provideIonicAngular } from '@ionic/angular/standalone';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
     AuthGuardService,
     AuthService,
-    provideToastr({
+    provideToastr( {
       preventDuplicates: true
-    }),
-    importProvidersFrom(NgHttpLoaderModule.forRoot()),
+    } ),
+    importProvidersFrom( NgHttpLoaderModule.forRoot() ),
     provideExperimentalZonelessChangeDetection(),
-    provideHttpClient(withFetch(), withInterceptors([authInterceptor, loggingInterceptor])),
-    provideRouter(routes, withComponentInputBinding(), withPreloading(PreloadAllModules), withRouterConfig({ onSameUrlNavigation: 'reload' })),
+    provideHttpClient( withFetch(), withInterceptors( [authInterceptor, loggingInterceptor] ) ),
+    provideRouter( routes,
+      // withComponentInputBinding(),
+      // withPreloading( PreloadAllModules ),
+      // withRouterConfig( { onSameUrlNavigation: 'reload' } )
+    ),
     // provideClientHydration(withHttpTransferCacheOptions({
     //   includePostRequests: true
     // }), withEventReplay()),
     provideHttpClient(),
     provideAnimationsAsync(),
     provideNgxWebstorage(
-      withNgxWebstorageConfig({ separator: ':', caseSensitive: true }),
+      withNgxWebstorageConfig( { separator: ':', caseSensitive: true } ),
       withLocalStorage(),
       withSessionStorage()
     ),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient( withInterceptorsFromDi() ),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ServerErrorsInterceptor,
@@ -48,10 +54,13 @@ export const appConfig: ApplicationConfig = {
       provide: JWT_OPTIONS,
       useValue: JWT_OPTIONS
     },
+    {
+      provide: ToastModule
+    },
     JwtHelperService,
     StorageService,
     ToastrService,
-    provideIonicAngular({})
+    MessageService
   ]
 };
 

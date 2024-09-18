@@ -8,7 +8,7 @@ import { addIcons } from "ionicons";
 import { NgxPaginationModule, PaginationInstance } from 'ngx-pagination';
 import { NgIf } from '@angular/common';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { MessageService } from '../../_services/message.service';
+import { CustomMessageService } from '../../_services/custom-message.service';
 
 @Component( {
   selector: 'app-guest',
@@ -41,7 +41,7 @@ export class GuestComponent implements OnInit, OnDestroy {
   message: string = 'No records found.';
   path: string = '';
   subscription: Subscription;
-  constructor( private route: ActivatedRoute, private messageService: MessageService ) {
+  constructor( private route: ActivatedRoute, private messageService: CustomMessageService ) {
     this.subscription = this.messageService.getMessage().subscribe( message => {
       this.showFullList = message;
     } );
@@ -55,7 +55,6 @@ export class GuestComponent implements OnInit, OnDestroy {
       this.showFullList = true;
       if ( data.Data === null )
         this.message = data.Message;
-      console.log( 'this.showFullList ' );
     } );
   }
 

@@ -163,7 +163,7 @@
 }
 
 
-.layout .sidebar .menu .menu-item a .menu-icon {
+/* .layout .sidebar .menu .menu-item a .menu-icon { */
   /* font-size: 1.2rem;
   width: 35px;
   min-width: 35px;
@@ -174,7 +174,7 @@
   margin-right: 10px;
   border-radius: 2px;
   transition: color 0.3s; */
-}
+/* } */
 
 .layout .sidebar .menu .menu-item a .menu-icon i {
   display: inline-block;
@@ -221,12 +221,12 @@
   transform: rotate(-45deg);
 }
 
-.layout .sidebar .menu .menu-item.sub-menu>.sub-menu-list {
+/* .layout .sidebar .menu .menu-item.sub-menu>.sub-menu-list { */
   /* padding-left: 20px;
   display: none;
   overflow: hidden;
   z-index: 999; */
-}
+/* } */
 
 .layout .sidebar .menu .menu-item.sub-menu.open>a {
   color: #dee2ec;

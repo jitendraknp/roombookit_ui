@@ -25,6 +25,9 @@ export const routes: Routes = [
     canActivateChild: [( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ) =>
       inject( AuthGuardService ).canActivateChild( route, state )],
     children: [
+      {
+        path: 'hotel-setup', component: HotelSetupComponent
+      },
       { path: 'chat', component: ChatComponent },
       {
         path: 'logout',
@@ -126,28 +129,38 @@ export const routes: Routes = [
         path: 'guest',
         resolve: { data: guestDataResolver },
         // component: GuestComponent,
-        loadComponent: () => import( './pages/guest/guest.component' ).then( m => m.GuestComponent ).finally( () => {
-          console.log( ' list loaded 1' );
-        } ),
+        loadComponent: () => import( './pages/guest/guest.component' ).then( m => m.GuestComponent ),
         children: [
-          {
-            path: 'add-guest',
-            loadComponent: () => import( './pages/guest/add-guest/add-guest.component' ).then( m => m.AddGuestComponent ),
-            title: 'Add Guest'
-          },
-          {
-            path: 'edit/:guest-id',
-            loadComponent: () => import( './pages/guest/edit-guest/edit-guest.component' ).then( m => m.EditGuestComponent ),
-          },
+          // {
+          //   path: 'add-guest',
+          //   loadComponent: () => import( './pages/guest/add-guest/add-guest.component' ).then( m => m.AddGuestComponent ),
+          //   title: 'Add Guest',
+          //   pathMatch: 'full'
+          // },
+          // {
+          //   path: 'edit/:guest-id',
+          //   loadComponent: () => import( './pages/guest/edit-guest/edit-guest.component' ).then( m => m.EditGuestComponent ),
+          // },
           {
             path: 'list',
             loadComponent: () => import( './pages/guest/guest-list/guest-list.component' ).then( m => m.GuestListComponent ).finally( () => {
-              console.log( ' list loaded)' );
             } ),
-            resolve: { user: guestDataResolver },
+            pathMatch: 'full'
           }
-        ]
+        ],
       },
+      {
+        path: 'guest/add-guest',
+        loadComponent: () => import( './pages/guest/add-guest/add-guest.component' ).then( m => m.AddGuestComponent ),
+        title: 'Add Guest',
+        pathMatch: 'full'
+      },
+      {
+        path: 'guest/edit/:guest-id',
+        loadComponent: () => import( './pages/guest/edit-guest/edit-guest.component' ).then( m => m.EditGuestComponent ),
+        title: 'Edit Guest',
+        pathMatch: 'full'
+      }
 
     ]
   },

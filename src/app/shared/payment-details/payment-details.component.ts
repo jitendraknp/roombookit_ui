@@ -35,7 +35,7 @@ export class PaymentDetailsComponent implements OnInit {
   paymentDetailsForm = new FormGroup( {
     // RatePerNight: new FormControl<number>( { value: 0, disabled: true }, [Validators.required] ),
     AmountToPay: new FormControl<number>( { value: 0, disabled: true } ),
-    GSTPercentage: new FormControl<number>( { value: 18, disabled: true } ),
+    GSTPercentage: new FormControl<number>( 12 ),
     IncGST: new FormControl( 0 ),
     ExcGST: new FormControl( 0 ),
     PaymentMode: new FormControl( null, [Validators.required] ),

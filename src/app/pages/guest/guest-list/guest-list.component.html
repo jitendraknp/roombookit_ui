@@ -1,55 +1,124 @@
 <div class="container profile-page pe-0 ps-0 pb-1">
   <div class="card profile-header bg-gradient-light m-0">
     <div class="body row pb-1">
-      <div class="col-lg-3 col-md-3 col-xs-12 col-sm-4">
+      <div class="col-lg-2 col-md-1 col-xs-12 col-sm-4">
         <div class="profile-image float-md-right py-1">
           <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
         </div>
       </div>
-      <div class="col-lg-9 col-md-9 col-xs-12 col-sm-8">
-
+      <div class="col-lg-10 col-md-11 col-xs-12 col-sm-8">
         <ng-container>
           <div class="flex flex-row justify-between">
+
             <p class="mt-0 mb-0 text-primary  font-semibold text-sm">
-              {{guestDetails?.FirstName}} {{guestDetails?.LastName}}
+              {{guestDetails?.FirstName }} {{guestDetails?.LastName}}
             </p>
             <div class="social-icon d-flex  justify-content-end ps-2">
-              <a class="d-inline" title="Twitter" href="javascript:void(0);" [routerLink]="['edit',guestDetails?.Id]">
-                <ion-icon name="create-sharp" class="text-sky-700"></ion-icon>
+              @if(guestDetails?.GeneratedInvoice?.Status=="Pending"){
+              <p class="text-sm text-red-500 pe-2"><i pTooltip="{{guestDetails?.GeneratedInvoice?.Status}}"
+                  [tooltipPosition]="'top'" variant="" [tooltipStyleClass]="'text-xs text-danger'"
+                  class="pi pi-exclamation-circle" style="color: red"></i></p>
+              }
+              @else {
+              <p class="text-sm text-blue-400">{{guestDetails?.GeneratedInvoice?.Status}}</p>
+              }
+              <a class="d-inline hover:text-orange-400" href="javascript:void(0);"
+                [routerLink]="['edit',guestDetails?.Id]" pTooltip="Edit guest" tooltipPosition="top"
+                [tooltipStyleClass]="'text-xs'">
+                <!-- <ion-icon name="create-sharp" class="text-sky-700"></ion-icon> -->
+                <i class="pi pi-pencil " style="color: var(--primary-color)"></i>
               </a>
-              <a class="d-inline" title="Twitter" href="javascript:void(0);">
-                <ion-icon name="trash-sharp" class="ion-icon-danger"></ion-icon>
+
+              @if( guestDetails?.GeneratedInvoice!=null){
+              <a href="javascript:void(0);"
+                styleClass="size-2  text-xs font-medium hover:bg-secondary/90 text-secondary-foreground cursor-pointer"
+                [pTooltip]="'Print invoice'" [tooltipPosition]="'top'" variant="transparent"
+                [tooltipStyleClass]="'text-xs'" (click)="printInvoice(guestDetails?.Id)">
+                <i class="pi pi-print" style="color: var(--primary-color)"></i>
               </a>
+              }
+              <a class="d-inline" href="javascript:void(0);" pTooltip="Delete guest" [fitContent]="true"
+                tooltipPosition="top" [tooltipStyleClass]="'text-xs'">
+                <i class="pi pi-trash" style="color: red"></i>
+              </a>
+            </div>
+          </div>
+          <div class="flex">
+            <div class="flex flex-col col-md-7">
+              <p class="text-muted text-sm">{{guestDetails?.Address}}</p>
+              <p class="text-muted pb-1  text-sm">{{guestDetails?.City?.Name}}, {{guestDetails?.State?.Name}},
+                {{guestDetails?.Coutntry?.Name}}
+              </p>
+              <div class="d-flex justify-normal">
+                <div class="d-inline pe-2">
+                  <p class="text-muted text-sm">
+                    <!-- <ion-icon name="call"></ion-icon> -->
+                    <i class="pi pi-phone" style="color: var(--primary-color)"></i>
+                    {{guestDetails?.MobileNo}}
+                  </p>
+                </div>
+                @if(guestDetails?.EmailId!=null || guestDetails?.EmailId!=""){
+                <div class="d-inline">
+                  <p class="job_post text-muted text-sm">
+                    <i class="pi pi-inbox" style="color: var(--primary-color)"></i> {{guestDetails?.EmailId}}
+                  </p>
+                </div>
+                }
+              </div>
+            </div>
+            <div class="row shadow-3xl pe-2">
+              <div
+                class="flex flex-row justify-between  border-1 border-bottom border-top-0 border-end-0 border-start-0 border-info py-1">
+                <p class="text-sm font-semibold text-muted "> Invoice No</p>
+                <p class="font-bold text-sm">
+                  @if(guestDetails?.GeneratedInvoice==null){
+                  Not Generated
+                  }
+                  @else{
+                  <a href="javascript:void(0)" class="hover:text-blue-400" [pTooltip]="'View invoice'"
+                    [tooltipPosition]="'top'" variant="transparent" [tooltipStyleClass]="'text-xs'">
+                    {{guestDetails?.GeneratedInvoice?.InvoiceNumber}}
+                  </a>
+                  }
+                </p>
+              </div>
+              <div
+                class="flex flex-row justify-between border-1 border-bottom border-top-0 border-end-0 border-start-0 border-info py-1">
+                <p class="text-sm font-semibold text-muted "> Check-In</p>
+                <p class="text-muted text-sm">
+                  @if(guestDetails?.GuestsStayDetail==null){
+                  NA
+                  }
+                  @else{
+                  {{guestDetails?.GuestsStayDetail?.CheckInDate}} }
+                </p>
+              </div>
+              <div
+                class="flex flex-row justify-between border-1 border-bottom border-top-0 border-end-0 border-start-0 border-info py-1">
+                <p class="text-sm font-semibold  text-muted "> Check-Out </p>
+                <p class="text-muted text-sm">
+                  @if(guestDetails?.GuestsStayDetail==null){
+                  NA
+                  }
+                  @else{
+                  {{guestDetails?.GuestsStayDetail?.CheckOutDate}}
+                  }
+                </p>
+              </div>
             </div>
           </div>
 
-          <p class="text-muted text-sm">{{guestDetails?.Address}}</p>
-          <p class="text-muted pb-2  text-sm">{{guestDetails?.City?.Name}}, {{guestDetails?.State?.Name}},
-            {{guestDetails?.Coutntry?.Name}}
-          </p>
-          <div class="d-flex">
-            <div class="d-inline pe-2">
-              <p class="text-muted text-sm">
-                <ion-icon name="call"></ion-icon>
-                {{guestDetails?.MobileNo}}
-              </p>
-            </div>
-            @if(guestDetails?.EmailId!=null){
-            <div class="d-inline">
-              <p class="job_post text-muted text-sm"><ion-icon name="mail"></ion-icon> {{guestDetails?.EmailId}}
-              </p>
-            </div>
-            }
-            <div class="ml-auto flex-1 flex items-center justify-end">
-              <p-button icon="pi pi-print"
-                styleClass="size-2  text-xs font-medium hover:bg-primary/90 text-primary-foreground"
-                [pTooltip]="'Print invoice'" [tooltipPosition]="'top'" variant="transparent"
-                [tooltipStyleClass]="'text-xs'" (onClick)="printInvoice(guestDetails?.Id)">
-              </p-button>
-            </div>
-          </div>
         </ng-container>
       </div>
+      <span class="flex flex-row  font-italic font-normal font-italic text-gray-500 opacity-8 py-1">
+        <p class="pe-1 fst-italic text-xs align-content-center">Date:</p>
+        <p class="fst-italic text-xs pe-2 align-content-center">{{guestDetails?.FormatCreatedDate}}</p>
+        <p class="pe-1 fst-italic text-xs align-content-center">By:</p>
+        <p class="fst-italic text-xs align-content-center">{{guestDetails?.CreatedBy}}</p>
+        <p class="align-content-end ps-2">
+          <p-image src="{{guestDetails?.QRString}}" alt="Image" width="24" [preview]="true" />
+        </p>
+      </span>
     </div>
   </div>
 </div>

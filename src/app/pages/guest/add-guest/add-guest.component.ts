@@ -1,27 +1,32 @@
 import { AfterContentChecked, ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { RippleModule } from 'primeng/ripple';
+import { StepperModule } from 'primeng/stepper';
+import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
 import { AddressComponent } from "../../../shared/address/address.component";
 import { NgSelectModule } from '@ng-select/ng-select';
 import { StayGuestComponent } from "../../../shared/stay-guest/stay-guest.component";
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { IonicModule } from '@ionic/angular';
-import { TooltipDirective } from '../../../_directives/tooltip.directive';
 import { GuestService } from '../../../_services/guest.service';
-import { GuestPersonalDetail } from '../../../models/guest-pd';
 import { GuestSiblingDetails } from '../../../models/sibling-details';
 import { ToastrService } from 'ngx-toastr';
 import { GuestBaseEntity } from '../../../models/guest-base';
 import { PaymentDetailsComponent } from '../../../shared/payment-details/payment-details.component';
 import { MoreGuestComponent } from "../../../shared/more-guest/more-guest.component";
 import { CommonModule, DatePipe, NgFor, SlicePipe } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '../../../_services/message.service';
-import { StepperModule } from 'primeng/stepper';
-import { ButtonModule } from 'primeng/button';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { CustomMessageService } from '../../../_services/custom-message.service';
 import { IdProofComponent } from "../../../shared/id-proof/id-proof.component";
 import { saveAs } from "file-saver";
-import { RippleModule } from 'primeng/ripple';
 import { NewGuestDetails } from '../../../models/new-guest-details';
+import { TooltipModule } from 'primeng/tooltip';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { CheckboxModule } from 'primeng/checkbox';
+import { StorageService } from '../../../_services/storage.service';
+import { ApiResponse } from '../../../models/response';
 @Component( {
   selector: 'app-add-guest',
   standalone: true,
@@ -31,8 +36,9 @@ import { NewGuestDetails } from '../../../models/new-guest-details';
     AddressComponent,
     NgSelectModule,
     BsDatepickerModule,
-    IonicModule,
-    TooltipDirective,
+    RouterLink,
+    ConfirmDialogModule,
+    ToastModule,
     PaymentDetailsComponent,
     StayGuestComponent,
     MoreGuestComponent,
@@ -40,15 +46,38 @@ import { NewGuestDetails } from '../../../models/new-guest-details';
     ButtonModule,
     RippleModule,
     NgFor,
+    TooltipModule,
+    InputTextareaModule,
+    CheckboxModule,
     IdProofComponent],
   templateUrl: './add-guest.component.html',
   styleUrl: './add-guest.component.css',
-  providers: [DatePipe]
+  providers: [DatePipe, ConfirmationService, MessageService]
 } )
 export class AddGuestComponent implements OnInit, AfterContentChecked {
   loading: boolean = false;
+  hotelId: string = '5c953e70-73fe-46cf-0267-08dcb3aa275e';
   saveGuest () {
-
+  }
+  confirm ( event: any ) {
+    this.confirmationService.confirm( {
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptIcon: 'pi pi-check mr-2',
+      rejectIcon: 'pi pi-times mr-2',
+      rejectButtonStyleClass: 'p-button-sm',
+      acceptButtonStyleClass: 'p-button-outlined p-button-sm',
+      accept: () => {
+        this.router.navigateByUrl( '/admin/guest/list' ).then( () => {
+          this.messageService.add( { severity: 'info', summary: 'Confirmed', detail: 'Canceled' } );
+        } );
+      },
+      reject: () => {
+        this.messageService.add( { severity: 'error', summary: 'Rejected', detail: 'You have rejected' } );
+      }
+    } );
   }
   generateInvoice () {
     this.loading = true;
@@ -66,10 +95,16 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
   }
   moreGuestForm: FormGroup;
   newGuestForm = this.formBuilder.group( {
-    FirstName: new FormControl( '', [Validators.required] ),
-    LastName: new FormControl( '', [Validators.required] ),
+    Company: new FormControl<string>( '' ),
+    CompanyGSTIN: new FormControl<string>( '' ),
+    CompanyAddress: new FormControl<string>( '' ),
+    Comments: new FormControl<string>( '' ),
+    Print_CD: new FormControl<boolean>( false ),
+    Print_Comments: new FormControl<boolean>( false ),
+    FirstName: new FormControl<string>( '', [Validators.required] ),
+    LastName: new FormControl<string>( '', [Validators.required] ),
     MobileNo: new FormControl( '', [Validators.required] ),
-    EmailId: new FormControl( '' ),
+    EmailId: new FormControl<string>( '' ),
     Gender: new FormControl( null, [Validators.required] ),
     Address: new FormControl( '', [Validators.required] ),
     CityId: new FormControl( null, [Validators.required] ),
@@ -85,10 +120,10 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     NoOfChildren: new FormControl<number>( 0, [Validators.required] ),
     RatePerNight: new FormControl<number>( { value: 0, disabled: true } ),
     Discount: new FormControl<number>( { value: 0, disabled: true } ),
-    TotalAmount: new FormControl<number>( { value: 0, disabled: true }, [Validators.required] ),
-    NoOfDays: new FormControl<number>( { value: 0, disabled: true } ),
+    TotalAmount: new FormControl<number>( 0 ),
+    NoOfDays: new FormControl<number>( 0 ),
     AmountToPay: new FormControl<number>( { value: 0, disabled: true } ),
-    GSTPercentage: new FormControl<number>( { value: 18, disabled: true } ),
+    GSTPercentage: new FormControl<number>( 12 ),
     IncGST: new FormControl( 0 ),
     ExcGST: new FormControl( 0 ),
     PaymentMode: new FormControl( null, [Validators.required] ),
@@ -109,7 +144,10 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     private formBuilder: FormBuilder,
     private cdref: ChangeDetectorRef,
     private datePipe: DatePipe,
-    private messageService: MessageService ) {
+    private customMessageService: CustomMessageService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private storageService: StorageService ) {
     this.moreGuestForm = this.fb.group( {
       guests: this.fb.array( [] )
     } );
@@ -134,16 +172,23 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
       LastName: new FormControl( '' ),
     } );
     this.guests.push( this.createGuest() );
-    this.messageService.sendNoOfGuests( this.guests.length );
+    this.customMessageService.sendNoOfGuests( this.guests.length );
     // this.guestForm.controls.GuestStayDetail.controls.TotalAmount.patchValue( this.guests.length );
     console.log( this.guests.length );
   }
   removeUser ( index: number ) {
     this.guests.removeAt( index );
-    this.messageService.clearNoOfGuests();
-    this.messageService.sendNoOfGuests( this.guests.length );
+    this.customMessageService.clearNoOfGuests();
+    this.customMessageService.sendNoOfGuests( this.guests.length );
   }
   ngOnInit (): void {
+    let storageData = this.storageService.getData( "auth-user" );
+    if ( storageData != null || storageData != undefined ) {
+      let resp = storageData as ApiResponse;
+      if ( resp.Data != null || resp.Data != undefined ) {
+        this.hotelId = resp.Data.HotelId;
+      }
+    }
   }
 
 
@@ -166,6 +211,7 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
         Age: c.get( "Age" )?.value!,
       } );
     }
+
     let guestDetail: NewGuestDetails = {
       FirstName: this.newGuestForm.controls.FirstName.value!,
       LastName: this.newGuestForm.controls.LastName.value!,
@@ -174,7 +220,14 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
       EmailId: this.newGuestForm.controls.EmailId.value!,
       MobileNo: this.newGuestForm.controls.MobileNo.value!,
       Address: this.newGuestForm.controls.Address.value!,
-      HotelId: "5c953e70-73fe-46cf-0267-08dcb3aa275e",
+      Company: this.newGuestForm.controls.Company.value!,
+      GSTIN: this.newGuestForm.controls.CompanyGSTIN.value!,
+      CompanyAddress: this.newGuestForm.controls.CompanyAddress.value!,
+      Comments: this.newGuestForm.controls.Comments.value!,
+      Print_CD: this.newGuestForm.controls.Print_CD.value!,
+      Print_Comments: this.newGuestForm.controls.Print_Comments.value!,
+      // HotelId: "5c953e70-73fe-46cf-0267-08dcb3aa275e",
+      HotelId: this.hotelId,
       CityId: this.newGuestForm.controls.CityId.value!,
       StateId: this.newGuestForm.controls.StateId.value!,
       CountryId: this.newGuestForm.controls.CountryId.value!,
@@ -222,7 +275,7 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     this.guestService.getAllGuest().subscribe( {
       next: ( result ) => {
         this.router.navigate( ['admin/guest'] ).then( ( resolve ) => {
-          this.messageService.sendMessage( true );
+          this.customMessageService.sendMessage( true );
         } );
       }
     } );

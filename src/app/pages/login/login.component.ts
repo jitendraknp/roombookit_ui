@@ -8,7 +8,11 @@ import { ToastrService } from 'ngx-toastr';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { AuthGuardService } from '../../authentication/services/auth-guard.service';
 import { map } from 'rxjs';
+import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
+
+
 @Component( {
   selector: 'app-login:not(p)',
   standalone: true,
@@ -17,6 +21,8 @@ import { ButtonModule } from 'primeng/button';
     RouterModule,
     CommonModule,
     ButtonModule,
+    RippleModule,
+    ToastModule,
     NgIf],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -39,7 +45,10 @@ export class LoginComponent implements OnInit {
   invalidCredentialMsg = '';
   retUrl = '';
   isUserLogout: any = false;
-  constructor( private authService: AuthService, private router: Router, private route: ActivatedRoute, ) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute, ) {
   }
 
   get username () {

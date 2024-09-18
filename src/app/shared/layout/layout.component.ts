@@ -12,10 +12,16 @@ import { FooterComponent } from '../footer/footer/footer.component';
 import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MenuItem, MessageService } from 'primeng/api';
 import { PanelMenuModule } from 'primeng/panelmenu';
+import { ToolbarModule } from 'primeng/toolbar';
+import { ButtonModule } from 'primeng/button';
+import { SplitButtonModule } from 'primeng/splitbutton';
 @Component( {
   selector: 'app-layout',
   standalone: true,
   imports: [
+    ToolbarModule,
+    ButtonModule,
+    SplitButtonModule,
     NgHttpLoaderModule,
     CommonModule,
     RouterOutlet,
@@ -99,7 +105,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       next: ( menu ) => {
         console.log( menu.Data );
         this.items = menu.Data as MenuItem[];
-        console.log( this.isMenuCollapsed );
+        console.log( this.items );
       },
       error: ( error ) => {
         this.toastrService.error( error.message ).onHidden.subscribe( () => {

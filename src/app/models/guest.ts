@@ -8,20 +8,32 @@ import { States } from "./states";
 
 export interface Guest extends GuestBaseEntity {
 
-    FirstName: string;
-    LastName: string;
-    Gender: string;
-    Address: string;
-    EmailId: string;
-    MobileNo: string;
-    Is_Active: boolean;
-    CityId: string;
-    City?: City;
-    StateId: string;
-    State?: States;
-    CoutntryId: string;
-    Coutntry?: Country;
-    PinCode: string;
-    IdentificationDetail?: IdentificationDetail[] | null;
-    PaymentDetail?: PaymentDetail[] | null;
+  FirstName: string;
+  LastName: string;
+  Gender: string;
+  Address: string;
+  EmailId: string;
+  MobileNo: string;
+  Is_Active: boolean;
+  CityId: string;
+  City?: City;
+  StateId: string;
+  State?: States;
+  CoutntryId: string;
+  Coutntry?: Country;
+  PinCode: string;
+  FormatCreatedDate?: string;
+  CreatedBy?: string;
+  QRString?: string;
+  IdentificationDetail?: IdentificationDetail[] | null;
+  PaymentDetail?: PaymentDetail | null;
+  GuestsStayDetail?: GuestStayDetail | null;
+  GeneratedInvoice?: GeneratedInvoice | null;
+}
+
+export interface GeneratedInvoice {
+  Id?: string;
+  GuestsId?: string;
+  InvoiceNumber?: string;
+  Status?: string;
 }

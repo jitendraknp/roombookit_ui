@@ -1,23 +1,25 @@
 import { Component, Input } from '@angular/core';
 import { Guest } from '../../../models/guest';
 import { RouterModule } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
-import { MessageService } from '../../../_services/message.service';
+// import { IonicModule } from '@ionic/angular';
+import { CustomMessageService } from '../../../_services/custom-message.service';
 import { Subscription } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { GuestService } from '../../../_services/guest.service';
-import { error } from 'console';
 import { Toast, ToastrService } from 'ngx-toastr';
 import saveAs from 'file-saver';
+import { PrimeIcons, MenuItem } from 'primeng/api';
+import { ImageModule } from 'primeng/image';
 @Component( {
   selector: 'app-guest-list',
   standalone: true,
   imports: [
-    IonicModule,
+    // IonicModule,
     RouterModule,
     ButtonModule,
-    TooltipModule
+    TooltipModule,
+    ImageModule
 
   ],
   templateUrl: './guest-list.component.html',
@@ -27,7 +29,7 @@ export class GuestListComponent {
   @Input() guestDetails: Guest | undefined;
   showFullList = true;
   subscription: Subscription;
-  constructor( private messageService: MessageService,
+  constructor( private messageService: CustomMessageService,
     private guestService: GuestService,
     private toast: ToastrService
   ) {

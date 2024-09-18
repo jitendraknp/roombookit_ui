@@ -1,6 +1,4 @@
-@import "../node_modules/primeng/resources/themes/lara-light-blue/theme.css";
-@import "../node_modules/primeng/resources/primeng.css";
-@import "../node_modules/primeicons/primeicons.css";
+
 .p-stepper .p-stepper-nav {
     display: flex !important;
     justify-content: space-between  !important;
@@ -156,6 +154,7 @@ body {
     min-height: 90vh;
     height: 90vh; */
   min-height: 100vh;
+  overflow: hidden;
 }
 
 ::-webkit-input-placeholder {

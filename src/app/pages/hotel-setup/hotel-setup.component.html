@@ -1,142 +1,163 @@
-<form action="#" novalidate class="gy-3 form-settings" [formGroup]="hotelSetupForm" (ngSubmit)="onSubmit()">
-    <div class="card text-bg-secondary shadow-lg">
-        <div class="card-header">
-            <h5>New Hotel Setup</h5>
-        </div>
-        <div class="card-body">
-
-            <div class="row g-3 align-center">
-                <div class="form-group mt-1">
-                    <label for="exampleFormControlInput1" class="form-label">Hotel Name</label>
-                    <input type="text" class="form-control form-control-sm shadow-lg" formControlName="name" id="name"
-                        placeholder="Specify the name of your hotel.">
-                    <small class="text-danger"
-                        *ngIf="hotelSetupForm.get('name')?.hasError('required') && hotelSetupForm.get('name')?.touched">
-                        This field is required.
-                    </small>
-                    <small class="text-danger" *ngIf="hotelSetupForm.get('name')?.hasError('minlength')">
-                        Name must be at least 10 characters long.
-                    </small>
-                    <small class="text-danger" *ngIf="hotelSetupForm.get('name')?.hasError('maxlength')">
-                        Name must not be greater than 50 characters long.
-                    </small>
-                </div>
-                <div class="form-group col-6 mt-2">
-                    <label for="exampleFormControlInput1" class="form-label">Hotel Code</label>
-                    <input type="text" class="form-control form-control-sm shadow-lg" formControlName="code"
-                        placeholder="Specify the code of your hotel.">
-                    <small class="text-danger"
-                        *ngIf="hotelSetupForm.get('code')?.hasError('required') && hotelSetupForm.get('code')?.touched">
-                        This field is required.
-                    </small>
-                </div>
-                <div class="form-group col mt-2">
-                    <label for="exampleFormControlInput1" class="form-label">Email</label>
-                    <input type="text" class="form-control form-control-sm shadow-lg" formControlName="emailId"
-                        placeholder="Specify the email of your hotel.">
-                    <small class="text-danger"
-                        *ngIf="hotelSetupForm.get('emailId')?.hasError('required') && hotelSetupForm.get('emailId')?.touched">
-                        This field is required.
-                    </small>
-                </div>
-            </div>
-            <div class="row mt-0">
-                <div class="form-group col mt-2">
-                    <label for="exampleFormControlInput1" class="form-label">Phone No</label>
-                    <input type="text" class="form-control form-control-sm shadow-lg" formControlName="phoneNo"
-                        placeholder="Phone No of your hotel">
-                </div>
-                <div class="form-group col mt-2">
-                    <label for="exampleFormControlInput1" class="form-label">Mobile No</label>
-                    <input type="text" class="form-control form-control-sm shadow-lg" formControlName="mobileNo"
-                        placeholder="Mobile No of your hotel.">
-                    <small class="text-danger"
-                        *ngIf="hotelSetupForm.get('mobileNo')?.hasError('required') && hotelSetupForm.get('mobileNo')?.touched">
-                        This field is required.
-                    </small>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group mt-2">
-                    <label for="exampleFormControlInput1" class="form-label">Address</label>
-                    <input type="text" class="form-control form-control-sm shadow-lg" formControlName="address"
-                        placeholder="Specify the name of your hotel  address.">
-                    <small class="text-danger"
-                        *ngIf="hotelSetupForm.get('address')?.hasError('required') && hotelSetupForm.get('address')?.touched">
-                        This field is required.
-                    </small>
-                </div>
-            </div>
-            <div class="row mt-0">
-                <div class="form-group col mt-2">
-                    <label for="exampleFormControlInput1" class="form-label">Country</label>
-                    <ng-select appearance="outline" [searchable]="false" [placeholder]="'Select Country'" class="custom"
-                        formControlName="countryId" notFoundText="No items found" (change)="onCountryChange($event)">
-                        @for (country of countries; track country.Id) {
-                        <ng-option [value]="country.Id">{{country.Name}} ({{country.Code}})</ng-option>
-                        }
-                    </ng-select>
-                    <small class="text-danger"
-                        *ngIf="hotelSetupForm.get('country')?.hasError('required') && hotelSetupForm.get('country')?.touched">
-                        This field is required.
-                    </small>
-                </div>
-                <div class="form-group col mt-2">
-                    <label for="exampleFormControlInput1" class="form-label">State</label>
-                    <ng-select appearance="outline" [searchable]="false" placeholder="Select State" class="custom"
-                        formControlName="stateId" notFoundText="No items found" (change)="onStateChange($event)">
-                        @for (state of states; track state.Id) {
-                        <ng-option [value]="state.Id">{{state.Name}} ({{state.Code}})</ng-option>
-                        }
-                    </ng-select>
-                    <small class="text-danger"
-                        *ngIf="hotelSetupForm.get('State')?.hasError('required') && hotelSetupForm.get('State')?.touched">
-                        This field is required.
-                    </small>
-                </div>
-            </div>
-            <div class="row mt-0">
-                <div class="form-group col mt-2">
-                    <label for="exampleFormControlInput1" class="form-label">City</label>
-                    <ng-select appearance="outline" [searchable]="false" placeholder="Select City" class="custom"
-                        formControlName="cityId" notFoundText="No items found">
-                        @for (city of cities; track city.Id) {
-                        <ng-option [value]="city.Id">{{city.Name}} ({{city.Code}})</ng-option>
-                        }
-                    </ng-select>
-                    <small class="text-danger"
-                        *ngIf="hotelSetupForm.get('city')?.hasError('required') && hotelSetupForm.get('city')?.touched">
-                        This field is required.
-                    </small>
-                </div>
-                <div class="form-group col mt-2">
-                    <label for="exampleFormControlInput1" class="form-label">Pincode</label>
-                    <input type="text" class="form-control form-control-sm shadow-lg" formControlName="pincode"
-                        placeholder="Mobile No of your hotel.">
-                    <small class="text-danger"
-                        *ngIf="hotelSetupForm.get('pincode')?.hasError('required') && hotelSetupForm.get('pincode')?.touched">
-                        This field is required.
-                    </small>
-                </div>
-            </div>
-
-        </div>
-        <div class="card-footer text-end">
-            <div class="row align-item-end">
-                <div class="col-8"></div>
-                <div class="col-2 text-end">
-                    @if(!hotelAreadySetup){
-                    <button type="submit" class="btn btn-sm btn-primary shadow-lg"><i class="bi bi-floppy-fill"></i>
-                        Save
-                    </button>
-                    }
-                </div>
-
-                <div class="col-2 text-end">
-                    <button class="btn btn-sm btn-danger shadow-lg" (click)="onCancel()"><i
-                            class="bi bi-x-square-fill"></i> Cancel</button>
-                </div>
-            </div>
-        </div>
+<form action="#" novalidate class="gy-3" [formGroup]="hotelSetupForm" (ngSubmit)="onSubmit()">
+  <div class="card">
+    <div class="card-header bg-[#60a5fa] bg-gradient text-white">
+      <p class="uppercase text-sm">Hotel Settings</p>
     </div>
+    <div class="card-body">
+
+      <div class="row g-3 align-center">
+        <div class="form-group mt-1">
+          <label for="name" class="form-label">Hotel Name</label>
+          <input type="text" class="form-control form-control-sm" formControlName="name" name="name"
+            placeholder="Specify the name of your hotel.">
+          <small class="text-danger"
+            *ngIf="hotelSetupForm.get('name')?.hasError('required') && hotelSetupForm.get('name')?.touched">
+            This field is required.
+          </small>
+          <small class="text-danger" *ngIf="hotelSetupForm.get('name')?.hasError('minlength')">
+            Name must be at least 10 characters long.
+          </small>
+          <small class="text-danger" *ngIf="hotelSetupForm.get('name')?.hasError('maxlength')">
+            Name must not be greater than 50 characters long.
+          </small>
+        </div>
+        <div class="form-group col-md-2 mt-2">
+          <label for="exampleFormControlInput1" class="form-label">Hotel Code</label>
+          <input type="text" class="form-control form-control-sm" formControlName="code"
+            placeholder="Specify the code of your hotel.">
+          <small class="text-danger"
+            *ngIf="hotelSetupForm.get('code')?.hasError('required') && hotelSetupForm.get('code')?.touched">
+            This field is required.
+          </small>
+        </div>
+        <div class="form-group col-md-4 mt-2">
+          <label for="exampleFormControlInput1" class="form-label">Email</label>
+          <input type="text" class="form-control form-control-sm" formControlName="emailId"
+            placeholder="Specify the email of your hotel.">
+          <small class="text-danger"
+            *ngIf="hotelSetupForm.get('emailId')?.hasError('required') && hotelSetupForm.get('emailId')?.touched">
+            This field is required.
+          </small>
+        </div>
+        <div class="form-group col-md-3 mt-2">
+          <label for="websiteA" class="form-label">Website</label>
+          <input type="text" class="form-control form-control-sm" formControlName="website" name="websiteA"
+            placeholder="Website of your hotel">
+        </div>
+        <div class="form-group col-md-3 mt-2">
+          <label for="phoneNo" class="form-label">Phone No</label>
+          <input type="text" class="form-control form-control-sm" formControlName="phoneNo" name="phoneNo"
+            placeholder="Phone No of your hotel.">
+          <small class="text-danger"
+            *ngIf="hotelSetupForm.get('mobileNo')?.hasError('required') && hotelSetupForm.get('mobileNo')?.touched">
+            This field is required.
+          </small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 form-group mt-2">
+          <label for="address1" class="form-label">Address 1</label>
+          <input type="text" class="form-control form-control-sm" formControlName="address" name="address1"
+            placeholder="Specify the name of your hotel  address." />
+          <small class="text-danger"
+            *ngIf="hotelSetupForm.get('address')?.hasError('required') && hotelSetupForm.get('address')?.touched">
+            This field is required.
+          </small>
+        </div>
+        <div class="col-md-6 form-group mt-2">
+          <label for="address2" class="form-label">Address 2</label>
+          <input type="text" class="form-control form-control-sm" formControlName="address1" name="address2"
+            placeholder="Specify the name of your hotel  address.">
+          <small class="text-danger"
+            *ngIf="hotelSetupForm.get('address1')?.hasError('required') && hotelSetupForm.get('address1')?.touched">
+            This field is required.
+          </small>
+        </div>
+      </div>
+      <div class="row mt-0">
+        <div class="form-group col-md-3 mt-2">
+          <label for="exampleFormControlInput1" class="form-label">Country</label>
+          <ng-select appearance="outline" [searchable]="false" [placeholder]="'Select Country'" class="custom"
+            formControlName="countryId" notFoundText="No items found" (change)="onCountryChange($event)">
+            @for (country of countries; track country.Id) {
+            <ng-option [value]="country.Id">{{country.Name}} ({{country.Code}})</ng-option>
+            }
+          </ng-select>
+          <small class="text-danger"
+            *ngIf="hotelSetupForm.get('country')?.hasError('required') && hotelSetupForm.get('country')?.touched">
+            This field is required.
+          </small>
+        </div>
+        <div class="form-group col-md-3 mt-2">
+          <label for="exampleFormControlInput1" class="form-label">State</label>
+          <ng-select appearance="outline" [searchable]="false" placeholder="Select State" class="custom"
+            formControlName="stateId" notFoundText="No items found" (change)="onStateChange($event)">
+            @for (state of states; track state.Id) {
+            <ng-option [value]="state.Id">{{state.Name}} ({{state.Code}})</ng-option>
+            }
+          </ng-select>
+          <small class="text-danger"
+            *ngIf="hotelSetupForm.get('State')?.hasError('required') && hotelSetupForm.get('State')?.touched">
+            This field is required.
+          </small>
+        </div>
+
+        <div class="form-group col-md-3 mt-2">
+          <label for="exampleFormControlInput1" class="form-label">City</label>
+          <ng-select appearance="outline" [searchable]="false" placeholder="Select City" class="custom"
+            formControlName="cityId" notFoundText="No items found">
+            @for (city of cities; track city.Id) {
+            <ng-option [value]="city.Id">{{city.Name}} ({{city.Code}})</ng-option>
+            }
+          </ng-select>
+          <small class="text-danger"
+            *ngIf="hotelSetupForm.get('city')?.hasError('required') && hotelSetupForm.get('city')?.touched">
+            This field is required.
+          </small>
+        </div>
+        <div class="form-group col-md-3 mt-2">
+          <label for="exampleFormControlInput1" class="form-label">Pincode</label>
+          <input type="text" class="form-control form-control-sm" formControlName="pincode"
+            placeholder="Mobile No of your hotel.">
+          <small class="text-danger"
+            *ngIf="hotelSetupForm.get('pincode')?.hasError('required') && hotelSetupForm.get('pincode')?.touched">
+            This field is required.
+          </small>
+        </div>
+      </div>
+
+    </div>
+    <div class="card border-0 flex-1 shadow-lg m-2">
+      <div class="card-header bg-[#60a5fa] bg-gradient text-white">
+        <p class="text-sm font-semibold">Taxation Details</p>
+      </div>
+      <div class="card-body">
+        <div class="flex flex-row gap-2">
+          <div class="flex-1 ">
+            <label for="gSTIN" class="form-label">GSTIN</label>
+            <input type="text" class="form-control form-control-sm" formControlName="GSTIN" name="gSTIN"
+              placeholder="Specify the GSTIN." />
+          </div>
+          <div class="flex-1">
+            <label for="cIN" class="form-label">CIN</label>
+            <input type="text" class="form-control form-control-sm" formControlName="CIN" name="cIN"
+              placeholder="Specify the CIN." />
+          </div>
+          <div class="flex-1">
+            <label for="pAN" class="form-label">PAN</label>
+            <input type="text" class="form-control form-control-sm" formControlName="PAN" name="pAN"
+              placeholder="Specify the PAN." />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-row flex-grow-1 justify-end px-3 py-2 gap-4">
+      <p>
+        <button type="submit" class="btn btn-sm btn-primary"><i class="pi pi-save"></i> Save </button>
+      </p>
+      <p>
+        <button class="btn btn-sm btn-danger"><i class="pi pi-trash"></i> Cancel</button>
+      </p>
+    </div>
+  </div>
 </form>

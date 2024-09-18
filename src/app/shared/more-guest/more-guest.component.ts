@@ -5,11 +5,16 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { IonIcon } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
 import { trashOutline, saveOutline } from "ionicons/icons";
-
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 @Component( {
   selector: 'app-more-guest',
   standalone: true,
-  imports: [IonIcon, NgSelectModule, CommonModule, ReactiveFormsModule, IonIcon],
+  imports: [
+    NgSelectModule,
+    CommonModule,
+    ReactiveFormsModule,
+    TooltipModule],
   templateUrl: './more-guest.component.html',
   styleUrl: './more-guest.component.css'
 } )
