@@ -1,4 +1,4 @@
-import { AfterRenderRef, AfterViewInit, Component, ElementRef, OnChanges, OnInit, Renderer2, SimpleChanges, ViewChild, afterNextRender, afterRender } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { FormBuilder, FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
@@ -10,8 +10,14 @@ import { DataTablesModule } from "angular-datatables";
 import { FooterComponent } from "../../shared/footer/footer/footer.component";
 import { PanelModule } from 'primeng/panel';
 import { AvatarModule } from 'primeng/avatar';
-import { MenuModule } from 'primeng/menu';
 import { CardModule } from 'primeng/card';
+import { DividerModule } from 'primeng/divider';
+import { DashboardService } from '../../_services/dashboard.service';
+import { InfoDisplayComponent } from '../../shared/info-display/info-display.component';
+import { DashboardGuestDetails } from '../../models/guest';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 @Component( {
   selector: 'app-dashboard',
   standalone: true,
@@ -28,14 +34,56 @@ import { CardModule } from 'primeng/card';
     FooterComponent,
     PanelModule,
     AvatarModule,
-    CardModule
+    CardModule,
+    DividerModule,
+    InfoDisplayComponent,
+    TableModule,
+    ButtonModule,
+    TooltipModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 } )
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
+  currentDate!: Date;
+  totalBookings: number = 0;
+  weeklyBookings: number = 0;
+  monthlyBookings: number = 0;
+  todaysCheckIn: number = 0;
+  todaysCheckOut: number = 0;
+  availableRooms: number = 0;
+  occupiedRooms: number = 0;
+  guestDetails: DashboardGuestDetails[] = [];
+  constructor(
+    private _formBuilder: FormBuilder,
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private dashboardService: DashboardService
+  ) {
+    this.currentDate = new Date();
+  }
 
-  constructor( private _formBuilder: FormBuilder, private elementRef: ElementRef, private renderer: Renderer2 ) {
+  ngOnInit (): void {
+    this.dashboardService.getDashboardData().subscribe( {
+      next: ( data ) => {
+        //TotalBookings 
+        this.totalBookings = data.Data?.TotalBookings?.Total;
+        this.weeklyBookings = data.Data?.TotalBookings?.Weekly;
+        this.monthlyBookings = data.Data?.TotalBookings?.Monthly;
+        this.todaysCheckIn = data.Data?.TotalBookings?.TodaysCheckIn;
+        this.todaysCheckOut = data.Data?.TotalBookings?.TodaysCheckOut;
+        this.availableRooms = data.Data?.TotalBookings?.AvailableRooms;
+        this.occupiedRooms = data.Data?.TotalBookings?.OccupiedRooms;
+        this.guestDetails = data.Data.Guests as DashboardGuestDetails[];
+        console.log( data );
+      },
+      error: ( error ) => {
+
+      },
+      complete: () => {
+
+      }
+    } );
   }
 
   options = this._formBuilder.group( {

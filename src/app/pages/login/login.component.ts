@@ -55,13 +55,7 @@ export class LoginComponent implements OnInit {
     return this.loginForm.get( 'username' );
   }
   ngOnInit (): void {
-    // this.authService.logoutUser().subscribe((resp) => {
-    //   if (resp) {
-    //     this.storageService.clean();
-    //     this.isUserLogout = resp;
-    //     this.router.navigate(['/']);
-    //   }
-    // });
+
   }
   loginForm = new FormGroup( {
     username: new FormControl( '', [Validators.required, Validators.minLength( 4 ), Validators.max( 50 )] ),

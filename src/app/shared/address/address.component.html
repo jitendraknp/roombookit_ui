@@ -1,10 +1,10 @@
 <form class="row" [formGroup]="form">
-  <div class="col-md-12 col-12 pb-2 pt-2">
+  <div class="col-md-12   pb-2 pt-2">
     <label for="address" class="form-label">Address</label>
     <input type="text" class="form-control form-control-sm" id="address" formControlName="Address"
       placeholder="Address" />
   </div>
-  <div class="col-md-12 col-sm-6 col-xs-12">
+  <div class="col-md-6 col-sm-6 col-xs-12">
     <label for="city" class="form-label">City</label>
     <ng-select appearance="outline" placeholder="Select City" class="text-sm" formControlName="CityId"
       (change)="onCityChange($event)" notFoundText="No items found">
@@ -13,7 +13,7 @@
       }
     </ng-select>
   </div>
-  <div class="col-md-12 col-sm-6 col-xs-12">
+  <div class="col-md-6 col-sm-6 col-xs-12">
     <label for="stateId" class="form-label">State</label>
     <ng-select appearance="outline" placeholder="Select State" id="stateId" class="text-sm" formControlName="StateId"
       notFoundText="No items found">
@@ -22,7 +22,7 @@
       }
     </ng-select>
   </div>
-  <div class="col-6 col-md-12 col-sm-6 col-xs-12">
+  <div class="col-md-6 col-sm-6 col-xs-12">
     <label for="countryId" class="form-label">Country</label>
     <ng-select appearance="outline" placeholder="Select Country" id="countryId" class="text-sm"
       formControlName="CountryId" notFoundText="No items found">
@@ -31,7 +31,7 @@
       }
     </ng-select>
   </div>
-  <div class="col-6 col-6 col-sm-6 col-xs-12">
+  <div class="col-md-6   col-sm-6 col-xs-12">
     <label for="pinCode" class="form-label">Pincode</label>
     <input type="text" class="form-control form-control-sm" id="pinCode" formControlName="PinCode"
       placeholder="PinCode" />

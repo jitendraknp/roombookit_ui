@@ -22,6 +22,11 @@ import { TableModule } from 'primeng/table';
 import { Guest } from '../../../models/guest';
 import { NewGuestDetails } from '../../../models/new-guest-details';
 import { ToastrService } from 'ngx-toastr';
+import { StorageService } from '../../../_services/storage.service';
+import { ApiResponse } from '../../../models/response';
+import saveAs from 'file-saver';
+import { GuestStayDetail } from '../../../models/guest_stay_detail';
+import { CheckboxModule } from 'primeng/checkbox';
 @Component( {
   selector: 'app-edit-guest',
   standalone: true,
@@ -38,7 +43,8 @@ import { ToastrService } from 'ngx-toastr';
     StayGuestComponent,
     AddressComponent,
     PaymentDetailsComponent,
-    IdProofComponent
+    IdProofComponent,
+    CheckboxModule
   ],
   templateUrl: './edit-guest.component.html',
   styleUrl: './edit-guest.component.css',
@@ -59,23 +65,35 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
     private guetsService: GuestService,
     private router: Router,
     private datePipe: DatePipe,
+    private storageService: StorageService
   ) {
     this.moreGuestForm = this.formBuilder.group( {
       guests: this.formBuilder.array( [] )
     } );
   }
   members!: GuestSiblingDetails[];
+  hotelId: string = '5c953e70-73fe-46cf-0267-08dcb3aa275e';
   guestId: string = '';
   ngOnInit (): void {
 
     this.route.params.subscribe( param => {
       this.guestId = param["guest-id"];
     } );
-
+    let storageData = this.storageService.getData( "auth-user" );
+    if ( storageData != null || storageData != undefined ) {
+      let resp = storageData as ApiResponse;
+      if ( resp.Data != null || resp.Data != undefined ) {
+        this.hotelId = resp.Data.HotelId;
+      }
+    }
     this.route.params.pipe(
       switchMap( ( params: Params ) => this.guetsService.getDetailsByGuestId( params['guest-id'] ) )
     ).subscribe( {
       next: ( result ) => {
+        this.editGuestForm.controls.PaymentDetailsId.setValue( result.Data.PaymentDetailsId );
+        this.editGuestForm.controls.Company.setValue( result.Data.Company );
+        this.editGuestForm.controls.CompanyAddress.setValue( result.Data.CompanyAddress );
+        this.editGuestForm.controls.CompanyGSTIN.setValue( result.Data.GSTIN );
         this.editGuestForm.controls.FirstName.setValue( result.Data.FirstName );
         this.editGuestForm.controls.LastName.setValue( result.Data.LastName );
         this.editGuestForm.controls.EmailId.setValue( result.Data.EmailId );
@@ -103,6 +121,9 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
         this.editGuestForm.controls.IncGST.setValue( result.Data.IncGST );
         this.editGuestForm.controls.AmountPaid.setValue( result.Data.AmountPaid );
         this.editGuestForm.controls.BalanceAmount.setValue( result.Data.BalanceAmount );
+        this.editGuestForm.controls.GuestStayDetailId.setValue( result.Data.GuestStayDetailId );
+        this.editGuestForm.controls.InvoiceNo.setValue( result.Data.InvoiceNo );
+        this.editGuestForm.controls.ManualInvoice.setValue( result.Data.ManualInvoice );
         this.members = result.Data.GuestSiblingDetail;
         this.fillMoreGuests( result.Data.GuestSiblingDetail );
         // this.toasterService.success('Country updated successfully.', 'Success');
@@ -113,6 +134,12 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
     } );
   }
   editGuestForm = this.formBuilder.group( {
+    Company: new FormControl<string>( '' ),
+    CompanyGSTIN: new FormControl<string>( '' ),
+    CompanyAddress: new FormControl<string>( '' ),
+    Comments: new FormControl<string>( '' ),
+    Print_CD: new FormControl<boolean>( true ),
+    Print_Comments: new FormControl<boolean>( true ),
     FirstName: new FormControl( '', [Validators.required] ),
     LastName: new FormControl( '', [Validators.required] ),
     MobileNo: new FormControl( '', [Validators.required] ),
@@ -127,25 +154,33 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
     CheckInDate: new FormControl<Date | null>( null, [Validators.required] ),
     CheckOutDate: new FormControl<Date | null>( null, [Validators.required] ),
     RoomNoId: new FormControl( null, [Validators.required] ),
-    NoOfGuests: new FormControl<number>( { value: 1, disabled: true }, [Validators.required] ),
+    NoOfGuests: new FormControl<number>( 0, [Validators.required] ),
     NoOfAdults: new FormControl<number>( 0, [Validators.required] ),
     NoOfChildren: new FormControl<number>( 0, [Validators.required] ),
-    RatePerNight: new FormControl<number>( { value: 0, disabled: true } ),
-    Discount: new FormControl<number>( { value: 0, disabled: true } ),
-    TotalAmount: new FormControl<number>( { value: 0, disabled: true }, [Validators.required] ),
-    NoOfDays: new FormControl<number>( { value: 0, disabled: true } ),
-    AmountToPay: new FormControl<number>( { value: 0, disabled: true } ),
-    GSTPercentage: new FormControl<number>( { value: 18, disabled: true } ),
+    RatePerNight: new FormControl<number>( 0 ),
+    Discount: new FormControl<number>( 0 ),
+    TotalAmount: new FormControl<number>( 0, [Validators.required] ),
+    NoOfDays: new FormControl<number>( 0 ),
+    AmountToPay: new FormControl<number>( 0 ),
+    GSTPercentage: new FormControl<number>( 12 ),
     IncGST: new FormControl( 0 ),
     ExcGST: new FormControl( 0 ),
+    CGST: new FormControl( 0 ),
+    SGST: new FormControl( 0 ),
+    UTGST: new FormControl( 0 ),
+    IGST: new FormControl( 0 ),
     PaymentMode: new FormControl( null, [Validators.required] ),
     AmountPaid: new FormControl<number>( 0, [Validators.required] ),
-    BalanceAmount: new FormControl<number>( { value: 0, disabled: true }, [Validators.required] ),
-    TransactionNo: new FormControl<string>( { value: '', disabled: true }, [Validators.required] ),
+    BalanceAmount: new FormControl<number>( 0 ),
+    TransactionNo: new FormControl<string>( '' ),
     IdType: new FormControl( "" ),
     IdNumber: new FormControl( "" ),
     ImageUrl: new FormControl( "" ),
     IsFrontSide: new FormControl( false ),
+    GuestStayDetailId: new FormControl( '' ),
+    InvoiceNo: new FormControl( { value: "", disabled: true } ),
+    ManualInvoice: new FormControl( { value: false, disabled: true } ),
+    PaymentDetailsId: new FormControl( '' )
   } );
   fillMoreGuests ( siblingDetails: GuestSiblingDetails[] ) {
 
@@ -175,7 +210,18 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
     this.cdref.detectChanges();
   }
   generateInvoice () {
-    throw new Error( 'Method not implemented.' );
+    this.loading = true;
+    this.guestService.generateInvoice( this.guestId ).subscribe( {
+      next: ( result ) => {
+        saveAs( result, `${ this.guestId }.pdf` );
+      },
+      error: ( err ) => {
+        console.log( err );
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    } );
   }
   moreGuestForm: FormGroup;
   get guests () {
@@ -254,7 +300,10 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
         Age: c.get( "Age" )?.value!,
       } );
     }
+
     let guestDetail: NewGuestDetails = {
+      GuestStayDetailId: this.editGuestForm.controls.GuestStayDetailId.value!,
+      PaymentDetailsId: this.editGuestForm.controls.PaymentDetailsId.value!,
       FirstName: this.editGuestForm.controls.FirstName.value!,
       LastName: this.editGuestForm.controls.LastName.value!,
       Gender: this.editGuestForm.controls.Gender.value!,
@@ -262,12 +311,18 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
       EmailId: this.editGuestForm.controls.EmailId.value!,
       MobileNo: this.editGuestForm.controls.MobileNo.value!,
       Address: this.editGuestForm.controls.Address.value!,
-      HotelId: "5c953e70-73fe-46cf-0267-08dcb3aa275e",
+      Company: this.editGuestForm.controls.Company.value!,
+      CompanyAddress: this.editGuestForm.controls.CompanyAddress.value!,
+      GSTIN: this.editGuestForm.controls.CompanyGSTIN.value!,
+      Comments: this.editGuestForm.controls.Comments.value!,
+      Print_CD: this.editGuestForm.controls.Print_CD.value!,
+      Print_Comments: this.editGuestForm.controls.Print_Comments.value!,
+      HotelId: this.hotelId,
       CityId: this.editGuestForm.controls.CityId.value!,
       StateId: this.editGuestForm.controls.StateId.value!,
       CountryId: this.editGuestForm.controls.CountryId.value!,
       AmountPaid: this.editGuestForm.controls.AmountPaid.value!,
-      AmountToPay: this.editGuestForm.controls.AmountToPay.value!,
+      AmountToPay: this.editGuestForm.controls.ExcGST.value!,
       BalanceAmount: this.editGuestForm.controls.BalanceAmount.value!,
       CheckInDate: this.datePipe.transform( this.editGuestForm.controls.CheckInDate.value!, 'yyyy-MM-dd hh:mm:ss a' )!.toString(),
       CheckOutDate: this.datePipe.transform( this.editGuestForm.controls.CheckOutDate.value!, 'yyyy-MM-dd hh:mm:ss a' )!.toString(),
@@ -280,6 +335,7 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
       NoOfDays: this.editGuestForm.controls.NoOfDays.value!,
       NoOfGuests: this.editGuestForm.controls.NoOfGuests.value!,
       PaymentMode: String( this.editGuestForm.controls.PaymentMode.value! ),
+      // RatePerNight: this.editGuestForm.controls.RatePerNight.value!,
       RatePerNight: this.editGuestForm.controls.RatePerNight.value!,
       RoomNoId: this.editGuestForm.controls.RoomNoId.value!,
       IdType: this.editGuestForm.controls.IdType.value!,
@@ -287,19 +343,20 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
       ImageUrl: this.editGuestForm.controls.ImageUrl.value!,
       IsFrontSide: true,
       TransactionNo: this.editGuestForm.controls.TransactionNo.value!,
+      InvoiceNo: this.editGuestForm.controls.InvoiceNo.value!,
+      ManualInvoice: Boolean( this.editGuestForm.controls.InvoiceNo.value! ),
       GuestId: this.guestId,
       GuestSiblingDetail: guestSiblings
     };
     console.log( guestDetail );
-    this.guestService.saveGuest( guestDetail ).subscribe( {
+    this.guestService.updateGuest( guestDetail ).subscribe( {
       next: ( data ) => {
         this.toastrService.success( data.Message, 'Success' );
         this.savedGuest.push( {
           Id: data.Data.Id,
           FL_Name: guestDetail.FirstName + ' ' + guestDetail.LastName
         } );
-        console.log( 'Guest saved successfully', data );
-        this.router.navigate( ['admin/guest'] );
+        // this.router.navigate( ['admin/guest'] );
       },
       error: ( error ) => {
         console.error( 'Error saving guest', error );

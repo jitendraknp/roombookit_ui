@@ -12,7 +12,7 @@
   <p-stepper class="card" [linear]="true" [(activeStep)]="active">
     <p-stepperPanel header="Guest Details">
       <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
-        <div class="flex flex-column h-12rem">
+        <div class="flex flex-column">
           <div class="border-0   surface-ground flex-auto flex justify-content-center align-items-center font-medium">
             <div class="d-flex flex-row  flex-sm-column flex-xs-column flex-md-row flex-lg-row ">
               <!-- <div> -->
@@ -20,25 +20,51 @@
                 <div class="card-header bg-[#60a5fa] bg-gradient text-white ps-2">
                   <p class="uppercase text-sm">Personal Details</p>
                 </div>
-                <div class="card-body p-0">
+                <div class="card-body p-1">
                   <!-- <div class="col-6"> -->
                   <div class="row pb-2 p-2">
-                    <div class="col-md-6 pb-2">
+                    <div class="col-md-12 pb-2 pe-2 ps-2">
+                      <div class="card border-1 p-0">
+                        <div class="card-header  d-flex justify-between p-2 py-1 bg-slate-300">
+                          <p class="text-blue-500 text-sm"> Guest Company Details</p>
+                        </div>
+                        <div class="card-body p-1">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="company" class="form-label">Company</label>
+                              <input type="text" class="form-control form-control-sm" id="company"
+                                formControlName="Company" placeholder="Company Name" />
+                            </div>
+                            <div class="col-md-6">
+                              <label for="companyGSTIN" class="form-label">GSTIN</label>
+                              <input type="text" class="form-control form-control-sm" id="companyGSTIN"
+                                formControlName="CompanyGSTIN" placeholder="Company GSTIN" />
+                            </div>
+                            <div class="col-md-12">
+                              <label for="companyAddress" class="form-label">Company Address</label>
+                              <input type="text" class="form-control form-control-sm" id="companyAddress"
+                                formControlName="CompanyAddress" placeholder="Company Address" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 ">
                       <label for="firstName" class="form-label">First Name</label>
                       <input type="text" class="form-control form-control-sm" id="firstName" formControlName="FirstName"
                         placeholder="First Name" />
                     </div>
-                    <div class="col-md-6  pb-2">
+                    <div class="col-md-6">
                       <label for="lastName" class="form-label">Last Name</label>
                       <input type="text" class="form-control form-control-sm" id="lastName" formControlName="LastName"
                         placeholder="Last Name" />
                     </div>
-                    <div class="col-md-6  pb-2">
+                    <div class="col-md-6">
                       <label for="emailId" class="form-label">Email</label>
                       <input type="email" class="form-control form-control-sm" id="emailId" formControlName="EmailId"
                         placeholder="Email" />
                     </div>
-                    <div class="col-6 pb-2 d-inline">
+                    <div class="col-md-6  d-inline">
                       <label for="Gender" class="form-label">Gender</label>
                       <ng-select appearance="outline" placeholder="Gender" id="Gender" class="text-sm"
                         formControlName="Gender" notFoundText="No items found">
@@ -56,10 +82,10 @@
                       </div>
                       <div class="justify-content-between content-end">
                         <button type="button"
-                          class="bg-gray-300 hover:bg-gray-400 text-sm text-gray-800 font-semibold  py-2 px-2 rounded inline-flex items-center"
+                          class="bg-gray-300 hover:bg-gray-400 text-sm text-gray-800 font-semibold  py-2 px-2 rounded inline-flex items-center gap-2"
                           (click)="addGuest()">
-                          <i class="pi pi-plus" style="color: var(--primary-color)"></i>
-                          More
+                          <i class="pi pi-plus font-semibold text-xs" style="color: var(--primary-color)"></i>
+                          <p class="font-sm">Member</p>
                         </button>
                       </div>
                     </div>
@@ -104,6 +130,39 @@
                 </div>
                 <div class="card-body p-2 pt-0">
                   <app-address [form]="editGuestForm"> </app-address>
+                  <div class="flex flex-column  py-2">
+                    <div class="card">
+                      <div class="card-header bg-[#60a5fa] bg-gradient text-white">
+                        <p class="text-sm font-semibold">Invoice Printing Option(s)</p>
+                      </div>
+                      <div class="card-body bg-blue-100 p-2">
+                        <div class="flex flex-row gap-3 text-sm font-semibold">
+                          <p class="pb-2 flex-grow-1">
+                            <label for="invoiceNo" class="form-label">Invoice No</label>
+                            <input type="text" class="form-control form-control-sm" id="invoiceNo"
+                              formControlName="InvoiceNo" placeholder="Invoice No" />
+                          </p>
+                          <p class="gap-2 pt-5">
+                            <p-checkbox value="Manual Invoice" class="me-2" inputId="cd" variant="filled"
+                              [binary]="true" formControlName="ManualInvoice" />
+                            <label for="cd">Manual</label>
+                          </p>
+                        </div>
+                        <div class="flex flex-row gap-3 text-sm font-semibold">
+                          <p class="gap-2">
+                            <p-checkbox value="Company Details" class="me-2" inputId="cd" variant="filled"
+                              [binary]="true" formControlName="Print_CD" />
+                            <label for="cd">Company Details</label>
+                          </p>
+                          <p class="gap-2">
+                            <p-checkbox value="Comments" inputId="comment" class="me-2" variant="filled" [binary]="true"
+                              formControlName="Print_Comments" />
+                            <label for="comment">Comments</label>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -124,14 +183,14 @@
     <p-stepperPanel header="Stay & Payment">
       <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"
         let-index="index">
-        <div class="flex flex-column h-12rem">
+        <div class="flex flex-column">
           <div class="border-0 surface-ground flex-auto flex justify-content-center align-items-center font-medium">
             <div class="card border-0 p-0 shadow-lg">
               <div class="card-header   bg-[#60a5fa] text-white ps-2">
                 <p class="uppercase text-sm">Stay Details</p>
               </div>
               <div class="card-body">
-                <app-stay-guest [guestList]="savedGuest" [form]="editGuestForm"></app-stay-guest>
+                <app-stay-guest [guestList]="savedGuest" [form]="editGuestForm" [editGuest]="true"></app-stay-guest>
               </div>
             </div>
             <div class="card border-0 p-0 ms-2 shadow-lg">
@@ -140,6 +199,7 @@
               </div>
               <div class="card-body">
                 <app-payment-details [form]="editGuestForm"></app-payment-details>
+
               </div>
             </div>
           </div>
@@ -155,7 +215,7 @@
     </p-stepperPanel>
     <p-stepperPanel header="ID Proof">
       <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
-        <div class="flex flex-column h-12rem">
+        <div class="flex flex-column">
           <div class="border-0  align-items-center font-medium">
             <div class="card border-0 p-0 ms-2 shadow-lg">
               <div class="card-header bg-[#60a5fa] bg-gradient text-white ps-2">

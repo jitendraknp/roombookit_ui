@@ -6,11 +6,12 @@
       <span class="img-fluid">Book Karlo</span>
     </h3>
   </div>
-  <p-panelMenu [model]="items" styleClass="w-full md:w-20rem">
+  <p-panelMenu [model]="items" [multiple]="false">
     <ng-template pTemplate="item" let-item>
       <ng-container *ngIf="item.route; else urlRef">
-        <a [routerLink]="item.route" [routerLinkActive]="'true'" class="flex align-items-center
+        <a pRipple routerLink="{item.route}" [routerLinkActive]="'true'" class="flex align-items-center
                 cursor-pointer text-color px-3 py-2">
+          <i [class]="item.icon + ' text-primary opacity-10'"></i>
           <span [class]="item.icon"></span>
           <span class="ml-2 text-color">{{ item.Label }}</span>
         </a>
@@ -18,12 +19,14 @@
       <ng-template #urlRef>
         <a *ngIf="item.url; else noLink" [routerLink]="item.url" class="flex align-items-center
                 cursor-pointer text-color px-3 py-2">
-          <span [class]="item.icon"></span>
+          <i [class]="item.icon + ' text-primary'"></i>
+          <!-- <span [class]="item.icon"></span> -->
           <span class="ml-2 cursor-pointer">{{ item.label }} </span>
         </a>
         <ng-template #noLink>
           <span class="flex align-items-center cursor-pointer text-color px-3 py-2">
-            <span [class]="item.icon"></span>
+            <!-- <span [class]="item.icon"></span> -->
+            <i [class]="item.icon + ' text-primary'"></i>
             <span class="ml-2 font-semibold">{{ item.label }}</span>
             <i *ngIf="item.items" class="pi pi-angle-down text-primary ml-auto"></i>
           </span>
@@ -105,9 +108,14 @@
     </div>
   </div>
   <div class="main-content pe-1 pb-4 ps-1">
+    <app-breadcrumb></app-breadcrumb>
     <div class="container-fluid cf ps-0">
       <router-outlet></router-outlet>
+
+      <app-footer></app-footer>
+
     </div>
-    <app-footer></app-footer>
+
   </div>
+
 </div>

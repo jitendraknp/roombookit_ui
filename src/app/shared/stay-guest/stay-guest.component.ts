@@ -41,16 +41,18 @@ const ONE_DAY = 24 * 60 * 60 * 1000;
 } )
 export class StayGuestComponent implements OnInit, AfterContentChecked, OnDestroy {
   onChange ( $event: any ) {
-    console.log( $event );
+
   }
   @Input() guestList: GuestBaseEntity[] = [];
   @Input() public form!: FormGroup;
-
+  @Input() editGuest: boolean = false;
   onRoomChange ( $event: string ) {
 
     if ( $event == '' || $event == undefined ) {
       this.form.controls["RatePerNight"].patchValue( 0 );
       this.form.controls["Discount"].patchValue( 0 );
+      this.form.controls["TotalAmount"].patchValue( 0 );
+      this.form.controls["ExcGST"].patchValue( 0 );
       return;
     }
     if ( !this.form.controls["CheckInDate"].valid && !this.form.controls["CheckOutDate"].valid ) {
@@ -76,31 +78,40 @@ export class StayGuestComponent implements OnInit, AfterContentChecked, OnDestro
           this.form.controls["Discount"].patchValue( value.Data.Discount );
           this.form.controls["TotalAmount"].patchValue( value.Data.TotalAmount );
           this.form.controls["NoOfDays"].patchValue( value.Data.TotalDays );
+          let gstPercentage: number = this.form.controls["GSTPercentage"].value;
+          let gstAmount = ( ( Number( value.Data.TotalAmount ) * gstPercentage ) / 100 ) + Number( value.Data.TotalAmount );
+          this.form.controls["ExcGST"].patchValue( gstAmount );
+
         } else {
           this.toastrService.error( value.Message );
         }
         this.cdr.detectChanges();
+
       },
       error: ( error: any ) => {
         this.toastrService.error( error.message );
         this.cdr.detectChanges();
       }
     } );
+    this.stayGuestForm.controls.RatePerNight.valueChanges.subscribe( value => {
+      console.log( 'Input value changed:', value );
+    } );
   }
   // @Input() public form!= FormGroup;
   stayGuestForm = new FormGroup( {
-    GuestId: new FormControl( null ),
     CheckInDate: new FormControl<Date>( new Date(), [Validators.required] ),
     CheckOutDate: new FormControl<string>( '', [Validators.required] ),
     RoomNoId: new FormControl( null, [Validators.required] ),
-    NoOfGuests: new FormControl<number>( { value: 1, disabled: true }, [Validators.required] ),
-    NoOfAdults: new FormControl<number>( 0, [Validators.required] ),
     NoOfChildren: new FormControl<number>( 0, [Validators.required] ),
-    RatePerNight: new FormControl<number>( { value: 0, disabled: true } ),
-    Discount: new FormControl<number>( { value: 0, disabled: true } ),
+    NoOfAdults: new FormControl<number>( 0, [Validators.required] ),
+    GuestId: new FormControl( null ),
+    NoOfGuests: new FormControl<number>( 0 ),
+    RatePerNight: new FormControl<number>( 0 ),
+    Discount: new FormControl<number>( 0 ),
     TotalAmount: new FormControl<number>( 0 ),
     NoOfDays: new FormControl<number>( 0 )
   } );
+
   protected selectedDates: [Date, Date] = [
     new Date( Date.now() - ONE_DAY ),
     new Date( Date.now() + ONE_DAY )
@@ -112,7 +123,7 @@ export class StayGuestComponent implements OnInit, AfterContentChecked, OnDestro
   room$!: Observable<ApiResponse | any>;
   public min = new Date();
   public minCheckOutDate: Date = new Date();
-
+  inputControl = new FormControl( 0 );
   constructor(
     protected cdr: ChangeDetectorRef,
     private toastrService: ToastrService,
@@ -134,6 +145,7 @@ export class StayGuestComponent implements OnInit, AfterContentChecked, OnDestro
   };
   rooms: Room[] = [];
   ngOnInit (): void {
+
     this.room$ = this.roomService.getAllRooms();
     this.room$.subscribe( rooms => {
       this.rooms = rooms.Data as Room[];
@@ -143,6 +155,22 @@ export class StayGuestComponent implements OnInit, AfterContentChecked, OnDestro
         this.stayGuestForm.controls.NoOfGuests.patchValue( result + 1 );
       }
     } );
+    this.form.controls["RatePerNight"].valueChanges.subscribe( value => {
+      let noOfDays: number = Number( this.form.controls["NoOfDays"].value );
+      console.log( noOfDays );
+      let newRate: number = Number( value );
+      if ( noOfDays > 0 && newRate > 0 ) {
+        let totalAmount: number = noOfDays * newRate;
+        this.form.controls["TotalAmount"].patchValue( totalAmount );
+        let gstPercentage: number = this.form.controls["GSTPercentage"].value;
+        let gstAmount = ( ( Number( totalAmount ) * gstPercentage ) / 100 ) + Number( totalAmount );
+        this.form.controls["ExcGST"].patchValue( gstAmount );
+      }
+      // else {
+      //   this.toastrService.warning( "Invalid data to calculate amount.", "Warning" );
+      // }
+    } );
+    this.inputControl.patchValue( this.form.controls["RatePerNight"].value );
   }
   onSubmit () {
     console.log( this.stayGuestForm );
@@ -165,7 +193,7 @@ export class StayGuestComponent implements OnInit, AfterContentChecked, OnDestro
       NoOfChildren: this.stayGuestForm.controls.NoOfChildren.value!,
       RatePerNight: this.stayGuestForm.controls.RatePerNight.value!,
       TotalAmount: this.stayGuestForm.controls.TotalAmount.value!,
-      GuestId: this.stayGuestForm.controls.GuestId.value!,
+      GuestsId: this.stayGuestForm.controls.GuestId.value!,
       Discount: this.stayGuestForm.controls.Discount.value!,
       NoOfDays: this.stayGuestForm.controls.NoOfDays.value!,
     };
@@ -187,10 +215,7 @@ export class StayGuestComponent implements OnInit, AfterContentChecked, OnDestro
     } );
   }
   selectedChanged ( event: any ) {
-    console.log( 'selectedChanged' );
-    console.log( event );
     this.minCheckOutDate = event.value;
-    console.log( this.minCheckOutDate );
   }
   myFilter ( d: any ) {
     this.minCheckOutDate = d;

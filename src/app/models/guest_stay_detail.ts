@@ -1,6 +1,6 @@
 export interface GuestStayDetail {
   Id?: string;
-  GuestId: string;
+  GuestsId: string;
   CheckInDate: string;
   CheckOutDate: string;
   RoomTypeId?: number;

@@ -53,8 +53,8 @@ export class HandleErrorService {
           errorMessage = "Something went wrong!";
       }
     }
-    console.log( errorMessage );
-    this.messageService.add( { severity: 'error', summary: 'Error', detail: 'Message Content' } );
+    // console.log( errorMessage );
+    // this.messageService.add( { severity: 'error', summary: 'Error', detail: 'Message Content' } );
 
     this.toastrs.error( errorMessage );
     if ( err.status === 401 ) {

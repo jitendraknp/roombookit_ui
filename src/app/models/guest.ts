@@ -37,3 +37,13 @@ export interface GeneratedInvoice {
   InvoiceNumber?: string;
   Status?: string;
 }
+export interface DashboardGuestDetails {
+  Id?: string;
+  FullName?: string;
+  Email?: string;
+  Avatar?: string;
+  CheckInDate?: string;
+  CheckInTime?: string;
+  CheckOutDate?: string;
+  CheckOutTime?: string;
+}

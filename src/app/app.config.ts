@@ -30,9 +30,9 @@ export const appConfig: ApplicationConfig = {
     provideExperimentalZonelessChangeDetection(),
     provideHttpClient( withFetch(), withInterceptors( [authInterceptor, loggingInterceptor] ) ),
     provideRouter( routes,
-      // withComponentInputBinding(),
-      // withPreloading( PreloadAllModules ),
-      // withRouterConfig( { onSameUrlNavigation: 'reload' } )
+      withComponentInputBinding(),
+      withPreloading( PreloadAllModules ),
+      withRouterConfig( { onSameUrlNavigation: 'reload' } )
     ),
     // provideClientHydration(withHttpTransferCacheOptions({
     //   includePostRequests: true

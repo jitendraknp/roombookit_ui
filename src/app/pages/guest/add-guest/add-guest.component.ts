@@ -55,6 +55,14 @@ import { ApiResponse } from '../../../models/response';
   providers: [DatePipe, ConfirmationService, MessageService]
 } )
 export class AddGuestComponent implements OnInit, AfterContentChecked {
+  onManualInvoiceChange () {
+    let mValue = this.newGuestForm.controls.ManualInvoice.value;
+    console.log( mValue );
+    if ( mValue )
+      this.newGuestForm.controls.InvoiceNo.enable();
+    else
+      this.newGuestForm.controls.InvoiceNo.disable();
+  }
   loading: boolean = false;
   hotelId: string = '5c953e70-73fe-46cf-0267-08dcb3aa275e';
   saveGuest () {
@@ -83,7 +91,7 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     this.loading = true;
     this.guestService.generateInvoice( this.savedGuest[0].Id! ).subscribe( {
       next: ( result ) => {
-        saveAs( result, 'abc.pdf' );
+        saveAs( result, `${ this.savedGuest[0].Id! }.pdf` );
       },
       error: ( err ) => {
         console.log( err );
@@ -99,8 +107,8 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     CompanyGSTIN: new FormControl<string>( '' ),
     CompanyAddress: new FormControl<string>( '' ),
     Comments: new FormControl<string>( '' ),
-    Print_CD: new FormControl<boolean>( false ),
-    Print_Comments: new FormControl<boolean>( false ),
+    Print_CD: new FormControl<boolean>( true ),
+    Print_Comments: new FormControl<boolean>( true ),
     FirstName: new FormControl<string>( '', [Validators.required] ),
     LastName: new FormControl<string>( '', [Validators.required] ),
     MobileNo: new FormControl( '', [Validators.required] ),
@@ -115,25 +123,31 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     CheckInDate: new FormControl<string>( '', [Validators.required] ),
     CheckOutDate: new FormControl<string>( '', [Validators.required] ),
     RoomNoId: new FormControl( null, [Validators.required] ),
-    NoOfGuests: new FormControl<number>( { value: 1, disabled: true }, [Validators.required] ),
+    NoOfGuests: new FormControl<number>( 0 ),
     NoOfAdults: new FormControl<number>( 0, [Validators.required] ),
     NoOfChildren: new FormControl<number>( 0, [Validators.required] ),
-    RatePerNight: new FormControl<number>( { value: 0, disabled: true } ),
-    Discount: new FormControl<number>( { value: 0, disabled: true } ),
+    RatePerNight: new FormControl<number>( 0 ),
+    Discount: new FormControl<number>( 0 ),
     TotalAmount: new FormControl<number>( 0 ),
     NoOfDays: new FormControl<number>( 0 ),
-    AmountToPay: new FormControl<number>( { value: 0, disabled: true } ),
+    AmountToPay: new FormControl<number>( 0 ),
     GSTPercentage: new FormControl<number>( 12 ),
     IncGST: new FormControl( 0 ),
     ExcGST: new FormControl( 0 ),
+    CGST: new FormControl( 0 ),
+    SGST: new FormControl( 0 ),
+    UTGST: new FormControl( 0 ),
+    IGST: new FormControl( 0 ),
     PaymentMode: new FormControl( null, [Validators.required] ),
     AmountPaid: new FormControl<number>( 0, [Validators.required] ),
-    BalanceAmount: new FormControl<number>( { value: 0, disabled: true }, [Validators.required] ),
-    TransactionNo: new FormControl<string>( { value: '', disabled: true }, [Validators.required] ),
+    BalanceAmount: new FormControl<number>( 0 ),
+    TransactionNo: new FormControl<string>( '' ),
     IdType: new FormControl( "" ),
     IdNumber: new FormControl( "" ),
     ImageUrl: new FormControl( "" ),
+    InvoiceNo: new FormControl( { value: "", disabled: true } ),
     IsFrontSide: new FormControl( false ),
+    ManualInvoice: new FormControl( false ),
   } );
   constructor(
     private route: ActivatedRoute,
@@ -189,6 +203,18 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
         this.hotelId = resp.Data.HotelId;
       }
     }
+    this.guestService.getNewInvoiceNo( this.hotelId ).subscribe( {
+      next: ( resp ) => {
+        console.log( resp );
+        this.newGuestForm.controls.InvoiceNo.setValue( resp.Data );
+      },
+      error: ( err ) => {
+        console.log( err );
+      },
+      complete: () => {
+
+      }
+    } );
   }
 
 
@@ -232,7 +258,7 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
       StateId: this.newGuestForm.controls.StateId.value!,
       CountryId: this.newGuestForm.controls.CountryId.value!,
       AmountPaid: this.newGuestForm.controls.AmountPaid.value!,
-      AmountToPay: this.newGuestForm.controls.AmountToPay.value!,
+      AmountToPay: this.newGuestForm.controls.ExcGST.value!,
       BalanceAmount: this.newGuestForm.controls.BalanceAmount.value!,
       CheckInDate: this.datePipe.transform( this.newGuestForm.controls.CheckInDate.value!, 'yyyy-MM-dd hh:mm:ss a' )!.toString(),
       CheckOutDate: this.datePipe.transform( this.newGuestForm.controls.CheckOutDate.value!, 'yyyy-MM-dd hh:mm:ss a' )!.toString(),
@@ -251,7 +277,9 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
       IdNumber: this.newGuestForm.controls.IdNumber.value!,
       ImageUrl: this.newGuestForm.controls.ImageUrl.value!,
       IsFrontSide: true,
+      ManualInvoice: Boolean( this.newGuestForm.controls.ManualInvoice.value ),
       TransactionNo: this.newGuestForm.controls.TransactionNo.value!,
+      InvoiceNo: this.newGuestForm.controls.InvoiceNo.value!,
       // GuestId: this.newGuestForm.controls.PaymentMode.value!,
       GuestSiblingDetail: guestSiblings
     };
@@ -263,13 +291,12 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
           FL_Name: guestDetail.FirstName + ' ' + guestDetail.LastName
         } );
         console.log( 'Guest saved successfully', data );
-        this.router.navigate( ['admin/guest'] );
+        // this.router.navigate( ['admin/guest'] );
       },
       error: ( error ) => {
         console.error( 'Error saving guest', error );
       }
     } );
-
   }
   onClose () {
     this.guestService.getAllGuest().subscribe( {
@@ -279,13 +306,8 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
         } );
       }
     } );
-
-    // this.router.navigate( ['admin/guest'] );
-
   }
   ngAfterContentChecked () {
-
     this.cdref.detectChanges();
-
   }
 }

@@ -16,12 +16,17 @@
           <input type="number" class="form-control form-control-sm" id="floorNo" formControlName="floorNo"
             placeholder="Floor No" />
         </div>
-        <div class="mb-3 col-md-6">
+        <div class="mb-3 col-md-12">
           <label for="type" class="form-label">Type</label>
           <ng-select appearance="outline" placeholder="Select Type" class="custom" formControlName="type"
             notFoundText="No items found">
-            <ng-option value="0">AC</ng-option>
-            <ng-option value="1">Non AC</ng-option>
+            <ng-option value="1">Non AC (Single)</ng-option>
+            <ng-option value="2">AC (Single)</ng-option>
+            <ng-option value="3">Non AC (Double)</ng-option>
+            <ng-option value="4">AC (Double)</ng-option>
+            <ng-option value="5">Single</ng-option>
+            <ng-option value="6">Double</ng-option>
+            <ng-option value="7">Triple</ng-option>
           </ng-select>
         </div>
         <div class="mb-3 col-md-6">

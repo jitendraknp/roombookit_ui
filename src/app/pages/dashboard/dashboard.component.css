@@ -4,3 +4,10 @@
 .p-card{
   font-family: Roboto, "Helvetica Neue", sans-serif !important;
 }
+
+.p-panel-header{
+  padding-bottom: 1px !important;
+}
+.p-panel-content {
+  padding-top: 0px !important;
+}

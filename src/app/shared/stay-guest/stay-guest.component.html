@@ -1,65 +1,66 @@
 <form class="row" [formGroup]="form">
-  <div class="col-md-6 col-12 pb-2">
+  <div class="col-md-6 pb-2">
     <!-- (dateTimeChange)="selectedChanged($event)"   [min]="min"-->
     <label for="checkInDate" class="form-label">Check In Date</label>
     <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" class="form-control form-control-sm"
       formControlName="CheckInDate" aria-owns="owl-dt-picker-0">
     <owl-date-time #dt1 aria-owns="owl-dt-picker-1" [hour12Timer]="false"></owl-date-time>
   </div>
-  <div class="col-md-6 col-6 pb-2">
+  <div class="col-md-6  pb-2">
     <label for="checkOutDate" class="form-label">Check Out Date</label>
     <!-- [min]="minCheckOutDate" -->
     <input [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" class="form-control form-control-sm"
       formControlName="CheckOutDate" aria-owns="owl-dt-picker-4">
     <owl-date-time #dt2 aria-owns="owl-dt-picker-5"></owl-date-time>
   </div>
-  <div class="col-md-6 col-12 pb-2">
+  <div class="col-md-12  pb-2">
     <label for="roomNoId" class="form-label">Room No / Floor / Type</label>
     <ng-select appearance="outline" placeholder="Select Room No" id="roomNoId" class="custom" formControlName="RoomNoId"
       (change)="onRoomChange($event)" notFoundText="No items found">
       @for(room of rooms; track room.Id) {
       <ng-option [value]="room.Id">
-        Room-{{room.RoomNo}} / Floor-{{room.FloorNo}} / {{room.Type=="1"?"AC":"Non AC" }}
+        Room-{{room.RoomNo}} / Floor-{{room.FloorNo}} / {{room.Type}}
       </ng-option>
       }
     </ng-select>
   </div>
-  <div class="col-md-3 col-12 pb-2">
+  <div class="col-md-6  pb-2">
     <label for="ratePerNight" class="form-label">Rate (&#8377;)</label>
-    <input type="number" class="form-control form-control-sm" id="ratePerNight" readonly formControlName="RatePerNight"
+    <input type="number" class="form-control form-control-sm" id="ratePerNight" formControlName="RatePerNight"
       placeholder="Rate Per Night" />
   </div>
-  <div class="col-md-3 col-12 pb-2">
-    <label for="discount" class="form-label">Discount (&#8377;)</label>
-    <input type="number" class="form-control form-control-sm" id="discount" readonly formControlName="Discount"
-      placeholder="Discount" />
-  </div>
-  <div class="col-md-3 col-12 pb-2">
+  <div class="col-md-6  pb-2">
     <label for="totalAmount" class="form-label">Total (&#8377;)</label>
-    <input type="number" class="form-control form-control-sm" id="totalAmount" readonly formControlName="TotalAmount"
+    <input type="number" class="form-control form-control-sm" id="totalAmount" formControlName="TotalAmount"
       placeholder="Total Amount" />
   </div>
-  <div class="col-md-3 col-12 pb-2">
-    <label for="noOfAdults" class="form-label">No Of Adults</label>
-    <input type="number" class="form-control form-control-sm" id="noOfAdults" formControlName="NoOfAdults"
-      placeholder="No Of Adults" />
+  <div class="col-md-4  pb-2">
+    <label for="discount" class="form-label">Discount (&#8377;)</label>
+    <input type="number" class="form-control form-control-sm" id="discount" formControlName="Discount"
+      placeholder="Discount" />
   </div>
-  <div class="col-md-6 col-12 pb-2">
-    <label for="noOfChildren" class="form-label">No Of Children</label>
-    <input type="number" class="form-control form-control-sm" id="noOfChildren" formControlName="NoOfChildren"
-      placeholder="No Of Children" />
-  </div>
-
-  <div class="col-md-3 col-12 ">
-    <label for="noOfGuests" class="form-label">No Of Guest</label>
-    <input type="number" class="form-control form-control-sm" readonly id="noOfGuests" formControlName="NoOfGuests"
-      placeholder="Total No Of Guest" />
-  </div>
-  <div class="col-md-3 col-6">
+  <div class="col-md-4  ">
     <label for="noOfDays" class="form-label">Days</label>
     <input type="number" class="form-control form-control-sm" id="noOfDays" formControlName="NoOfDays"
       placeholder="No Of Days" />
   </div>
+  <div class="col-md-4 pb-2">
+    <label for="noOfAdults" class="form-label"># Adults</label>
+    <input type="number" class="form-control form-control-sm" id="noOfAdults" formControlName="NoOfAdults"
+      placeholder="No Of Adults" />
+  </div>
+  <div class="col-md-4  pb-2">
+    <label for="noOfChildren" class="form-label"># Children</label>
+    <input type="number" class="form-control form-control-sm" id="noOfChildren" formControlName="NoOfChildren"
+      placeholder="No Of Children" />
+  </div>
+
+  <div class="col-md-4">
+    <label for="noOfGuests" class="form-label"># Guests</label>
+    <input type="number" class="form-control form-control-sm" id="noOfGuests" formControlName="NoOfGuests"
+      placeholder="Total No Of Guest" />
+  </div>
+
   <!-- <div class="col-md-3 col-3  align-content-end text-end">
     <p-button [size]="'small'" [label]="'Save'" [icon]="'pi pi-save'" (onClick)="onSubmit()"></p-button>
   </div> -->

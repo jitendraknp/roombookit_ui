@@ -1,18 +1,8 @@
 <form class="row" [formGroup]="form">
   <div class="col-md-6 col-6 pb-2">
-    <label for="excGSTRate" class="form-label">Exc. of GST (&#8377;)</label>
-    <input type="number" class="form-control form-control-sm" id="excGSTRate" formControlName="ExcGST"
-      placeholder="Total Amount" />
-  </div>
-  <div class="col-md-6 col-6 pb-2">
-    <label for="incGSTRate" class="form-label">Inc. of GST (&#8377;)</label>
-    <input type="number" class="form-control form-control-sm" id="incGSTRate" formControlName="IncGST"
-      placeholder="Total Amount" />
-  </div>
-  <div class="col-md-6 col-6 pb-2">
     <label for="gstRate" class="form-label">GST Rate</label>
-    <ng-select appearance="outline" placeholder="Select GST Rate" id="gstRate" class="custom"
-      formControlName="GSTPercentage" notFoundText="No items found">
+    <ng-select appearance="outline" placeholder="Select GST Rate" id="gstRate" class="custom" [formControl]="gstControl"
+      (change)="onGstChange($event)" formControlName="GSTPercentage" notFoundText="No items found">
       <ng-option [value]="1">0%</ng-option>
       <ng-option [value]="5">5%</ng-option>
       <ng-option [value]="12" selected>12%</ng-option>
@@ -20,6 +10,16 @@
       <ng-option [value]="28">28%</ng-option>
     </ng-select>
   </div>
+  <div class="col-md-6 col-6 pb-2">
+    <label for="excGSTRate" class="form-label">After GST (&#8377;)</label>
+    <input type="number" class="form-control form-control-sm" id="excGSTRate" formControlName="ExcGST"
+      placeholder="Total Amount" />
+  </div>
+  <!-- <div class="col-md-6 col-6 pb-2">
+    <label for="incGSTRate" class="form-label">Inc. of GST (&#8377;)</label>
+    <input type="number" class="form-control form-control-sm" id="incGSTRate" formControlName="IncGST"
+      placeholder="Total Amount" />
+  </div> -->
   <div class="col-md-6 col-6 pb-2">
     <label for="advancePayment" class="form-label">Payment Mode</label>
     <ng-select appearance="outline" placeholder="Payment Mode" id="paymentMode" class="custom"
@@ -37,15 +37,39 @@
       placeholder="Transaction No" />
   </div>
   <div class="col-md-6 col-6 pb-2">
-    <label for="advancePayment" class="form-label">Payment</label>
+    <label for="advancePayment" class="form-label">Advance Payment</label>
     <input type="number" class="form-control form-control-sm" id="advancePayment" formControlName="AmountPaid"
       placeholder="Advance Payment" />
   </div>
 
   <div class="col-md-6 col-6">
-    <label for="balancePayment" class="form-label">Balance</label>
+    <label for="balancePayment" class="form-label">Balance </label>
     <input type="number" class="form-control form-control-sm" id="balancePayment" formControlName="BalanceAmount"
       placeholder="Balance Payment" />
+    <p class="text-xs italic text-gray-400 font-semibold text-end">Total-(Advance+Discount)</p>
+  </div>
+  <div class="flex flex-row gap-2 ps-0">
+    <div class="flex-1 flex-grow-0"></div>
+    <div class="flex-1">
+      <label for="CGST" class="form-label">CGST (&#8377;)</label>
+      <input type="number" class="form-control form-control-sm" id="CGST" formControlName="CGST"
+        placeholder="Central Goods and Services Tax" />
+    </div>
+    <div class="flex-1">
+      <label for="SGST" class="form-label">SGST (&#8377;)</label>
+      <input type="number" class="form-control form-control-sm" id="SGST" formControlName="SGST"
+        placeholder="State Goods and Services Tax" />
+    </div>
+    <div class="flex-1">
+      <label for="UTGST" class="form-label">UTGST (&#8377;)</label>
+      <input type="number" class="form-control form-control-sm" id="UTGST" formControlName="UTGST"
+        placeholder="Union Territory Goods and Services Tax " />
+    </div>
+    <div class="flex-1">
+      <label for="IGST" class="form-label">IGST (&#8377;)</label>
+      <input type="number" class="form-control form-control-sm" id="IGST" formControlName="IGST"
+        placeholder="Integrated Goods and Services Tax " />
+    </div>
   </div>
   <!-- <div class="col-md-6 col-6 align-content-end text-end">
     <p-button [size]="'small'" [label]="'Save'" [icon]="'pi pi-save'" (onClick)="onSubmit()"></p-button>

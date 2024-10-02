@@ -5,7 +5,7 @@ import { User } from './users';
 import { StorageService } from '../../_services/storage.service';
 import { RSAHelperService } from '../../_services/rsahelper.service';
 import { LoginModel } from '../../models/login';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { ApiResponse } from '../../models/response';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment';
@@ -21,7 +21,7 @@ let usersObservable = of( USERS );
 
 } )
 export class AuthService {
-  private redirectUrl: string = 'admin/dashboard';
+  private redirectUrl: string = 'dashboard';
   private loginUrl: string = '/login';
   private isloggedIn: boolean = false;
   private loggedInUser = {} as User;
@@ -35,11 +35,11 @@ export class AuthService {
   }
 
   rsaLogin ( user: LoginModel ): Observable<ApiResponse> {
-    const encUser: LoginModel = {
-      username: this.rsaHelper.encryptWithPublicKey( user.username ),
-      password: this.rsaHelper.encryptWithPublicKey( user.password ),
-    };
-    return this.httpClient.post<ApiResponse>( `${ URL }rsa-login`, encUser ).pipe( shareReplay(), retry( 0 ), catchError( this.handleError ) );
+    // const encUser: LoginModel = {
+    //   username: this.rsaHelper.encryptWithPublicKey( user.username ),
+    //   password: this.rsaHelper.encryptWithPublicKey( user.password ),
+    // };
+    return this.httpClient.post<ApiResponse>( `${ URL }rsa-login`, user );
   }
   getAllUsers () {
     return usersObservable;
@@ -94,7 +94,7 @@ export class AuthService {
       //return throwError(() => new Error(error.error));
       // this.toastService?.error(error?.error, 'back');
     }
-    console.log( error );
+    // console.log( error );
     // console.log(toastrService);
     // this.toastService.error(error?.message, 'back');
     return throwError( () => new Error( 'Something bad happened; please try again later.' ) );

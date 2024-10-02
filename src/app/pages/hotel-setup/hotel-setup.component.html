@@ -1,4 +1,7 @@
 <form action="#" novalidate class="gy-3" [formGroup]="hotelSetupForm" (ngSubmit)="onSubmit()">
+  @defer(on immediate){
+  <p-toast />
+
   <div class="card">
     <div class="card-header bg-[#60a5fa] bg-gradient text-white">
       <p class="uppercase text-sm">Hotel Settings</p>
@@ -151,13 +154,73 @@
         </div>
       </div>
     </div>
+    <div class="card border-0 flex-1 shadow-lg m-2">
+      <div class="card-header bg-[#60a5fa] bg-gradient text-white">
+        <p class="text-sm font-semibold">Taxation Details</p>
+      </div>
+      <div class="card-body">
+        <div class="flex flex-row gap-2">
+          <div class="flex-1 ">
+            <label for="gSTIN" class="form-label">GSTIN</label>
+            <input type="text" class="form-control form-control-sm" formControlName="GSTIN" name="gSTIN"
+              placeholder="Specify the GSTIN." />
+          </div>
+          <div class="flex-1">
+            <label for="cIN" class="form-label">CIN</label>
+            <input type="text" class="form-control form-control-sm" formControlName="CIN" name="cIN"
+              placeholder="Specify the CIN." />
+          </div>
+          <div class="flex-1">
+            <label for="pAN" class="form-label">PAN</label>
+            <input type="text" class="form-control form-control-sm" formControlName="PAN" name="pAN"
+              placeholder="Specify the PAN." />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card border-0 flex-1 shadow-lg m-2">
+      <div class="card-header bg-[#60a5fa] bg-gradient text-white">
+        <p class="text-sm font-semibold">Invoice Setting(s)</p>
+      </div>
+      <div class="card-body">
+        <div class="flex flex-row gap-2">
+          <div class="flex-1">
+            <label for="InvNoSuffix" class="form-label">Invoice Prefix</label>
+            <input type="text" class="form-control form-control-sm" formControlName="InvNoSuffix"
+              placeholder="Invoice Prefix">
+          </div>
+          <div class="flex-1">
+            <label for="InvNoSuffix" class="form-label">Last Invoice No</label>
+            <input type="text" class="form-control form-control-sm" formControlName="LastInvNo"
+              placeholder="Last Invoice No">
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="flex flex-row flex-grow-1 justify-end px-3 py-2 gap-4">
       <p>
         <button type="submit" class="btn btn-sm btn-primary"><i class="pi pi-save"></i> Save </button>
       </p>
       <p>
-        <button class="btn btn-sm btn-danger"><i class="pi pi-trash"></i> Cancel</button>
+        <button type="button" class="btn btn-sm btn-danger" (click)="onCancel()"><i class="pi pi-trash"></i>
+          Cancel</button>
       </p>
     </div>
   </div>
+  }
+
+  @placeholder () {
+  <div class="d-flex justify-content-center">
+    <div class="spinner-border  text-warning " role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  }
+  @loading ( ) {
+  <div class="d-flex justify-content-center">
+    <div class="spinner-border  text-info d-flex justify-content-center" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  }
 </form>

@@ -15,6 +15,7 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import {BreadcrumbComponent} from "../breadcrumb/breadcrumb.component";
 @Component( {
   selector: 'app-layout',
   standalone: true,
@@ -30,7 +31,8 @@ import { SplitButtonModule } from 'primeng/splitbutton';
     FooterComponent,
     NgbModule,
     NgbDropdownModule,
-    PanelMenuModule
+    PanelMenuModule,
+    BreadcrumbComponent
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
@@ -101,18 +103,23 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
   ngOnInit (): void {
-    this.commonService.getMenus().subscribe( {
-      next: ( menu ) => {
-        console.log( menu.Data );
-        this.items = menu.Data as MenuItem[];
-        console.log( this.items );
-      },
-      error: ( error ) => {
-        this.toastrService.error( error.message ).onHidden.subscribe( () => {
-          this.router.navigate( ['login'] );
-        } );
-      }
-    } );
+    let storedMenuData = this.storageService.getData( "USER_MENU" );
+    if ( storedMenuData != undefined || storedMenuData != null ) {
+      this.items = JSON.parse( storedMenuData ) as MenuItem[];
+    }
+    else {
+      this.commonService.getMenus().subscribe( {
+        next: ( menu ) => {
+          this.items = menu.Data as MenuItem[];
+          this.storageService.saveData( JSON.stringify( this.items ), "USER_MENU" );
+        },
+        error: ( error ) => {
+          this.toastrService.error( error.message ).onHidden.subscribe( () => {
+            this.router.navigate( ['login'] );
+          } );
+        }
+      } );
+    }
     this.token = this.storageService.getUser()?.Data.Token;
     this.hotelName = this.jwtHelperService.decodeToken( this.token )?.hotelName;
   }

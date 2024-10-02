@@ -1,3 +1,4 @@
+import { GuestStayDetail } from "./guest_stay_detail";
 import { GuestSiblingDetails } from "./sibling-details";
 
 export interface NewGuestDetails {
@@ -41,4 +42,9 @@ export interface NewGuestDetails {
   ImageUrl?: string;
   IsFrontSide: boolean;
   GuestSiblingDetail?: GuestSiblingDetails[];
+  GuestStayDetail?: GuestStayDetail[];
+  GuestStayDetailId?: string;
+  PaymentDetailsId?: string;
+  InvoiceNo?: string;
+  ManualInvoice?: boolean;
 }

@@ -1,105 +1,160 @@
 <div class="card">
   <p-panel header="Overview" [toggleable]="true">
+
+
     <div class="grid gap-4 grid-cols-4 grid-rows-1">
       <div class="rounded   shadow-lg px-2 py-2 shadow-blue-500/50">
         <p class="text-[#858D9D] leading-7 font-bold text-sm">Today's</p>
         <div class="d-flex justify-between">
           <p class="text-[#5D6679]  text-sm font-bold">Check-In</p>
-          <span class="text-[#1366D9] font-semibold text-2xl">20</span>
+          <span class="text-[#1366D9] font-semibold text-2xl">{{todaysCheckIn}}</span>
         </div>
       </div>
       <div class="rounded   shadow-lg px-2 py-2 shadow-blue-500/50">
         <p class="text-[#858D9D] leading-7 font-bold text-sm">Today's</p>
         <div class="d-flex justify-between">
           <p class="text-[#5D6679]  text-sm font-bold">Check-Out</p>
-          <span class="text-[#1366D9] font-semibold text-2xl">40</span>
+          <span class="text-[#1366D9] font-semibold text-2xl">{{todaysCheckOut}}</span>
         </div>
       </div>
       <div class="rounded   shadow-lg px-2 py-2 shadow-blue-500/50">
         <p class="text-[#858D9D] leading-7 font-bold text-sm">Total</p>
         <div class="d-flex justify-between">
           <p class="text-[#5D6679]  text-sm font-bold">Available room</p>
-          <span class="text-[#1366D9] font-semibold text-2xl">40</span>
+          <span class="text-[#1366D9] font-semibold text-2xl">{{availableRooms}}</span>
         </div>
       </div>
       <div class="rounded   shadow-lg px-2 py-2 shadow-blue-500/50">
         <p class="text-[#858D9D]  leading-7 font-bold text-sm">Total</p>
         <div class="d-flex justify-between">
           <p class="text-[#5D6679]  text-sm font-bold">Occupied room</p>
-          <span class="text-[#1366D9] font-semibold text-2xl">40</span>
+          <span class="text-[#1366D9] font-semibold text-2xl">{{occupiedRooms}}</span>
         </div>
       </div>
     </div>
   </p-panel>
+  <div class="flex flex-row pb-2 pt-0 justify-end pe-2">
+    <!-- <app-info-display title="Info Title 1" content="This is the first piece of information."></app-info-display> -->
+    <span class="flex flex-row  font-italic font-normal font-italic text-gray-500 opacity-8 py-1">
+      <p class="pe-1 fst-italic text-xs align-content-center">
+        Total Bookings:
+        <span class="text-[#1366D9]">({{totalBookings}})</span>
+      </p>
+    </span>
+    <span class="flex flex-row  font-italic font-normal font-italic text-gray-500 opacity-8 py-1">
+      <p class="pe-1 fst-italic text-xs align-content-center">
+        weekly :
+        <span class="text-[#1366D9]">({{weeklyBookings}})</span>
+      </p>
+    </span>
+    <span class="flex flex-row  font-italic font-normal font-italic text-gray-500 opacity-8 py-1">
+      <p class="pe-1 fst-italic text-xs align-content-center">Monthly : <span
+          class="text-[#1366D9]">({{monthlyBookings}})</span></p>
+    </span>
+  </div>
 </div>
 
 <div class="row pt-2">
-  <div class="col-lg-7 col-md-12">
+  <div class="col-lg-12 col-md-12">
     <div class="card shadow-lg" style="min-height: 485px">
       <div class="card-header card-header-text">
         <h4 class="card-title">Guest Stats</h4>
-        <p class="category">New guest(s) on 15th December, 2016</p>
+        <p class="category">Guest(s) on {{ currentDate | date:'fullDate' }}</p>
       </div>
       <div class="card-content table-responsive">
         <table class="table table-hover">
-          <thead class="text-primary">
-            <tr>
-              <th>ID</th>
+          <thead>
+            <tr class="text-primary font-semibold text-sm">
+              <th>#</th>
               <th>Name</th>
-              <th>Salary</th>
-              <th>Country</th>
+              <th>Check-In</th>
+              <th>Check-Out</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Bob Williams</td>
-              <td>$23,566</td>
-              <td>USA</td>
+            @for (guest of guestDetails; track $index){
+            <tr class="text-primary   text-sm">
+              <td>{{$index+1}}</td>
+              <td>{{guest.FullName}}</td>
+              <td>
+                <span class="flex flex-column">
+                  <p>
+                    {{guest.CheckInDate}}
+                  </p>
+                  <p class="text-xs font-italic">
+                    {{guest.CheckInTime}}
+                  </p>
+                </span>
+              </td>
+              <td>
+                <span class="flex flex-column">
+                  <p>{{guest.CheckOutDate}}</p>
+                  <p class="text-xs font-italic">{{guest.CheckOutTime}}</p>
+                </span>
+              </td>
+              <td>{{guest.Email}}</td>
+              <td></td>
+              <td>
+                <p-button icon="pi pi-pencil" [link]="true" [text]="true" size="small" [pTooltip]="tooltipContent"
+                  tooltipPosition="left" [tooltipStyleClass]="'text-xs'" [routerLink]=" ['/admin/guest/edit',guest?.Id]"
+                  [outlined]="true" />
+                <ng-template #tooltipContent>
+                  <div class="flex align-items-center">
+                    <span>Edit : '{{guest.FullName}}'</span>
+                  </div>
+                </ng-template>
+              </td>
             </tr>
-            <tr>
-              <td>2</td>
-              <td>Mike Tyson</td>
-              <td>$10,200</td>
-              <td>Canada</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Tim Sebastian</td>
-              <td>$32,190</td>
-              <td>Netherlands</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>Philip Morris</td>
-              <td>$31,123</td>
-              <td>Korea, South</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>Minerva Hooper</td>
-              <td>$23,789</td>
-              <td>South Africa</td>
-            </tr>
-            <tr>
-              <td>6</td>
-              <td>Hulk Hogan</td>
-              <td>$43,120</td>
-              <td>Netherlands</td>
-            </tr>
-            <tr>
-              <td>7</td>
-              <td>Angelina Jolie </td>
-              <td>$12,140</td>
-              <td>Australia</td>
-            </tr>
+            }
           </tbody>
         </table>
       </div>
     </div>
   </div>
-
-  <div class="col-lg-5 col-md-12">
+  <!-- <div class="card">
+    <p-table [value]="guestDetails" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="3">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Check-In</th>
+          <th>Check-Out</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-guest>
+        <tr class="font-semibold text-sm">
+          <td> </td>
+          <td>{{guest.FullName}}</td>
+          <td>
+            <span class="flex flex-column">
+              <p>
+                {{guest.CheckInDate}}
+              </p>
+              <p class="text-xs font-italic  font-semibold">
+                {{guest.CheckInTime}}
+              </p>
+            </span>
+          </td>
+          <td>
+            <span class="flex flex-column">
+              <p>{{guest.CheckOutDate}}</p>
+              <p class="text-xs font-italic  font-semibold">{{guest.CheckOutTime}}</p>
+            </span>
+          </td>
+          <td>{{guest.Email}}</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div> -->
+  <!-- <div class="col-lg-5 col-md-12">
     <div class="card shadow-lg" style="min-height: 485px">
       <div class="card-header card-header-text">
         <h4 class="card-title">Activities</h4>
@@ -146,5 +201,5 @@
       </div>
 
     </div>
-  </div>
+  </div> -->
 </div>

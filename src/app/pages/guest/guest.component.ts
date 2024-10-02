@@ -1,13 +1,12 @@
-import { AfterContentChecked, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet, RouterModule, ActivatedRoute } from '@angular/router';
 import { NoRecordsFoundComponent } from '../no-records-found/no-records-found.component';
 import { Guest } from '../../models/guest';
 import { GuestListComponent } from "./guest-list/guest-list.component";
 import { TooltipDirective } from '../../_directives/tooltip.directive';
-import { addIcons } from "ionicons";
 import { NgxPaginationModule, PaginationInstance } from 'ngx-pagination';
 import { NgIf } from '@angular/common';
-import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { CustomMessageService } from '../../_services/custom-message.service';
 
 @Component( {

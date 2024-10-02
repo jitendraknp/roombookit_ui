@@ -16,4 +16,6 @@ export interface Hotel {
   CityId: string;
   CountryId: string;
   StateId: string;
+  InvNoSuffix?: string;
+  LastInvNo?: number;
 }

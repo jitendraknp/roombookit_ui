@@ -12,7 +12,7 @@
             <div class="row pt-4 pb-2">
               <div class="col-md-2">
                 <p class="font-normal">
-                  All Rooms <span class="text-blue-600/100"> ({{rooms.length}})</span>
+                  All Rooms <span class="text-blue-600/100"> ({{rooms==null?'0':rooms!.length}})</span>
                 </p>
               </div>
               <div class="col-md-2">
@@ -36,7 +36,7 @@
               <app-room-list [cardDetails]="room" [resetFormSubject]="resetFormSubject"></app-room-list>
               <!-- </li> -->
               }
-              @if(rooms.length==0) {
+              @if(rooms==null) {
               <app-no-records-found></app-no-records-found>
               }
             </ul>

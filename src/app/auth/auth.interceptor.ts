@@ -23,7 +23,7 @@ export const authInterceptor: HttpInterceptorFn = ( req, next ) => {
           // You might trigger a re-authentication flow or redirect the user here
         } else {
           // Handle other HTTP error codes
-          messageService.add( { severity: 'error', summary: 'Error', detail: 'Message Content' } );
+          // messageService.add( { severity: 'error', summary: 'Error', detail: 'Message Content' } );
           console.log( 'HTTP error:', err );
         }
       } else {

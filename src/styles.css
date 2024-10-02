@@ -5,12 +5,13 @@
 @import "@danielmoncada/angular-datetime-picker/assets/style/picker.min.css";
 @import "@ng-select/ng-select/themes/default.theme.css";
 @import 'ngx-toastr/toastr';
+@import "../node_modules/primeflex/primeflex.css";
 @import "../node_modules/primeng/resources/themes/lara-light-blue/theme.css";
 @import "../node_modules/primeng/resources/primeng.css";
 @import "../node_modules/primeicons/primeicons.css";
 @import '../node_modules/tailwindcss/tailwind.css';
-@import '../node_modules/tailwindcss/base.css';
-@import '../node_modules/tailwindcss/utilities.css';
+/*@import '../node_modules/tailwindcss/base.css';*/
+/*@import '../node_modules/tailwindcss/utilities.css';*/
 @import '../node_modules/tailwindcss/variants.css';
 @layer bootstrap-reboot, primeng;
 

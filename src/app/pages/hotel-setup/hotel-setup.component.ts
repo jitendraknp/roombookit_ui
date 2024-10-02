@@ -2,25 +2,29 @@ import { AfterRenderRef, Component, EventEmitter, Output } from '@angular/core';
 import { AfterViewInit, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { ToastModule } from 'primeng/toast';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CommonService } from '../../_services/common.service';
 import { Country } from '../../models/countries';
 import { States } from '../../models/states';
 import { City } from '../../models/cities';
 import { SetupHotelService } from '../../_services/setup-hotel.service';
-import { CommonModule, NgClass, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Hotel } from '../../models/hotel';
-
+import { Message } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
 @Component( {
   selector: 'app-hotel-setup',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, NgSelectModule, NgIf],
+  imports: [ReactiveFormsModule, RouterModule, NgSelectModule, NgIf, ToastModule, MessagesModule],
   templateUrl: './hotel-setup.component.html',
-  styleUrl: './hotel-setup.component.css'
+  styleUrl: './hotel-setup.component.css',
+  providers: [ConfirmationService, MessageService]
 } )
 export class HotelSetupComponent implements OnInit, AfterViewInit, AfterRenderRef {
-
-  constructor( private commonService: CommonService, private router: Router, private hotelService: SetupHotelService ) {
+  messages!: Message[];
+  constructor( private commonService: CommonService, private router: Router, private hotelService: SetupHotelService, private messageService: MessageService ) {
   }
   destroy (): void {
   }
@@ -44,6 +48,8 @@ export class HotelSetupComponent implements OnInit, AfterViewInit, AfterRenderRe
     name: new FormControl( "", [Validators.required, Validators.minLength( 10 ), Validators.maxLength( 50 )] ),
     code: new FormControl( "", [Validators.required] ),
     emailId: new FormControl( "", [Validators.required] ),
+    InvNoSuffix: new FormControl( "" ),
+    LastInvNo: new FormControl( "" ),
     website: new FormControl( "" ),
     phoneNo: new FormControl( "" ),
     address: new FormControl( "", [Validators.required] ),
@@ -61,6 +67,14 @@ export class HotelSetupComponent implements OnInit, AfterViewInit, AfterRenderRe
   @Output() hotelAreadySetup: EventEmitter<boolean> = new EventEmitter( true );
 
   ngOnInit () {
+    this.messages = [
+      { severity: 'info', detail: 'Info Message' },
+      { severity: 'success', detail: 'Success Message' },
+      { severity: 'warn', detail: 'Warning Message' },
+      { severity: 'error', detail: 'Error Message' },
+      { severity: 'secondary', detail: 'Secondary Message' },
+      { severity: 'contrast', detail: 'Contrast Message' }
+    ];
     this.hotelService.getHotels().subscribe( {
       next: ( data ) => {
         this.hotel = data.Data[0];
@@ -81,6 +95,8 @@ export class HotelSetupComponent implements OnInit, AfterViewInit, AfterRenderRe
           this.onStateChange( this.hotel?.StateId! );
           this.hotelSetupForm.controls['cityId'].patchValue( this.hotel?.CityId );
           this.hotelSetupForm.controls['pincode'].patchValue( this.hotel?.Pincode );
+          this.hotelSetupForm.controls['InvNoSuffix'].patchValue( this.hotel?.InvNoSuffix );
+          this.hotelSetupForm.controls['LastInvNo'].patchValue( this.hotel?.LastInvNo );
           // this.hotelSetupForm.disable();
           let isExists = ( data.Data == null ) ? false : true;
           this.hotelAreadySetup.emit( isExists );
@@ -93,7 +109,6 @@ export class HotelSetupComponent implements OnInit, AfterViewInit, AfterRenderRe
   }
 
   onCountryChange ( value: string ): void {
-    console.log( 'Country changed', value );
     if ( value !== '' && value !== undefined ) {
       this.commonService.getStates( value ).subscribe( {
         next: ( data ) => {
@@ -107,7 +122,6 @@ export class HotelSetupComponent implements OnInit, AfterViewInit, AfterRenderRe
   }
 
   onStateChange ( value: string ) {
-    console.log( 'State changed', value );
     if ( value !== '' && value !== undefined ) {
       this.commonService.getCities( value ).subscribe( {
         next: ( data ) => {
@@ -125,18 +139,18 @@ export class HotelSetupComponent implements OnInit, AfterViewInit, AfterRenderRe
 
   onSubmit () {
     if ( this.hotelSetupForm.valid ) {
-      console.log( this.hotelSetupForm.value );
       this.hotelService.setUpHotel( this.hotelSetupForm.value ).subscribe( {
         next: ( data ) => {
           this.hotelAreadySetup.emit( false );
-          this.router.navigate( ['/admin-setup'] );
+          this.router.navigate( ['/hotel-setup'] );
         },
         error: ( err ) => console.log( err )
       } );
     }
   }
   onCancel () {
-    this.router.navigate( ['/login'] );
+    // this.messages = [{ severity: 'info', detail: 'Message Content' }];
+    this.messageService.add( { severity: 'error', detail: 'Yet to implement' } );
 
   }
 }
