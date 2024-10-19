@@ -1,5 +1,5 @@
 export interface RoomRentRequest {
-  Id: string;
+  Id: string[];
   CheckInDate: string;
   CheckOutDate: string;
 }

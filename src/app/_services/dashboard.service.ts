@@ -1,22 +1,30 @@
-import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { ApiResponse } from '../models/response';
-const URL = `${ environment.api.baseUrl }dashboard/`;
+import {Injectable} from '@angular/core';
+import {environment} from '../../environments/environment';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {ApiResponse, PagedResponse} from '../models/response';
 
-@Injectable( {
+const URL = `${environment.api.baseUrl}dashboard/`;
+
+@Injectable({
   providedIn: 'root'
-} )
+})
 export class DashboardService {
 
-  constructor( private httpClient: HttpClient ) { }
   httpOptions = {
-    headers: new HttpHeaders( {
+    headers: new HttpHeaders({
       'Content-Type': 'application/json',
-    } )
+    })
   };
-  getDashboardData (): Observable<ApiResponse> {
-    return this.httpClient.get<ApiResponse>( `${ URL }all/dashboard`, this.httpOptions );
+
+  constructor(private httpClient: HttpClient) {
+  }
+
+  getDashboardData(): Observable<ApiResponse> {
+    return this.httpClient.get<ApiResponse>(`${URL}all/dashboard`, this.httpOptions);
+  }
+
+  getGuestsData(pageNumber: number, pageSize: number): Observable<PagedResponse> {
+    return this.httpClient.get<PagedResponse>(`${URL}guest/${pageNumber}/${pageSize}`, this.httpOptions);
   }
 }

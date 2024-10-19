@@ -1,59 +1,78 @@
 <form [formGroup]="roomForm" (ngSubmit)="onSubmit()">
+  <p-toast position="top-center" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'"
+    [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'" />
   <div class="card border-0 shadow-lg">
     <div class="card-header  d-flex justify-content-between align-items-center bg-primary bg-gradient text-white">
-      <p class="uppercase text-sm">Add User</p>
-      <ion-icon name="close" class="cursor-pointer" (click)="onClose()"></ion-icon>
+      <p class="uppercase text-sm">Add Room</p>
+      <a href="javascript:void(0);" (click)="onClose()">
+        <i class="pi pi-times" style="color: white"></i>
+      </a>
+
     </div>
     <div class="card-body">
-      <div class="row">
-        <div class="mb-3 col-md-6">
-          <label for="roomNo" class="form-label">Room No</label>
-          <input type="text" class="form-control form-control-sm" id="roomNo" formControlName="roomNo"
-            placeholder="Room No" />
+      <div class="flex flex-row gap-1 flex-grow-1 pb-2">
+        <div class="flex flex-1 gap-2">
+          <div class="flex flex-col text-sm">
+            <label for="roomNo" class="form-label  text-sm">Room No</label>
+            <input type="text" class="form-control form-control-sm" id="roomNo" formControlName="roomNo"
+              placeholder="Room No" />
+          </div>
         </div>
-        <div class="mb-3 col-md-6">
-          <label for="floorNo" class="form-label">Floor No</label>
-          <input type="number" class="form-control form-control-sm" id="floorNo" formControlName="floorNo"
-            placeholder="Floor No" />
+        <div class="flex flex-1 gap-2">
+          <div class="flex flex-col text-sm">
+            <label for="floorNo" class="form-label">Floor No</label>
+            <input type="number" class="form-control form-control-sm" id="floorNo" formControlName="floorNo"
+              placeholder="Floor No" />
+          </div>
         </div>
-        <div class="mb-3 col-md-12">
-          <label for="type" class="form-label">Type</label>
-          <ng-select appearance="outline" placeholder="Select Type" class="custom" formControlName="type"
-            notFoundText="No items found">
-            <ng-option value="1">Non AC (Single)</ng-option>
-            <ng-option value="2">AC (Single)</ng-option>
-            <ng-option value="3">Non AC (Double)</ng-option>
-            <ng-option value="4">AC (Double)</ng-option>
-            <ng-option value="5">Single</ng-option>
-            <ng-option value="6">Double</ng-option>
-            <ng-option value="7">Triple</ng-option>
-          </ng-select>
+        <div class="flex flex-1 gap-2">
+          <div class="flex flex-col text-sm w-full">
+            <label for="type" class="form-label">Type</label>
+            <ng-select appearance="outline" placeholder="Select Type" class="custom" id="type" name="type"
+              formControlName="type" notFoundText="No items found">
+              <ng-option value="1">Non AC (Single)</ng-option>
+              <ng-option value="2">AC (Single)</ng-option>
+              <ng-option value="3">Non AC (Double)</ng-option>
+              <ng-option value="4">AC (Double)</ng-option>
+              <ng-option value="5">Single</ng-option>
+              <ng-option value="6">Double</ng-option>
+              <ng-option value="7">Triple</ng-option>
+            </ng-select>
+          </div>
         </div>
-        <div class="mb-3 col-md-6">
-          <label for="capacity" class="form-label">Capacity</label>
-          <input type="number" class="form-control form-control-sm" id="capacity" formControlName="capacity"
-            placeholder="Capacity" />
+      </div>
+      <div class="flex flex-row gap-2 flex-grow-1">
+        <div class="flex flex-1">
+          <div class="flex flex-col text-sm">
+            <label for="capacity" class="form-label">Capacity</label>
+            <input type="number" class="form-control form-control-sm" id="capacity" formControlName="capacity"
+              placeholder="Capacity" />
+          </div>
         </div>
-        <div class="mb-3 col-md-6">
-          <label for="rentperNight" class="form-label">Rate/Night</label>
-          <input type="number" class="form-control form-control-sm" id="rentperNight" formControlName="rentperNight"
-            placeholder="Rate/Night" />
+        <div class="flex flex-1">
+          <div class="flex flex-col text-sm">
+            <label for="rentperNight" class="form-label">Rate/Night</label>
+            <input type="number" class="form-control form-control-sm" id="rentperNight" formControlName="rentperNight"
+              placeholder="Rate/Night" />
+          </div>
         </div>
-        <div class="mb-3 col-md-6">
-          <label for="isDiscountApplicable" class="form-label">Discount</label>
-          <div class="input-group">
-            <div class="input-group-text">
-              <input class="form-check-input mt-0" type="checkbox" formControlName="isDiscountApplicable"
-                aria-label="Checkbox for following text input" />
+        <div class="flex flex-1">
+          <div class="flex flex-col text-sm">
+            <label for="isDiscountApplicable" class="form-label">Discount</label>
+            <div class="input-group">
+              <div class="input-group-text">
+                <input class="form-check-input mt-0" type="checkbox" formControlName="isDiscountApplicable"
+                  aria-label="Checkbox for following text input" />
+              </div>
+              <input type="text" class="form-control form-control-sm" id="isDiscountApplicable"
+                formControlName="discountValue" placeholder="Discount Applicable" />
             </div>
-            <input type="text" class="form-control form-control-sm" id="isDiscountApplicable"
-              formControlName="discountValue" placeholder="Discount Applicable" />
           </div>
         </div>
       </div>
     </div>
     <div class="card-footer text-end">
-      <button type="submit" class="btn btn-primary btn-sm" [disabled]="!roomForm.valid">Add</button>
+      <button type="submit" class="btn btn-primary btn-sm" [disabled]="!roomForm.valid">Save</button>
     </div>
   </div>
 </form>

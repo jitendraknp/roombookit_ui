@@ -1,13 +1,13 @@
 <div class="card shadow-lg">
-    <div class="card-header bg-info text-white d-flex p-2">
-        <mat-icon> {{iconName}}</mat-icon>
-        <h6 class="card-title">{{cardName}}</h6>
-    </div>
-    <div class="card-body">
-        <p class="card-text text-muted fw-bold">Total {{cardName}} :</p>
-        <p class="card-text text-muted fw-bold">Total Active:</p>
-    </div>
-    <div class="card-footer text-end">
-        <a href="#" mat-button color="primary" routerLink="{{path}}">View</a>
-    </div>
+  <div class="card-header bg-info text-white d-flex p-2">
+    <!--        <mat-icon> {{iconName}}</mat-icon>-->
+    <h6 class="card-title">{{ cardName }}</h6>
+  </div>
+  <div class="card-body">
+    <p class="card-text text-muted fw-bold">Total {{ cardName }} :</p>
+    <p class="card-text text-muted fw-bold">Total Active:</p>
+  </div>
+  <div class="card-footer text-end">
+    <a color="primary" href="#" routerLink="{{path}}">View</a>
+  </div>
 </div>

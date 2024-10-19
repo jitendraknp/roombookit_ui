@@ -1,205 +1,135 @@
-<div class="card">
-  <p-panel header="Overview" [toggleable]="true">
-
-
-    <div class="grid gap-4 grid-cols-4 grid-rows-1">
-      <div class="rounded   shadow-lg px-2 py-2 shadow-blue-500/50">
-        <p class="text-[#858D9D] leading-7 font-bold text-sm">Today's</p>
-        <div class="d-flex justify-between">
-          <p class="text-[#5D6679]  text-sm font-bold">Check-In</p>
-          <span class="text-[#1366D9] font-semibold text-2xl">{{todaysCheckIn}}</span>
+<div class="p-2 gap-2">
+  <div class="card">
+    <p-panel [toggleable]="true" header="Overview">
+      <div class="grid gap-4 grid-cols-4 grid-rows-1 pt-2">
+        <div class="rounded   shadow-lg px-2 py-2 shadow-blue-500/50">
+          <p class="text-[#858D9D] leading-7 font-bold text-sm">Today's</p>
+          <div class="d-flex justify-between">
+            <p class="text-[#5D6679]  text-sm font-bold">Check-In</p>
+            <span class="text-[#1366D9] font-semibold text-2xl">{{ todaysCheckIn }}</span>
+          </div>
+        </div>
+        <div class="rounded   shadow-lg px-2 py-2 shadow-blue-500/50">
+          <p class="text-[#858D9D] leading-7 font-bold text-sm">Today's</p>
+          <div class="d-flex justify-between">
+            <p class="text-[#5D6679]  text-sm font-bold">Check-Out</p>
+            <span class="text-[#1366D9] font-semibold text-2xl">{{ todaysCheckOut }}</span>
+          </div>
+        </div>
+        <div class="rounded   shadow-lg px-2 py-2 shadow-blue-500/50">
+          <p class="text-[#858D9D] leading-7 font-bold text-sm">Total</p>
+          <div class="d-flex justify-between">
+            <p class="text-[#5D6679]  text-sm font-bold">Available room</p>
+            <span class="text-[#1366D9] font-semibold text-2xl">{{ availableRooms }}</span>
+          </div>
+        </div>
+        <div class="rounded   shadow-lg px-2 py-2 shadow-blue-500/50">
+          <p class="text-[#858D9D]  leading-7 font-bold text-sm">Total</p>
+          <div class="d-flex justify-between">
+            <p class="text-[#5D6679]  text-sm font-bold">Occupied room</p>
+            <span class="text-[#1366D9] font-semibold text-2xl">{{ occupiedRooms }}</span>
+          </div>
         </div>
       </div>
-      <div class="rounded   shadow-lg px-2 py-2 shadow-blue-500/50">
-        <p class="text-[#858D9D] leading-7 font-bold text-sm">Today's</p>
-        <div class="d-flex justify-between">
-          <p class="text-[#5D6679]  text-sm font-bold">Check-Out</p>
-          <span class="text-[#1366D9] font-semibold text-2xl">{{todaysCheckOut}}</span>
-        </div>
-      </div>
-      <div class="rounded   shadow-lg px-2 py-2 shadow-blue-500/50">
-        <p class="text-[#858D9D] leading-7 font-bold text-sm">Total</p>
-        <div class="d-flex justify-between">
-          <p class="text-[#5D6679]  text-sm font-bold">Available room</p>
-          <span class="text-[#1366D9] font-semibold text-2xl">{{availableRooms}}</span>
-        </div>
-      </div>
-      <div class="rounded   shadow-lg px-2 py-2 shadow-blue-500/50">
-        <p class="text-[#858D9D]  leading-7 font-bold text-sm">Total</p>
-        <div class="d-flex justify-between">
-          <p class="text-[#5D6679]  text-sm font-bold">Occupied room</p>
-          <span class="text-[#1366D9] font-semibold text-2xl">{{occupiedRooms}}</span>
-        </div>
-      </div>
+    </p-panel>
+    <div class="flex flex-row pb-2 pt-0 justify-end pe-2">
+      <!-- <app-info-display title="Info Title 1" content="This is the first piece of information."></app-info-display> -->
+      <span class="flex flex-row  font-italic font-normal font-italic text-gray-500 opacity-8 py-1">
+        <p class="pe-1 fst-italic text-xs align-content-center">
+          Total Bookings:
+          <span class="text-[#1366D9]">({{ totalBookings }})</span>
+        </p>
+      </span>
+      <span class="flex flex-row  font-italic font-normal font-italic text-gray-500 opacity-8 py-1">
+        <p class="pe-1 fst-italic text-xs align-content-center">
+          weekly :
+          <span class="text-[#1366D9]">({{ weeklyBookings }})</span>
+        </p>
+      </span>
+      <span class="flex flex-row  font-italic font-normal font-italic text-gray-500 opacity-8 py-1">
+        <p class="pe-1 fst-italic text-xs align-content-center">Monthly : <span class="text-[#1366D9]">({{
+            monthlyBookings
+            }})</span></p>
+      </span>
     </div>
-  </p-panel>
-  <div class="flex flex-row pb-2 pt-0 justify-end pe-2">
-    <!-- <app-info-display title="Info Title 1" content="This is the first piece of information."></app-info-display> -->
-    <span class="flex flex-row  font-italic font-normal font-italic text-gray-500 opacity-8 py-1">
-      <p class="pe-1 fst-italic text-xs align-content-center">
-        Total Bookings:
-        <span class="text-[#1366D9]">({{totalBookings}})</span>
-      </p>
-    </span>
-    <span class="flex flex-row  font-italic font-normal font-italic text-gray-500 opacity-8 py-1">
-      <p class="pe-1 fst-italic text-xs align-content-center">
-        weekly :
-        <span class="text-[#1366D9]">({{weeklyBookings}})</span>
-      </p>
-    </span>
-    <span class="flex flex-row  font-italic font-normal font-italic text-gray-500 opacity-8 py-1">
-      <p class="pe-1 fst-italic text-xs align-content-center">Monthly : <span
-          class="text-[#1366D9]">({{monthlyBookings}})</span></p>
-    </span>
   </div>
-</div>
+  <div class="flex flex-row pt-2">
+    <div class="flex flex-grow-1">
+      <div class="card shadow-lg flex flex-grow-1">
+        <div class="card-header card-header-text bg-bluegray-100 flex flex-row justify-between">
+          <h5 class="card-title text-bold text-sm">Booking Details</h5>
+          <p class="text-xs font-italiccpt-1">Guest(s) on {{ currentDate | date:'fullDate' }}</p>
+        </div>
+        <div class="card-body table-responsive p-1">
 
-<div class="row pt-2">
-  <div class="col-lg-12 col-md-12">
-    <div class="card shadow-lg" style="min-height: 485px">
-      <div class="card-header card-header-text">
-        <h4 class="card-title">Guest Stats</h4>
-        <p class="category">Guest(s) on {{ currentDate | date:'fullDate' }}</p>
-      </div>
-      <div class="card-content table-responsive">
-        <table class="table table-hover">
-          <thead>
-            <tr class="text-primary font-semibold text-sm">
-              <th>#</th>
-              <th>Name</th>
-              <th>Check-In</th>
-              <th>Check-Out</th>
-              <th>Email</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (guest of guestDetails; track $index){
-            <tr class="text-primary   text-sm">
-              <td>{{$index+1}}</td>
-              <td>{{guest.FullName}}</td>
-              <td>
-                <span class="flex flex-column">
-                  <p>
-                    {{guest.CheckInDate}}
+          <p-table [value]="guestDetails" [paginator]="true" [rows]="5" [autoLayout]="true"
+            [alwaysShowPaginator]="false">
+            <ng-template pTemplate="header">
+              <tr>
+                <th class="font-semibold text-sm">#</th>
+                <th class="font-semibold text-sm">Name</th>
+                <th class="font-semibold text-sm">Check-In</th>
+                <th class="font-semibold text-sm">Check-Out</th>
+                <th class="font-semibold text-sm">Email</th>
+                <th class="font-semibold text-sm">Status</th>
+                <th class="font-semibold text-sm" style="text-align: center;">Action</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="7" class="text-center text-red-600 font-semibold">{{noRecordsMessage}}</td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+              <tr *ngIf="guestDetails.length > 0" class="text-xs">
+                <td class="text-xs">{{ rowIndex + 1}}</td>
+                <td class="text-xs">{{ rowData.FullName }}</td>
+                <td class="text-xs">
+                  <p class="text-xs">
+                    {{ rowData.CheckInDate }}
                   </p>
                   <p class="text-xs font-italic">
-                    {{guest.CheckInTime}}
+                    {{ rowData.CheckInTime }}
                   </p>
-                </span>
-              </td>
-              <td>
-                <span class="flex flex-column">
-                  <p>{{guest.CheckOutDate}}</p>
-                  <p class="text-xs font-italic">{{guest.CheckOutTime}}</p>
-                </span>
-              </td>
-              <td>{{guest.Email}}</td>
-              <td></td>
-              <td>
-                <p-button icon="pi pi-pencil" [link]="true" [text]="true" size="small" [pTooltip]="tooltipContent"
-                  tooltipPosition="left" [tooltipStyleClass]="'text-xs'" [routerLink]=" ['/admin/guest/edit',guest?.Id]"
-                  [outlined]="true" />
-                <ng-template #tooltipContent>
-                  <div class="flex align-items-center">
-                    <span>Edit : '{{guest.FullName}}'</span>
-                  </div>
-                </ng-template>
-              </td>
-            </tr>
-            }
-          </tbody>
-        </table>
+                </td>
+                <td class="text-xs">
+                  <span class="flex flex-column">
+                    <p class="text-xs">{{ rowData.CheckOutDate }}</p>
+                    <p class="text-xs font-italic">{{ rowData.CheckOutTime }}</p>
+                  </span>
+                </td>
+                <td class="text-xs">{{ rowData.Email }}</td>
+                <td></td>
+                <td class="text-xs">
+                  <!-- [routerLink]="['/admin/guest/edit',rowData?.Id]" [outlined]="true" />-->
+                  <button pButton type="button" icon="pi pi-eye" [pTooltip]="'View'" tooltipPosition="top"
+                    class="small-button"></button>
+                  <button pButton type="button" icon="pi pi-pencil" [pTooltip]="'Delete'" tooltipPosition="top"
+                    class="small-button"></button>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <!-- <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-end text-sm">
+                      <pagination-controls (pageChange)="handlePageChange($event)" [responsive]="true">
+                      </pagination-controls>
+                    </ul>
+                  </nav> -->
+        </div>
+
       </div>
+    </div>
+    <div class="flex flex-column text-sm gap-2 ps-1">
+      <!-- <p-card [ngClass]="'text-sm text-zinc-900 white-card'" class="white-card">
+        <h2 class=" text-zinc-900 px-1">Room Type Occupancy</h2>
+        <p-chart type="bar" [data]="availableRoomsChartData" style="max-width: 200px;"></p-chart>
+      </p-card> -->
+      <p-card>
+        <h1 class=" text-zinc-900 px-1 text-lg font-semibold">Room Type Occupancy</h1>
+        <p-chart type="doughnut" [data]="roomOccupancyData" [options]="options1" [width]="'180px'"
+          style="max-width: 80px;"></p-chart>
+      </p-card>
     </div>
   </div>
-  <!-- <div class="card">
-    <p-table [value]="guestDetails" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="3">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Check-In</th>
-          <th>Check-Out</th>
-          <th>Email</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-guest>
-        <tr class="font-semibold text-sm">
-          <td> </td>
-          <td>{{guest.FullName}}</td>
-          <td>
-            <span class="flex flex-column">
-              <p>
-                {{guest.CheckInDate}}
-              </p>
-              <p class="text-xs font-italic  font-semibold">
-                {{guest.CheckInTime}}
-              </p>
-            </span>
-          </td>
-          <td>
-            <span class="flex flex-column">
-              <p>{{guest.CheckOutDate}}</p>
-              <p class="text-xs font-italic  font-semibold">{{guest.CheckOutTime}}</p>
-            </span>
-          </td>
-          <td>{{guest.Email}}</td>
-          <td></td>
-          <td></td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div> -->
-  <!-- <div class="col-lg-5 col-md-12">
-    <div class="card shadow-lg" style="min-height: 485px">
-      <div class="card-header card-header-text">
-        <h4 class="card-title">Activities</h4>
-      </div>
-      <div class="card-content">
-        <div class="streamline">
-          <div class="sl-item sl-primary">
-            <div class="sl-content">
-              <small class="text-muted">5 mins ago</small>
-              <p>Williams has just joined Project X</p>
-            </div>
-          </div>
-          <div class="sl-item sl-danger">
-            <div class="sl-content">
-              <small class="text-muted">25 mins ago</small>
-              <p>Jane has sent a request for access to the project folder</p>
-            </div>
-          </div>
-          <div class="sl-item sl-success">
-            <div class="sl-content">
-              <small class="text-muted">40 mins ago</small>
-              <p>Kate added you to her team</p>
-            </div>
-          </div>
-          <div class="sl-item">
-            <div class="sl-content">
-              <small class="text-muted">45 minutes ago</small>
-              <p>John has finished his task</p>
-            </div>
-          </div>
-          <div class="sl-item sl-warning">
-            <div class="sl-content">
-              <small class="text-muted">55 mins ago</small>
-              <p>Jim shared a folder with you</p>
-            </div>
-          </div>
-          <div class="sl-item">
-            <div class="sl-content">
-              <small class="text-muted">60 minutes ago</small>
-              <p>John has finished his task</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div> -->
 </div>

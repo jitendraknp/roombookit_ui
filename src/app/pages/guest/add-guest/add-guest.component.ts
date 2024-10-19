@@ -1,17 +1,18 @@
-import { AfterContentChecked, ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AfterContentChecked, ChangeDetectorRef, Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { RippleModule } from 'primeng/ripple';
 import { StepperModule } from 'primeng/stepper';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
-import { AddressComponent } from "../../../shared/address/address.component";
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { CheckboxModule } from 'primeng/checkbox';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { AddressComponent } from "../../../shared/address/address.component";
 import { StayGuestComponent } from "../../../shared/stay-guest/stay-guest.component";
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { GuestService } from '../../../_services/guest.service';
 import { GuestSiblingDetails } from '../../../models/sibling-details';
-import { ToastrService } from 'ngx-toastr';
 import { GuestBaseEntity } from '../../../models/guest-base';
 import { PaymentDetailsComponent } from '../../../shared/payment-details/payment-details.component';
 import { MoreGuestComponent } from "../../../shared/more-guest/more-guest.component";
@@ -20,13 +21,16 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CustomMessageService } from '../../../_services/custom-message.service';
 import { IdProofComponent } from "../../../shared/id-proof/id-proof.component";
 import { saveAs } from "file-saver";
-import { NewGuestDetails } from '../../../models/new-guest-details';
+import { BookingDetails, GuestDetails, NewGuestDetails } from '../../../models/new-guest-details';
 import { TooltipModule } from 'primeng/tooltip';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { CheckboxModule } from 'primeng/checkbox';
 import { StorageService } from '../../../_services/storage.service';
 import { ApiResponse } from '../../../models/response';
+import { CamelCaseToSpacePipe } from '../../../_helpers/camelcasetospace';
+import { UtilsService } from '../../../_helpers/utils.service';
+import { BookingService } from '../../../_services/booking.service';
+import { InvoiceService } from '../../../_services/invoice.service';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+
 @Component( {
   selector: 'app-add-guest',
   standalone: true,
@@ -35,7 +39,6 @@ import { ApiResponse } from '../../../models/response';
     ReactiveFormsModule,
     AddressComponent,
     NgSelectModule,
-    BsDatepickerModule,
     RouterLink,
     ConfirmDialogModule,
     ToastModule,
@@ -49,80 +52,46 @@ import { ApiResponse } from '../../../models/response';
     TooltipModule,
     InputTextareaModule,
     CheckboxModule,
+    NgxMaskDirective,
     IdProofComponent],
   templateUrl: './add-guest.component.html',
   styleUrl: './add-guest.component.css',
-  providers: [DatePipe, ConfirmationService, MessageService]
+  providers: [DatePipe, ConfirmationService, MessageService, provideNgxMask()],
+  encapsulation: ViewEncapsulation.None,
+
 } )
 export class AddGuestComponent implements OnInit, AfterContentChecked {
-  onManualInvoiceChange () {
-    let mValue = this.newGuestForm.controls.ManualInvoice.value;
-    console.log( mValue );
-    if ( mValue )
-      this.newGuestForm.controls.InvoiceNo.enable();
-    else
-      this.newGuestForm.controls.InvoiceNo.disable();
+  onContinue ( $event: any ) {
+    console.log( $event );
   }
   loading: boolean = false;
+  isBookigDataSaved: boolean = false;
   hotelId: string = '5c953e70-73fe-46cf-0267-08dcb3aa275e';
-  saveGuest () {
-  }
-  confirm ( event: any ) {
-    this.confirmationService.confirm( {
-      target: event.target as EventTarget,
-      message: 'Do you want to delete this record?',
-      header: 'Delete Confirmation',
-      icon: 'pi pi-info-circle',
-      acceptIcon: 'pi pi-check mr-2',
-      rejectIcon: 'pi pi-times mr-2',
-      rejectButtonStyleClass: 'p-button-sm',
-      acceptButtonStyleClass: 'p-button-outlined p-button-sm',
-      accept: () => {
-        this.router.navigateByUrl( '/admin/guest/list' ).then( () => {
-          this.messageService.add( { severity: 'info', summary: 'Confirmed', detail: 'Canceled' } );
-        } );
-      },
-      reject: () => {
-        this.messageService.add( { severity: 'error', summary: 'Rejected', detail: 'You have rejected' } );
-      }
-    } );
-  }
-  generateInvoice () {
-    this.loading = true;
-    this.guestService.generateInvoice( this.savedGuest[0].Id! ).subscribe( {
-      next: ( result ) => {
-        saveAs( result, `${ this.savedGuest[0].Id! }.pdf` );
-      },
-      error: ( err ) => {
-        console.log( err );
-      },
-      complete: () => {
-        this.loading = false;
-      }
-    } );
-  }
   moreGuestForm: FormGroup;
   newGuestForm = this.formBuilder.group( {
+    GuestId: new FormControl<string>( '' ),
     Company: new FormControl<string>( '' ),
     CompanyGSTIN: new FormControl<string>( '' ),
     CompanyAddress: new FormControl<string>( '' ),
     Comments: new FormControl<string>( '' ),
     Print_CD: new FormControl<boolean>( true ),
     Print_Comments: new FormControl<boolean>( true ),
-    FirstName: new FormControl<string>( '', [Validators.required] ),
-    LastName: new FormControl<string>( '', [Validators.required] ),
-    MobileNo: new FormControl( '', [Validators.required] ),
+    FirstName: new FormControl<string>( '', [Validators.required, Validators.minLength( 3 )] ),
+    LastName: new FormControl<string>( '', [Validators.required, Validators.minLength( 3 )] ),
+    MobileNo: new FormControl( '', [Validators.required, Validators.minLength( 10 )] ),
     EmailId: new FormControl<string>( '' ),
-    Gender: new FormControl( null, [Validators.required] ),
-    Address: new FormControl( '', [Validators.required] ),
+    Gender: new FormControl( 'MALE', [Validators.required] ),
+    Address: new FormControl( '', [Validators.required, Validators.minLength( 3 )] ),
     CityId: new FormControl( null, [Validators.required] ),
-    StateId: new FormControl( null, [Validators.required] ),
-    CountryId: new FormControl( null, [Validators.required] ),
-    PinCode: new FormControl( '', [Validators.required] ),
-    GuestId: new FormControl( null ),
-    CheckInDate: new FormControl<string>( '', [Validators.required] ),
-    CheckOutDate: new FormControl<string>( '', [Validators.required] ),
-    RoomNoId: new FormControl( null, [Validators.required] ),
+    StateId: new FormControl( { value: "", disabled: true } ),
+    CountryId: new FormControl( { value: "", disabled: true } ),
+    PinCode: new FormControl( '' ),
+    CheckInDate: new FormControl<string>( '', [Validators.required,
+    Validators.pattern( /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4} ([01][0-9]|1[0-2]):([0-5][0-9]) (AM|PM)$/ )] ),
+    CheckOutDate: new FormControl<string>( '', [Validators.required,
+    Validators.pattern( /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4} ([01][0-9]|1[0-2]):([0-5][0-9]) (AM|PM)$/ )] ),
+    RoomNoId: new FormControl( [] ),
+    RoomId: new FormControl( [], [Validators.required] ),
     NoOfGuests: new FormControl<number>( 0 ),
     NoOfAdults: new FormControl<number>( 0, [Validators.required] ),
     NoOfChildren: new FormControl<number>( 0, [Validators.required] ),
@@ -138,7 +107,7 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     SGST: new FormControl( 0 ),
     UTGST: new FormControl( 0 ),
     IGST: new FormControl( 0 ),
-    PaymentMode: new FormControl( null, [Validators.required] ),
+    PaymentMode: new FormControl( 1, [Validators.required] ),
     AmountPaid: new FormControl<number>( 0, [Validators.required] ),
     BalanceAmount: new FormControl<number>( 0 ),
     TransactionNo: new FormControl<string>( '' ),
@@ -148,29 +117,105 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     InvoiceNo: new FormControl( { value: "", disabled: true } ),
     IsFrontSide: new FormControl( false ),
     ManualInvoice: new FormControl( false ),
-  } );
+    // dateTimeInput: new FormControl( '', [
+    //   Validators.required,
+    //   this.validateDateTime()
+    // ] ),
+  },
+    { validators: this.dateRangeValidator( 'CheckInDate', 'CheckOutDate' ) }
+  );
+
+  dateRangeValidator ( startControlName: string, endControlName: string ): ValidatorFn {
+    return ( formGroup: AbstractControl ): { [key: string]: any; } | null => {
+      const startControl = formGroup.get( startControlName );
+      const endControl = formGroup.get( endControlName );
+      if ( !startControl || !endControl ) {
+        return null;
+      }
+      const startDate = startControl.value;
+      const endDate = endControl.value;
+      if ( startDate && endDate && startDate > endDate ) {
+        return { dateRangeInvalid: true }; // Return an error object if the validation fails
+      }
+      return null; // Return null if the validation passes
+    };
+  }
+  active: number | undefined = 0;
+  savedGuest: GuestBaseEntity[] = [];
+
   constructor(
-    private route: ActivatedRoute,
+    @Inject( ActivatedRoute ) private route: ActivatedRoute,
     private guestService: GuestService,
-    private toastrService: ToastrService,
-    private fb: FormBuilder,
-    private router: Router,
-    private formBuilder: FormBuilder,
-    private cdref: ChangeDetectorRef,
+    private bookingService: BookingService,
+    @Inject( FormBuilder ) private fb: FormBuilder,
+    @Inject( Router ) private router: Router,
+    @Inject( FormBuilder ) private formBuilder: FormBuilder,
+    @Inject( ChangeDetectorRef ) private cdref: ChangeDetectorRef,
     private datePipe: DatePipe,
     private customMessageService: CustomMessageService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
+    private utilsService: UtilsService,
+    private invoiceService: InvoiceService,
     private storageService: StorageService ) {
     this.moreGuestForm = this.fb.group( {
       guests: this.fb.array( [] )
     } );
+    this.moreGuestForm.setValidators( this.dateRangeValidator( 'CheckInDate', 'CheckOutDate' ) );
   }
-  active: number | undefined = 0;
 
   get guests () {
     return this.moreGuestForm.get( 'guests' ) as FormArray;
   }
+
+  onManualInvoiceChange () {
+    let mValue = this.newGuestForm.controls.ManualInvoice.value;
+    console.log( mValue );
+    if ( mValue )
+      this.newGuestForm.controls.InvoiceNo.enable();
+    else
+      this.newGuestForm.controls.InvoiceNo.disable();
+  }
+
+  saveGuest () {
+  }
+
+  confirm ( event: any ) {
+    this.confirmationService.confirm( {
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptIcon: 'pi pi-check mr-2',
+      rejectIcon: 'pi pi-times mr-2',
+      rejectButtonStyleClass: 'p-button-sm',
+      acceptButtonStyleClass: 'p-button-outlined p-button-sm',
+      accept: () => {
+        this.router.navigateByUrl( '/guest/list' ).then( () => {
+          this.messageService.add( { severity: 'info', summary: 'Confirmed', detail: 'Canceled' } );
+        } );
+      },
+      reject: () => {
+        this.messageService.add( { severity: 'error', summary: 'Rejected', detail: 'You have rejected' } );
+      }
+    } );
+  }
+
+  generateInvoice () {
+    this.loading = true;
+    this.guestService.generateInvoice( this.savedGuest[0].Id! ).subscribe( {
+      next: ( result ) => {
+        saveAs( result, `${ this.savedGuest[0].Id! }.pdf` );
+      },
+      error: ( err ) => {
+        console.log( err );
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    } );
+  }
+
   createGuest (): FormGroup {
 
     return this.fb.group( {
@@ -180,7 +225,9 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
       Age: [''],
     } );
   }
-  addGuest () {
+
+  addGuest ( $event: any ) {
+    $event.preventDefault();
     const guestF = new FormGroup( {
       FirstName: new FormControl( '' ),
       LastName: new FormControl( '' ),
@@ -190,11 +237,13 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     // this.guestForm.controls.GuestStayDetail.controls.TotalAmount.patchValue( this.guests.length );
     console.log( this.guests.length );
   }
+
   removeUser ( index: number ) {
     this.guests.removeAt( index );
     this.customMessageService.clearNoOfGuests();
     this.customMessageService.sendNoOfGuests( this.guests.length );
   }
+
   ngOnInit (): void {
     let storageData = this.storageService.getData( "auth-user" );
     if ( storageData != null || storageData != undefined ) {
@@ -205,7 +254,6 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     }
     this.guestService.getNewInvoiceNo( this.hotelId ).subscribe( {
       next: ( resp ) => {
-        console.log( resp );
         this.newGuestForm.controls.InvoiceNo.setValue( resp.Data );
       },
       error: ( err ) => {
@@ -216,15 +264,19 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
       }
     } );
   }
-
-
-  savedGuest: GuestBaseEntity[] = [];
+  private camelCaseToSpacePipe = new CamelCaseToSpacePipe();
   onSubmit () {
-    if ( this.newGuestForm.invalid )
-      this.toastrService.error( 'Please enter a valid data.' );
-    else {
-      this.submitGuest();
+
+  }
+  private findInvalidControls (): string[] {
+    const invalidControls: string[] = [];
+    const controls = this.newGuestForm.controls;
+    for ( const name in controls ) {
+      if ( controls[name as keyof typeof controls].invalid ) {
+        invalidControls.push( this.camelCaseToSpacePipe.transform( name.replace( "Id", "" ) ) );
+      }
     }
+    return invalidControls;
   }
   submitGuest () {
     const siblingDetails = this.moreGuestForm.get( 'guests' ) as FormArray;
@@ -272,7 +324,7 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
       NoOfGuests: this.newGuestForm.controls.NoOfGuests.value!,
       PaymentMode: String( this.newGuestForm.controls.PaymentMode.value! ),
       RatePerNight: this.newGuestForm.controls.RatePerNight.value!,
-      RoomNoId: this.newGuestForm.controls.RoomNoId.value!,
+      // RoomNoId: [this.newGuestForm.controls.RoomNoId.value!],
       IdType: this.newGuestForm.controls.IdType.value!,
       IdNumber: this.newGuestForm.controls.IdNumber.value!,
       ImageUrl: this.newGuestForm.controls.ImageUrl.value!,
@@ -285,7 +337,7 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     };
     this.guestService.saveGuest( guestDetail ).subscribe( {
       next: ( data ) => {
-        this.toastrService.success( data.Message, 'Success' );
+        this.messageService.add( { severity: 'success', summary: 'Saved', detail: 'Guest saved successfully' } );
         this.savedGuest.push( {
           Id: data.Data.Id,
           FL_Name: guestDetail.FirstName + ' ' + guestDetail.LastName
@@ -298,6 +350,7 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
       }
     } );
   }
+
   onClose () {
     this.guestService.getAllGuest().subscribe( {
       next: ( result ) => {
@@ -307,7 +360,148 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
       }
     } );
   }
+
+  onGuestSave () {
+    console.log( this.newGuestForm.value );
+    const invalidControls = this.utilsService.validateAndGetInvalidControls( this.newGuestForm, [
+      'FirstName',
+      'LastName',
+      'Gender',
+      'MobileNo',
+      'Address',
+      'CityId',
+    ] );
+    if ( invalidControls.length > 0 ) {
+      this.messageService.add( { severity: 'error', summary: 'Required Fields', detail: invalidControls.join( ', ' ) } );
+      return;
+    }
+    const guestDetails: GuestDetails = {
+      Company: this.newGuestForm.controls.Company.value!,
+      CompanyAddress: this.newGuestForm.controls.CompanyAddress.value!,
+      GsTin: this.newGuestForm.controls.CompanyGSTIN.value!,
+      FirstName: this.newGuestForm.controls.FirstName.value!,
+      LastName: this.newGuestForm.controls.LastName.value!,
+      Email: this.newGuestForm.controls.EmailId.value!,
+      Gender: this.newGuestForm.controls.Gender.value!,
+      MobileNo: this.newGuestForm.controls.MobileNo.value!,
+      Address: this.newGuestForm.controls.Address.value!,
+      CityId: this.newGuestForm.controls.CityId.value!,
+      InvoiceNo: this.newGuestForm.controls.InvoiceNo.value!,
+      IsManualInv: this.newGuestForm.controls.ManualInvoice.value!,
+      Print_CD: this.newGuestForm.controls.Print_CD.value!,
+      Comment: this.newGuestForm.controls.Comments.value!,
+    };
+    console.log( guestDetails );
+    this.guestService.saveGuestDetails( guestDetails ).subscribe( {
+      next: ( response ) => {
+        console.log( response );
+        if ( response.StatusCode == 200 ) {
+          this.messageService.add( { severity: 'success', summary: 'Saved', detail: response.Message } );
+          this.newGuestForm.controls.GuestId.patchValue( response.Data.Id );
+        }
+        if ( response.StatusCode == 9 )
+          this.messageService.add( { severity: 'error', summary: 'Error', detail: `An error occurred while saving data` } );
+      },
+      error: ( err ) => {
+        this.messageService.add( { severity: 'error', summary: 'Error', detail: `An error occurred while saving data - ${ err }` } );
+        console.log( err );
+      },
+      complete: () => {
+        console.log( this.newGuestForm.controls.GuestId.value );
+      }
+    } );
+  }
+  onSaveBooking ( event: any ) {
+    const invalidControls = this.findInvalidControls();
+    if ( invalidControls.length > 0 ) {
+      // Handle the case where there are invalid controls
+      console.error( 'Invalid controls:', invalidControls );
+      this.messageService.add( { severity: 'error', summary: 'Required Fields', detail: invalidControls.join( ', ' ) } );
+      return;
+    }
+    const bookingDetails: BookingDetails = {
+      GuestId: this.newGuestForm.controls.GuestId.value!,
+      CheckInDate: this.datePipe.transform( this.newGuestForm.controls.CheckInDate.value!, 'yyyy-MM-dd hh:mm:ss a' )!.toString(),
+      CheckOutDate: this.datePipe.transform( this.newGuestForm.controls.CheckOutDate.value!, 'yyyy-MM-dd hh:mm:ss a' )!.toString(),
+      Rooms: this.newGuestForm.controls.RoomId.value!,
+      RatePerNight: this.newGuestForm.controls.RatePerNight.value!,
+      TotalAmount: this.newGuestForm.controls.TotalAmount.value!,
+      Discount: this.newGuestForm.controls.Discount.value!,
+      NoOfDays: this.newGuestForm.controls.NoOfDays.value!,
+      NoOfAdults: this.newGuestForm.controls.NoOfAdults.value!,
+      NoOfChild: this.newGuestForm.controls.NoOfChildren.value!,
+      NoOfGuests: this.newGuestForm.controls.NoOfGuests.value!,
+      AmountIncludingGst: this.newGuestForm.controls.ExcGST.value!,
+      AmountPaid: this.newGuestForm.controls.AmountPaid.value!,
+      Balance: this.newGuestForm.controls.BalanceAmount.value!,
+      PaymentMode: String( this.newGuestForm.controls.PaymentMode.value! ),
+      TransactionNo: this.newGuestForm.controls.TransactionNo.value!,
+      CGST: this.newGuestForm.controls.CGST.value!,
+      SGST: this.newGuestForm.controls.CGST.value!,
+      UTGST: this.newGuestForm.controls.CGST.value!,
+      IGST: this.newGuestForm.controls.IGST.value!,
+      InvoiceNo: this.newGuestForm.controls.InvoiceNo.value!,
+      TotalDays: this.newGuestForm.controls.NoOfDays.value!,
+    };
+
+    this.bookingService.saveBookingDetails( bookingDetails ).subscribe( {
+      next: ( response ) => {
+        if ( response.StatusCode == 200 ) {
+          this.isBookigDataSaved = true;
+          this.messageService.add( { severity: 'success', summary: 'Success', detail: `${ response.Message } with invoice no ${ this.newGuestForm.controls.InvoiceNo.value! }` } );
+        }
+        if ( response.StatusCode == 400 ) {
+          this.isBookigDataSaved = true;
+          this.messageService.add( { severity: 'error', summary: 'Error', detail: `An error occured while saving and generating invoice.` } );
+        }
+      },
+      error: ( err ) => {
+        console.log( err );
+      },
+      complete: () => {
+        // this.newGuestForm.reset();
+      }
+
+    } );
+
+  }
+  onInvoiceClick ( id: string, invoiceNo?: string ) {
+
+    this.invoiceService.generateInvoice( id, invoiceNo ).subscribe( {
+      next: ( response ) => {
+        saveAs( response, `${ id }.pdf` );
+      },
+      error: ( error ) => {
+        console.log( error );
+      }
+    } );
+  }
   ngAfterContentChecked () {
     this.cdref.detectChanges();
   }
+  activeIndex: number = 0;
+  previousIndex: number = 0;
+  // Method to handle the step change event
+  onStepChange ( event: any ) {
+    const stepIndex = event.index; // Get the current step index
+    console.log( 'Step changed to:', stepIndex );
+
+    // You can perform any local actions you want here without emitting data
+    this.handleStepChangeLocally( stepIndex );
+  }
+
+  // Local method to handle step changes without server interaction
+  handleStepChangeLocally ( stepIndex: number ) {
+    // Perform any local logic depending on the current step
+    if ( stepIndex === 0 ) {
+      console.log( 'Handling step 1' );
+    } else if ( stepIndex === 1 ) {
+      console.log( 'Handling step 2' );
+    } else if ( stepIndex === 2 ) {
+      console.log( 'Handling step 3' );
+    }
+
+    // No HTTP request made here, just handling logic locally
+  }
 }
+

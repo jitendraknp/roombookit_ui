@@ -10,12 +10,12 @@
       </div>
     </div>
     <div class="col-right">
-      <div class="login-form ">
+      <div class="login-form flex flex-column">
         <h2>Login</h2>
         <form action="#" novalidate [formGroup]="loginForm" (ngSubmit)="login(loginForm)" autocomplete="off">
-          <div class="form-group">
+          <div class="form-group flex flex-column pb-3">
             <label class="form-label">Username / Email<span>*</span></label>
-            <input type="text" id="username" formControlName="username" class="form-control" autocomplete="disabled"
+            <input type="text" pInputText id="username" formControlName="username" autocomplete="disabled"
               placeholder="Username or Email">
 
             <div
@@ -33,7 +33,7 @@
               </small>
             </div>
           </div>
-          <div class="form-group pt-4 pb-3">
+          <div class="form-group flex flex-column  pb-3">
             <label class="form-label">Password<span>*</span></label>
             <input class="form-control" type="password" formControlName="password" placeholder="Password"
               autocomplete="off">
@@ -43,14 +43,14 @@
               This field is required.
             </small>
           </div>
-          <div class="row">
-            <div class="col-md-6">
-              <a href="">Forget Password?</a>
+          <div class="flex flex-row">
+            <div class="flex-grow-1 ">
+              <p-button label="Forget Password?" [link]="true" [routerLink]="['/forgot-password']" />
             </div>
-            <div class="col-md-6 col-6 text-end">
+            <div class="flex-grow-1 text-end">
               <!-- <input type="submit" class="border-0 btn btn-primary btn-sm" value="Log In" /> -->
               <p-button label="Log In" [size]="'small'" icon="pi pi-sign-in" [iconPos]="'right'"
-                [disabled]="!loginForm.valid" type="submit"></p-button>
+                [ngClass]="'btn btn-sm btn-primary'" [disabled]="!loginForm.valid" type="submit"></p-button>
             </div>
 
           </div>
@@ -58,8 +58,8 @@
       </div>
     </div>
   </div>
-  <div class="credit">
-  </div>
+  <!-- <div class="credit">
+  </div> -->
 </div>
 }
 @error {

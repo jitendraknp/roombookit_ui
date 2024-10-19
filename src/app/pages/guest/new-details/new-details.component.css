@@ -1,0 +1,10 @@
+/* Ensure the OwlDateTime popup appears above the dialog */
+.owl-dt-popup {
+  z-index: 2103 !important;
+}
+
+/* Optionally, adjust z-index for the PrimeNG dialog */
+::ng-deep .ui-dialog {
+  z-index: 1000 !important;
+}
+

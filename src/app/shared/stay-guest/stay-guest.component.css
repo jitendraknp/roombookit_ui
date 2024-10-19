@@ -1,0 +1,154 @@
+.p-datatable {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ddd;
+    font-family: 'Arial', sans-serif;
+}
+ .p-datatable-thead > tr > th {
+    background-color: #60a5fa;
+    color: white !important;
+    padding: 2px;
+    text-align: left;
+   
+    border-bottom: 2px solid #ccc;
+}
+.p-datatable .p-datatable-tbody > tr {
+    border-bottom: 1px solid #ddd;
+}
+.p-datatable-tbody > tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+.p-datatable .p-datatable-tbody > tr:nth-child(even) {
+    background-color: #ffffff;
+}
+/* Customize table cells */
+.p-datatable .p-datatable-tbody > tr > td {
+    padding: 4px;
+    text-align: left;
+    color: #555;
+}
+
+/* Hover effect for rows */
+.p-datatable-tbody > tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Customize buttons in table cells */
+.p-datatable .p-button {
+    font-size: 12px;
+    padding: 4px 8px;
+}
+
+/* Customize pagination */
+.p-paginator .p-paginator-pages .p-paginator-page {
+    color: #007bff;
+    border-radius: 4px;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page:hover {
+    background-color: #e9ecef;
+}
+
+/* Customize selected row */
+ .p-datatable .p-datatable-tbody > tr.p-highlight {
+    background-color: #d3e5ff;
+    color: #333;
+}
+.p-datatable .p-datatable-thead > tr > th{
+    padding: 4px !important;
+    background-color: #60a5fa !important;
+        color: white !important;
+}
+ 
+.p-calendar input {
+  /* background-color: #f0f0f0;
+  border: 1px solid #007bff; 
+  color: #333; 
+  padding: 2px; 
+  border-radius: 4px; 
+  font-size: 8px; */
+  border-color: transparent !important;  
+    box-shadow: none !important;  
+}
+
+/* Style the calendar popup container */
+.p-datepicker {
+  background-color: #ffffff; /* White background */
+  border: 1px solid #007bff; /* Blue border */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Slight shadow */
+  border-radius: 4px; /* Rounded corners */
+  font-family: 'Arial', sans-serif; /* Custom font */
+}
+
+/* Style the header of the calendar (year/month dropdowns) */
+.p-datepicker-header {
+  background-color: #007bff; /* Blue header background */
+  color: white; /* White text color */
+  padding: 2px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+/* Style the year and month navigation buttons */
+.p-datepicker-prev,
+.p-datepicker-next {
+  color: white;
+  font-size: 10px;
+}
+
+/* Style the date cells */
+.p-datepicker-calendar td {
+  color: #333; /* Default text color for dates */
+  padding: 1px !important;
+}
+
+.p-datepicker-calendar td:hover {
+  background-color: darkgrey; /* Blue background on hover */
+  color: black; /* White text on hover */
+   border-radius: 20px;
+}
+
+/* Style selected date */
+.p-datepicker-calendar td.p-datepicker-today,
+.p-datepicker-calendar td.p-highlight {
+  background-color: lightgrey; /* Highlighted date background */
+  color: white; /* Highlighted date text color */
+  border-radius: 20px;
+}
+
+/* Style time picker section */
+.p-timepicker {
+  background-color: #ffffff; /* Timepicker background */
+  border-top: 1px solid #007bff; /* Border between calendar and timepicker */
+  padding: 4px;
+}
+
+.p-timepicker select {
+  /* background-color: #f0f0f0; */
+  border: 1px solid #007bff;
+  color: #333;
+  /* padding: 6px; */
+  /* border-radius: 4px; */
+}
+.p-calendar {
+    position: relative; /* Ensure it has positioning */
+    /* z-index:3000; A high z-index value */
+}
+/* Style button bar (Today/Clear buttons) */
+.p-datepicker-buttonbar .p-button {
+  /* background-color: #007bff; Button background */
+  /* color: white; Button text color */
+  margin-right: 5px;
+  border-radius: 4px;
+}
+.p-datepicker .p-timepicker button
+{
+height: 0.5rem !important;
+}
+.p-datepicker .p-timepicker span
+{
+font-size:0.8rem !important
+}
+.p-datepicker table{
+    font-size: 0.8rem !important;
+} 

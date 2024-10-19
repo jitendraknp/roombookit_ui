@@ -1,21 +1,24 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, Router, RouterModule } from '@angular/router';
-import { NgHttpLoaderModule } from 'ng-http-loader';
+import { NgHttpLoaderComponent } from 'ng-http-loader';
 import { CommonService } from '../../_services/common.service';
 import { Menu } from '../../models/menu';
 import { ToastrService } from 'ngx-toastr';
-import { IonicModule } from '@ionic/angular';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { StorageService } from '../../_services/storage.service';
 import { FooterComponent } from '../footer/footer/footer.component';
-import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MenuItem, MessageService } from 'primeng/api';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 import { SplitButtonModule } from 'primeng/splitbutton';
-import {BreadcrumbComponent} from "../breadcrumb/breadcrumb.component";
+import { BreadcrumbComponent } from "../breadcrumb/breadcrumb.component";
+import { AvatarModule } from 'primeng/avatar';
+import { MenuModule } from 'primeng/menu';
+import { OverlayPanelModule } from "primeng/overlaypanel";
+import { AuthService } from '../../authentication/services/auth.service';
+
 @Component( {
   selector: 'app-layout',
   standalone: true,
@@ -23,28 +26,38 @@ import {BreadcrumbComponent} from "../breadcrumb/breadcrumb.component";
     ToolbarModule,
     ButtonModule,
     SplitButtonModule,
-    NgHttpLoaderModule,
+    NgHttpLoaderComponent,
     CommonModule,
     RouterOutlet,
     RouterModule,
-    IonicModule,
     FooterComponent,
-    NgbModule,
-    NgbDropdownModule,
     PanelMenuModule,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    MenuModule,
+    AvatarModule,
+    OverlayPanelModule
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
-  providers: [ToastrService, CommonService]
+  providers: [ToastrService, CommonService],
+
 } )
 export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
+  username: string = 'John Doe'; // Replace with your username
+  userImage: string = 'assets/user.png'; // Path to your user image
+  profile_items: MenuItem[] = [
+    { label: 'Profile', icon: 'pi pi-user', command: () => this.goToProfile() },
+    { label: 'Settings', icon: 'pi pi-cog', command: () => this.goToSettings() },
+    { label: 'Logout', icon: 'pi pi-sign-out', command: () => this.logout() },
+  ];
   items!: MenuItem[];
   menuDTO: Menu[] = [];
   toggleClass: string = "collapsed";
   token: string = "";
   hotelName: string = "";
   collapsed: any;
+  isMenuCollapsed = false;
+
   constructor(
     private commonService: CommonService,
     private renderer: Renderer2,
@@ -52,11 +65,16 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     private toastrService: ToastrService,
     private router: Router,
     private jwtHelperService: JwtHelperService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private authService: AuthService
   ) {
   }
+  isCompressed = false;
   ngOnDestroy (): void {
     this.commonService.getMenus().subscribe().unsubscribe();
+  }
+  toggleSidebar1 () {
+    this.isCompressed = !this.isCompressed;
   }
   ngAfterViewInit () {
 
@@ -70,8 +88,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       this.renderer.listen( sidebarCollapse, 'click', () => {
         this.toggleSidebar();
       } );
-    }
-    else {
+    } else {
       if ( sidemenu ) {
         sidemenu.classList.addClass( 'show' );
         sidemenu.classList.removeClass( 'collapsed' );
@@ -79,9 +96,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
   }
+
   action () {
 
   }
+
   toggleSidebar (): void {
     this.isMenuCollapsed = !this.isMenuCollapsed;
     const sidebar = this.elRef.nativeElement.querySelector( '#sidebar' );
@@ -89,7 +108,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     const bodyOverlay = this.elRef.nativeElement.querySelector( '.body-overlay' );
     //#sidebar > ul > li.nav-item.dropdown > ul
     const menuContainer = this.elRef.nativeElement.querySelector( '#sidebar > ul > li.nav-item.dropdown > ul' );
-    console.log( menuContainer );
     if ( this.isMenuCollapsed ) {
       this.renderer.addClass( sidebar, 'active' );
       this.renderer.addClass( content, 'active' );
@@ -102,12 +120,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       // this.renderer.removeClass(bodyOverlay, 'show-nav');
     }
   }
+
   ngOnInit (): void {
     let storedMenuData = this.storageService.getData( "USER_MENU" );
     if ( storedMenuData != undefined || storedMenuData != null ) {
       this.items = JSON.parse( storedMenuData ) as MenuItem[];
-    }
-    else {
+    } else {
       this.commonService.getMenus().subscribe( {
         next: ( menu ) => {
           this.items = menu.Data as MenuItem[];
@@ -123,14 +141,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.token = this.storageService.getUser()?.Data.Token;
     this.hotelName = this.jwtHelperService.decodeToken( this.token )?.hotelName;
   }
-  isMenuCollapsed = false;
 
   toggleCollapse () {
     this.isMenuCollapsed = !this.isMenuCollapsed;
     if ( !this.isMenuCollapsed ) {
       this.toggleClass = 'collapse sidemenu';
-    }
-    else {
+    } else {
       this.toggleClass = 'show sidemenu';
     }
     const menu = this.elRef.nativeElement.querySelector( '.menu' );
@@ -139,4 +155,21 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  goToProfile () {
+    console.log( 'Navigating to Profile' );
+  }
+
+  goToSettings () {
+    console.log( 'Navigating to Settings' );
+  }
+
+  logout () {
+    this.authService.logoutUser().subscribe( ( resp ) => {
+      if ( resp ) {
+        this.storageService.clean();
+        this.router.navigate( ['/login'] );
+      }
+    } );
+
+  }
 }

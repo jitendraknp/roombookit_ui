@@ -1,22 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { StorageService } from '../../../../_services/storage.service';
 import { NgClass } from '@angular/common';
 import { RoomService } from '../../../../_services/room.service';
-import { ToastrService } from 'ngx-toastr';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { addIcons } from "ionicons";
-import { close } from "ionicons/icons";
-import { IonicModule } from '@ionic/angular';
+import { Button } from "primeng/button";
+import { BehaviorSubject } from "rxjs";
 
 @Component( {
   selector: 'app-add-room',
   standalone: true,
-  imports: [ReactiveFormsModule, NgClass, NgSelectModule, IonicModule],
+  imports: [ReactiveFormsModule, NgClass, NgSelectModule, Button, ToastModule],
   templateUrl: './add-room.component.html',
-  styleUrl: './add-room.component.css'
+  styleUrl: './add-room.component.css',
+  providers: [MessageService]
 } )
 export class AddRoomComponent implements OnInit {
   roomForm = new FormGroup( {
@@ -27,55 +28,51 @@ export class AddRoomComponent implements OnInit {
     capacity: new FormControl( '', [Validators.required] ),
     rentperNight: new FormControl( '', [Validators.required] ),
     isDiscountApplicable: new FormControl( false ),
-    discountValue: new FormControl( '', [Validators.required] )
+    discountValue: new FormControl( 0 )
   } );
   token!: string;
   tokenPayload: any;
+  isvisible = false;
+
+  @Output() showList!: BehaviorSubject<boolean>;
   isDisabled = true;
+
   constructor(
     private router: Router,
     private jwtHelper: JwtHelperService,
-    private storageService: StorageService, private roomService: RoomService, private toastrService: ToastrService ) {
-    addIcons( { close } );
-  }
+    private storageService: StorageService,
+    private roomService: RoomService,
+    private messageService: MessageService ) {
 
+  }
   ngOnInit (): void {
     const payLoad = JSON.parse( this.GetTokenDecoded() );
     this.roomForm.get( 'hotelId' )?.setValue( payLoad.hotelId );
-
-    // this.route.queryParams.subscribe(params => {
-    //   const returnUrl = params['returnUrl'] || '/admin/room';
-    //   // Now, you can navigate to the returnUrl if needed
-    //   this.router.navigateByUrl(returnUrl);
-    // });
   }
 
   onSubmit (): void {
     if ( this.roomForm.valid ) {
-      // Handle form submission
+
       this.roomService.addRoom( this.roomForm.value ).subscribe( {
         next: ( data ) => {
           if ( data.StatusCode === 200 ) {
-            console.log( data );
-            this.toastrService.success( data.Message, 'Success' );
-            // this.router.navigate(['admin/room'], { queryParams: { returnUrl: this.router.url } });
-            this.router.navigateByUrl( '/admin/room' ).then( () => {
-              window.location.reload();
-            } ); // Assuming you have a route to navigate back to the rooms list
+            this.messageService.add( { severity: 'success', summary: 'Saved', detail: 'Room details saved successfuly' } );
+          }
+          if ( data.StatusCode === 40 ) {
+            this.messageService.add( { severity: 'error', summary: 'Failed- Duplicate record', detail: 'Failed to save room details.' } );
           }
         },
         error: ( err ) => console.log( err )
       } );
     }
   }
+
   onClose (): void {
-    // Handle close action, e.g., navigate away
-    this.router.navigate( ['admin/room'] ); // Assuming you have a route to navigate back to the rooms list
+    this.router.navigate( ['/room'] );
   }
+
   GetTokenDecoded (): string {
     this.token = this.storageService.getUser().Data.Token;
-    // console.log(this.jwtHelper.decodeToken(this.token));
-    // this.jwtHelper.isTokenExpired(this.token);
     this.tokenPayload = JSON.stringify( this.jwtHelper.decodeToken( this.token ) );
     return this.tokenPayload;
   }

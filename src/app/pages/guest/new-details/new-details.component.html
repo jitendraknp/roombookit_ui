@@ -1,0 +1,207 @@
+<form [formGroup]="newBookingForm" (ngSubmit)="onSubmit()">
+  <p-toast position="top-center" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'"
+    [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'" />
+  <div class="card shadow-blue-200 shadow-md border-0 p-2">
+    <div class="card-body p-1 gap-2 flex flex-row">
+      <div class="flex  flex-column w-50 shadow-sm p-2">
+        <div class="flex flex-row gap-2">
+          <div class="flex-grow-1">
+            <label class="form-label font-semibold" for="guestname">Guest Name</label>
+            <input [value]="selectedItem?.value?.SearchResult" class="form-control form-control-sm font-semibold"
+              disabled id="guestname" type="text" />
+          </div>
+        </div>
+        <div class="flex flex-row gap-2">
+          <div class="flex-grow-1">
+            <label class="form-label font-semibold" for="guestname">Phone No</label>
+            <input class="form-control form-control-sm font-semibold" id="guestname" type="text"
+              formControlName="PhoneNo" [value]="guestDetail?.GuestAddresses?.PhoneNo" />
+          </div>
+          <div class="align-items-end justify-items-end content-baseline py-2">
+            <p-button pTooltip="Change or update phone no" tooltipPosition="right" class="text-sky-400"
+              (onClick)="onPhoneNoEdit()">
+              <i [ngClass]="newBookingForm.get('PhoneNo')?.disabled  ? 'pi pi-pencil' : 'pi pi-check'"></i>
+            </p-button>
+          </div>
+        </div>
+        <div class="flex flex-row gap-2  pt-2">
+          <div class="flex-grow-1">
+            <label class="form-label font-semibold" for="guestname">Address</label>
+            <input class="form-control form-control-sm font-semibold" id="city" type="text" formControlName="Address"
+              [value]="options[0]" />
+            <label class="form-label font-semibold" for="city">City</label>
+            <input *ngIf="!showEditableCity" class="form-control form-control-sm font-semibold" id="city" type="text"
+              [disabled]="true" [value]="guestDetail?.GuestAddresses?.CityName" />
+            <p-autoComplete [inputStyleClass]="'form-control form-control-sm text-sm font-semibold flex'"
+              *ngIf="showEditableCity" [suggestions]="filteredCity" (completeMethod)="filterCity($event)"
+              [styleClass]="'w-100'" (onSelect)="onCitySelect($event)" formControlName="CityId" class="w-100"
+              optionLabel="Name" optionValue="Id" />
+          </div>
+          <div class="pt-2">
+            <p-button pTooltip="Change or update address" tooltipPosition="right" class="text-sky-400"
+              (onClick)="onAddressEdit()" [ngStyle]="{'align-self':' flex-end'}">
+              <i [ngClass]="newBookingForm.get('Address')?.disabled  ? 'pi pi-pencil' : 'pi pi-check'"
+                [ngStyle]="{'align-self':' flex-end'}"></i>
+            </p-button>
+          </div>
+        </div>
+        <div class="flex flex-row gap-1">
+          <div class="flex-grow-1">
+            <label class="form-label font-semibold" for="state">State</label>
+            <input class="form-control form-control-sm text-sm" id="state" type="text" formControlName="State"
+              [value]="newBookingForm.get('State')?.value" />
+          </div>
+          <div>
+            <label class="form-label font-semibold" for="country">Country</label>
+            <input class="form-control form-control-sm text-sm" id="country" type="text" formControlName="Country"
+              [value]="newBookingForm.get('Country')?.value" />
+          </div>
+        </div>
+        <div class="flex flex-column gap-2">
+          <!-- <div class="card flex-grow-1"> -->
+          <label class="form-label font-semibold" for="guestname">Company Address</label>
+          <p-listbox *ngIf="companyAddress.length > 0" [multiple]="false" [options]="companyAddress"
+            [listStyleClass]="'font-semibold'">
+          </p-listbox>
+          <!-- </div> -->
+        </div>
+      </div>
+      <p-divider layout="vertical"></p-divider>
+      <div class="flex  flex-column">
+        <div class="flex flex-row gap-2">
+          <div class="flex-grow-1">
+            <label class="form-label font-semibold" for="checkin">Check In</label>
+            <input [owlDateTimeTrigger]="dt2" [owlDateTime]="dt2" aria-owns="owl-dt-picker-4"
+              aria-describedby="checkin-help" formControlName="CheckInDate" class="form-control form-control-sm"
+              id="checkin" placeholder="Check In Date" type="text" />
+            <owl-date-time #dt2 aria-owns="owl-dt-picker-5" [className]="'text-sm'"
+              [pickerMode]="'dialog'"></owl-date-time>
+            <small id="username-help"
+              *ngIf="newBookingForm.get('CheckInDate')?.invalid && newBookingForm.get('CheckInDate')?.touched">
+              <p class="text-red-600">Check-in date is required.</p>
+            </small>
+            <!-- <div *ngIf="newBookingForm.get('CheckInDate')?.invalid && newBookingForm.get('CheckInDate')?.touched">
+              <p class="text-red-600 font-semibold text-xs  font-italic">Check-in date is required.</p>
+            </div> -->
+          </div>
+          <div class="flex-grow-1">
+            <label class="form-label font-semibold" for="checkout">Check Out</label>
+            <input [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" aria-owns="owl-dt-picker-3"
+              aria-describedby="checkout-help" formControlName="CheckOutDate" class="form-control form-control-sm"
+              id="checkout" placeholder="Check Out Date" type="text" />
+            <owl-date-time #dt3 aria-owns="owl-dt-picker-3" [pickerMode]="'dialog'"></owl-date-time>
+            <small id="username-help"
+              *ngIf="newBookingForm.get('CheckInDate')?.invalid && newBookingForm.get('CheckInDate')?.touched">
+              <p class="text-red-600">Check-out date is required.</p>
+            </small>
+            <!-- <div *ngIf="newBookingForm.get('CheckOutDate')?.invalid && newBookingForm.get('CheckOutDate')?.touched">
+              <p class="text-red-600 font-semibold  text-xs  font-italic"></p>
+            </div> -->
+          </div>
+
+        </div>
+        <div class="flex flex-row">
+          <div *ngIf="newBookingForm.errors?.['invalidDateRange']">
+            <p class="text-red-600 font-semibold text-xs  font-italic">Check-out date must be after check-in date.</p>
+          </div>
+        </div>
+        <div class="flex flex-row gap-2">
+          <div class="flex-grow-1">
+            <label class="form-label font-semibold" for="room">Room</label>
+            <!-- <input class="form-control form-control-sm" id="room" placeholder="Room" formControlName="RoomId"
+              type="text" /> -->
+            <span class="p-input-icon-right flex w-100">
+              <p-autoComplete [inputStyleClass]="'form-control form-control-sm text-sm font-semibold flex'"
+                [styleClass]="'w-100'" [suggestions]="filteredRooms" (onSelect)="onItemSelect($event)" [delay]="600"
+                [minLength]="2" (completeMethod)="filterRoom($event)" formControlName="RoomId" class="w-100"
+                optionLabel="RoomNo" />
+            </span>
+          </div>
+          <div class="w-25">
+            <label class="form-label font-semibold" for="noofDays">No of Days</label>
+            <input class="form-control form-control-sm" id="noofDays" placeholder="No of Days"
+              formControlName="NoOfDays" type="text" />
+          </div>
+        </div>
+        <div class="flex flex-row gap-2 py-2">
+          <div class="flex-grow-1">
+            <label class="form-label font-semibold" for="rent">Rent</label>
+            <input class="form-control form-control-sm" id="rent" placeholder="Rent" formControlName="Rent"
+              type="text" />
+          </div>
+          <div class="flex-grow-1">
+            <label class="form-label font-semibold" for="totalAmount">Total Amount</label>
+            <input class="form-control form-control-sm" id="totalAmount" placeholder="Total Amount"
+              formControlName="TotalAmount" type="text" />
+          </div>
+          <div class="flex-grow-1">
+            <label class="form-label font-semibold" for="totalAmountGst">Amount with GST (12%)</label>
+            <input class="form-control form-control-sm" id="totalAmountGst" placeholder="Amount with GST" type="text"
+              formControlName="GSTAmount" />
+          </div>
+        </div>
+        <div class="flex flex-row gap-2 py-2">
+          <div class="flex-grow-1">
+            <label class="form-label font-semibold" for="totalAmountGst">Amount Paid</label>
+            <input class="form-control form-control-sm" id="totalAmountGst" placeholder="Amount Paid" type="text"
+              formControlName="AmountPaid" />
+          </div>
+          <div class="flex-grow-1">
+            <label class="form-label font-semibold" for="totalAmountGst">Balance</label>
+            <input class="form-control form-control-sm" id="totalAmountGst" placeholder="Balance" type="text"
+              formControlName="Balance" />
+          </div>
+
+        </div>
+        <div class="flex flex-row gap-2">
+          <div class="flex-grow-1">
+            <label class="form-label font-semibold" for="paymentMethod">Payment Method</label>
+            <!-- <input class="form-control form-control-sm" id="paymentMethod" placeholder="Payment Method" type="text"
+              formControlName="PaymentMethod" /> -->
+            <!-- <p-dropdown id="paymentMethod" [options]="paymentMethods" formControlName="PaymentMethod"></p-dropdown> -->
+            <p-autoComplete [inputStyleClass]="'form-control form-control-sm text-sm font-semibold flex'"
+              [styleClass]="'w-100'" [suggestions]="filteredPayments" formControlName="PaymentMethod" class="w-100"
+              (completeMethod)="filterPayment($event)" optionLabel="label" />
+          </div>
+          <div class="flex-grow-1">
+            <label class="form-label font-semibold" for="invoiceNo">Invoice No</label>
+            <input class="form-control form-control-sm" id="invoiceNo" placeholder="Invoice No" type="text"
+              [value]="guestDetail?.InvoiceNo" formControlName="InvoiceNo" />
+          </div>
+          <!-- <div class="flex-grow-1 py-5">
+            <p-button pTooltip="Save Payment" tooltipPosition="right" icon="pi pi-save" class="text-sky-400"
+              (onClick)="onSave()" />
+          </div> -->
+        </div>
+        <div class="p-col-12 p-lg-12" *ngIf="payments.length>0">
+          <h2>Payment History</h2>
+          <p-table [value]="payments" [paginator]="true" [rows]="5">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Payment Date</th>
+                <th>Amount Paid</th>
+                <th>Status</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-payment>
+              <tr>
+                <td>{{ payment.payment_date | date: 'short' }}</td>
+                <td>{{ payment.amount_paid | currency }}</td>
+                <td>{{ payment.payment_status }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <div class="flex flex-row gap-2 justify-end justify-items-end py-2 flex-centered">
+          <!-- icon="pi pi-save" -->
+          <p-button label="Save" class="btn btn-primary btn-sm" (onClick)="onSave()" />
+          <p-button class="btn btn-primary btn-sm" label="Generate Invoice" size="small" />
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <p class="text-xs  font-italic  text-opacity-20 from-gray-400/80 py-1">
+    For internal use : {{selectedItem?.value?.Id}}
+  </p>
+</form>

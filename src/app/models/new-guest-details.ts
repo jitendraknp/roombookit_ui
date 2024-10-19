@@ -2,6 +2,7 @@ import { GuestStayDetail } from "./guest_stay_detail";
 import { GuestSiblingDetails } from "./sibling-details";
 
 export interface NewGuestDetails {
+  Id?: string;
   GuestId?: string;
   FirstName: string;
   LastName: string;
@@ -16,7 +17,8 @@ export interface NewGuestDetails {
   CountryId: string;
   CheckInDate: string;
   CheckOutDate: string;
-  RoomNoId: string;
+  RoomNoId?: string[];
+  RoomId?: [];
   NoOfGuests: number;
   NoOfAdults: number;
   NoOfChildren: number;
@@ -47,4 +49,64 @@ export interface NewGuestDetails {
   PaymentDetailsId?: string;
   InvoiceNo?: string;
   ManualInvoice?: boolean;
+}
+
+export interface GuestDetails {
+  Id?: string;
+  Company?: string;
+  CompanyAddress?: string;
+  GsTin?: string;
+  PinCode?: string;
+  FirstName?: string;
+  LastName?: string;
+  Email?: string;
+  Gender?: string;
+  MobileNo?: string;
+  Address?: string;
+  CityId?: string;
+  InvoiceNo?: string;
+  IsManualInv?: boolean;
+  Print_CD?: boolean;
+  Comment?: string;
+  PrintComment?: boolean;
+}
+export interface BookingDetails {
+  Id?: string;
+  GuestId?: string;
+  CheckInDate?: string;
+  CheckOutDate?: string;
+  Rooms?: SelectedRooms[];
+  RatePerNight?: number;
+  TotalDays?: number;
+  TotalAmount?: number;
+  Discount?: number;
+  NoOfDays?: number;
+  NoOfAdults?: number;
+  NoOfChild?: number;
+  NoOfGuests?: number;
+  AmountIncludingGst?: number;
+  AmountPaid?: number;
+  Balance?: number;
+  PaymentMode?: string;
+  TransactionNo?: string;
+  CGST?: number;
+  SGST?: number;
+  UTGST?: number;
+  IGST?: number;
+  InvoiceNo?: string;
+  GuestStayDetailId?: string;
+  PaymentDetailsId?: string;
+}
+
+export interface SelectedRooms {
+  Id?: string,
+  RoomId?: string;
+}
+export interface SelectedRoomsDetail {
+  Id?: string,
+  RoomNo?: string;
+  Floor?: number;
+  TotalDays?: number;
+  TotalAmount?: number;
+  Rent?: number;
 }

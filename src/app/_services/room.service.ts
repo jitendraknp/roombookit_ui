@@ -21,7 +21,7 @@ export class RoomService {
     return this.httpClient.post<ApiResponse>( `${ URL }save`, room, this.httpOptions ).pipe( retry( 0 ), catchError( this.handleError ) );
   }
   updateRoom ( room: any ): Observable<ApiResponse> {
-    return this.httpClient.put<ApiResponse>( `${ URL }update`, room, this.httpOptions ).pipe( retry( 0 ), catchError( this.handleError ) );
+    return this.httpClient.put<ApiResponse>( `${ URL }update`, room, this.httpOptions );
   }
   getAllRooms () {
     return this.httpClient.get<ApiResponse>( `${ URL }all`, this.httpOptions ).pipe( retry( 0 ), catchError( this.handleError ) );

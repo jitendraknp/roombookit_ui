@@ -1,31 +1,19 @@
-import { Component } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
-import { MatMenuModule } from '@angular/material/menu';
-import { BookitCardsComponent } from '../../../../shared/bookit-cards/bookit-cards.component';
-import { MatCardModule } from '@angular/material/card';
-import { FormBuilder } from '@angular/forms';
+import {Component} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {BookitCardsComponent} from '../../../../shared/bookit-cards/bookit-cards.component';
+import {FormBuilder} from '@angular/forms';
 
 @Component({
   selector: 'app-master-list',
   standalone: true,
   imports: [
-    MatSidenavModule,
-    MatMenuModule,
-    MatButtonModule,
-    MatIconModule,
     CommonModule,
     BookitCardsComponent,
-    MatCardModule
   ],
   templateUrl: './master-list.component.html',
   styleUrl: './master-list.component.css'
 })
 export class MasterListComponent {
-  constructor(private _formBuilder: FormBuilder) {
-  }
   options = this._formBuilder.group({
     bottom: 0,
     fixed: false,
@@ -72,4 +60,7 @@ export class MasterListComponent {
   ]
   events: string[] = [];
   opened: boolean = true;
+
+  constructor(private _formBuilder: FormBuilder) {
+  }
 }

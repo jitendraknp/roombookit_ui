@@ -1,0 +1,12 @@
+<div class="p-fluid">
+  <div class="p-field">
+    <label for="month">Select Month</label>
+    <p-dropdown
+      [options]="months"
+      [(ngModel)]="selectedMonth"
+      optionLabel="name"
+      placeholder="Select a month"
+      (onChange)="onMonthChange($event)">
+    </p-dropdown>
+  </div>
+</div>

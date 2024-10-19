@@ -56,7 +56,8 @@ export class HandleErrorService {
     // console.log( errorMessage );
     // this.messageService.add( { severity: 'error', summary: 'Error', detail: 'Message Content' } );
 
-    this.toastrs.error( errorMessage );
+    // this.toastrs.error( errorMessage );
+    this.messageService.add( { severity: 'error', summary: 'error', detail: errorMessage } );
     if ( err.status === 401 ) {
       this.router.navigate( ['login'], {
         queryParams: this.authService.getRedirectUrl().subscribe( url => {

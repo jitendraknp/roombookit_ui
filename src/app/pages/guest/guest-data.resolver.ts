@@ -8,5 +8,5 @@ export const guestDataResolver: ResolveFn<ApiResponse> = ( route, state ) => {
   const guestService = inject( GuestService );
   const messageService = inject( CustomMessageService );
   messageService.sendMessage( true );
-  return guestService.getAllGuest();
+  return guestService.getAllGuestWithPaging( 1, 10 );
 };

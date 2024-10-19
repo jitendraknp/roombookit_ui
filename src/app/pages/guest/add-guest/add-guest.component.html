@@ -1,235 +1,259 @@
-<p-toast />
 <p-confirmDialog />
+<div class="p-2">
+  <form (submit)="onSubmit()" [formGroup]="newGuestForm">
+    <p-toast position="top-center" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'"
+      [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'" />
+    <div class="flex flex-row justify-between border border-gray-300   px-2 py-2 border-top-rounded">
+      <p class="text-1xl font-semibold">Add New Guest</p>
+      <a (click)="confirm($event)" [tooltipStyleClass]="'text-xs'" class="cursor:pointer ml-auto"
+        href="javascript:void(0)" pTooltip="Cancel" tooltipPosition="top">
+        <i class="pi pi-times" style="color: red"></i>
+      </a>
+    </div>
+    <p-stepper [(activeStep)]="active" [linear]="true" class="card" [(activeStep)]="activeIndex"
+      (onStepChange)="onStepChange($event)">
+      <p-stepperPanel header="Guest Details">
+        <ng-template let-index="index" let-nextCallback="nextCallback" pTemplate="content">
+          <div class="flex flex-column">
+            <div class="border-0   surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+              <div class="d-flex flex-row  flex-sm-column flex-xs-column flex-md-row flex-lg-row ">
+                <div class="card shadow-lg border-0 p-0 flex-1">
+                  <div class="card-header bg-[#60a5fa] bg-gradient text-white ps-2">
+                    <p class="uppercase text-xs">Personal Details</p>
+                  </div>
+                  <div class="card-body p-1">
+                    <!-- <div class="col-6"> -->
+                    <div class="row pb-2 p-2">
+                      <div class="col-md-12 pb-2 pe-2 ps-2">
+                        <div class="card border-1 p-0">
+                          <div class="card-header  d-flex justify-between p-2 py-1 bg-slate-300">
+                            <p class="text-blue-500 text-sm"> Guest Company Details</p>
+                          </div>
+                          <div class="card-body p-1">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <label class="form-label" for="company">Company</label>
+                                <input class="form-control form-control-sm" formControlName="Company" id="company"
+                                  placeholder="Company Name" type="text" />
+                              </div>
+                              <div class="col-md-6">
+                                <label class="form-label" for="companyGSTIN">GSTIN</label>
+                                <input class="form-control form-control-sm" formControlName="CompanyGSTIN"
+                                  id="companyGSTIN" placeholder="Company GSTIN" type="text" />
+                              </div>
+                              <div class="col-md-12">
+                                <label class="form-label" for="companyAddress">Company Address</label>
+                                <input class="form-control form-control-sm" formControlName="CompanyAddress"
+                                  id="companyAddress" placeholder="Company Address" type="text" />
 
-<form [formGroup]="newGuestForm" (submit)="onSubmit()">
-  <div class="flex flex-row w-full justify-between border border-gray-300 shadow-sm px-2 py-2 border-top-rounded">
-    <p class="text-1xl font-semibold">Add New Guest</p>
-    <a href="javascript:void(0)" (click)="confirm($event)" class="cursor:pointer ml-auto" pTooltip="Cancel"
-      tooltipPosition="top" [tooltipStyleClass]="'text-xs'">
-      <i class="pi pi-times" style="color: red"></i>
-    </a>
-  </div>
-  <p-stepper class="card" [linear]="true" [(activeStep)]="active">
-    <p-stepperPanel header="Guest Details">
-      <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
-        <div class="flex flex-column">
-          <div class="border-0   surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-            <div class="d-flex flex-row  flex-sm-column flex-xs-column flex-md-row flex-lg-row ">
-              <div class="card shadow-lg border-0 p-0 flex-1">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label" for="firstName">First Name</label>
+                        <input class="form-control form-control-sm" formControlName="FirstName" id="firstName"
+                          placeholder="First Name" type="text" />
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label" for="lastName">Last Name</label>
+                        <input class="form-control form-control-sm" formControlName="LastName" id="lastName"
+                          placeholder="Last Name" type="text" />
+                      </div>
+                      <div class="col-md-6 col-sm-12">
+                        <label class="form-label" for="mobileNo">Mobile No</label>
+                        <input class="form-control form-control-sm" formControlName="MobileNo" id="mobileNo"
+                          placeholder="Mobile No" type="text" />
+                      </div>
+
+                      <div class="col-md-6 d-inline">
+                        <label class="form-label" for="Gender">Gender</label>
+                        <ng-select appearance="outline" class="custom" formControlName="Gender" id="Gender"
+                          notFoundText="No items found" placeholder="Gender">
+                          <ng-option value="MALE">MALE</ng-option>
+                          <ng-option value="FEMALE">FEMALE</ng-option>
+                          <ng-option value="TRANSGENDER">TRANSGENDER</ng-option>
+                        </ng-select>
+                      </div>
+                      <div class="d-flex justify-content-between ">
+                        <div class="col-md-6">
+                          <label class="form-label" for="emailId">Email</label>
+                          <input class="form-control form-control-sm" formControlName="EmailId" id="emailId"
+                            placeholder="Email" type="email" />
+                        </div>
+                        <div class="flex justify-content-end align-items-center text-end pt-4">
+                          <div class="flex flex-row text-end gap-2 items-end">
+                            <div class="justify-end content-end flex-end">
+                              <a (click)="addGuest($event)" class="text-xs font-semibold text-primary-500" href="#">Add
+                                Member</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flex flex-col py-1 ">
+                        <form [formGroup]="moreGuestForm" class="pe-0 w-fill">
+                          <div [ngClass]="{'ng-invalid': 'remove-invalid','ng-valid': 'remove-invalid'}"
+                            formArrayName="guests">
+                            <div *ngFor="let user of guests.controls; let i = index" [formGroupName]="i"
+                              class="justify-between mb-2">
+                              <app-more-guest (removeUser)="removeUser(i)" [guestForm]="user"
+                                [recordNo]=i></app-more-guest>
+                            </div>
+                          </div>
+                        </form>
+
+                      </div>
+
+                    </div>
+                    <!-- </div> -->
+                  </div>
+                </div>
+                <div class="card shadow-lg border-0 p-0 ms-2 flex-1">
+                  <div class="card-header  bg-[#60a5fa] bg-gradient text-white ps-2">
+                    <p class="uppercase text-xs">Contact Details</p>
+                  </div>
+                  <div class="card-body p-2 pt-0">
+                    <app-address [form]="newGuestForm"></app-address>
+                    <div class="flex flex-column  py-2">
+                      <div class="card">
+                        <div class="card-header bg-[#60a5fa] bg-gradient text-white">
+                          <p class="text-xs font-semibold uppercase">Invoice Printing Option(s)</p>
+                        </div>
+                        <div class="card-body bg-blue-100 p-2">
+                          <div class="flex flex-row gap-3 text-xs font-semibold">
+                            <p class="pb-2 flex-grow-1">
+                              <label class="form-label" for="invoiceNo">Invoice No</label>
+                              <input class="form-control form-control-sm text-xs font-semibold"
+                                formControlName="InvoiceNo" id="invoiceNo" placeholder="Invoice No" type="text" />
+                            </p>
+                            <p class="gap-2 pt-5">
+                              <p-checkbox (onChange)="onManualInvoiceChange()" [binary]="true" class="me-2"
+                                formControlName="ManualInvoice" inputId="cd" value="Manual Invoice" variant="filled" />
+                              <label for="cd">Manual</label>
+                            </p>
+                          </div>
+                          <div class="flex flex-row gap-3 text-xs font-semibold">
+                            <p class="gap-2">
+                              <p-checkbox [binary]="true" class="me-2" formControlName="Print_CD" inputId="cd"
+                                value="Company Details" variant="filled" />
+                              <label for="cd">Company Details</label>
+                            </p>
+                            <p class="gap-2">
+                              <p-checkbox [binary]="true" class="me-2" formControlName="Print_Comments"
+                                inputId="comment" name="comment" value="Comments" variant="filled" />
+                              <label for="comment">Comments</label>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="flex flex-row">
+              <div class="flex flex-column py-2 pe-2 flex-grow-1">
+                <div class="card">
+                  <div class="card-header bg-[#60a5fa] bg-gradient text-white">
+                    <p class="text-xs font-semibold uppercase">Comments</p>
+                  </div>
+                  <div class="card-body p-1  bg-blue-100">
+                    <textarea class="form-control form-control-sm" formControlName="Comments" id="comments"
+                      pInputTextarea placeholder="Comments / Remarks" rows="w" variant="outlined"></textarea>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="flex justify-content-end align-items-center text-end pt-2">
+            <div class="flex flex-row text-end gap-2 items-end">
+              <div>
+                <p-button label="Save" size="small" severity="primary" (onClick)="onGuestSave()" type="button"
+                  class="p-button p-button-primary p-button-sm" />
+              </div>
+              <div>
+                <p-button (onClick)="nextCallback.emit()" label="Continue" size="small" severity="primary"
+                  class="p-button p-button-primary p-button-sm" />
+              </div>
+
+            </div>
+
+          </div>
+          <div class="flex">
+            <p class="text-xs italic from-neutral-300 font-semibold">For internal use :
+              {{newGuestForm.controls.GuestId.value}}
+            </p>
+          </div>
+        </ng-template>
+
+      </p-stepperPanel>
+      <p-stepperPanel header="Stay & Payment">
+        <ng-template let-index="index" let-nextCallback="nextCallback" let-prevCallback="prevCallback"
+          pTemplate="content">
+          <div class="flex flex-column">
+            <div class="border-0 flex flex-row">
+              <div class="card border-0 p-0 shadow-lg flex-1">
+                <div class="card-header   bg-[#60a5fa] text-white ps-2">
+                  <p class="uppercase text-xs">Stay Details</p>
+                </div>
+                <div class="card-body">
+                  <app-stay-guest [form]="newGuestForm" [guestList]="savedGuest" class="font-semibold"
+                    [isEditForm]="false"></app-stay-guest>
+                </div>
+              </div>
+              <div class="card border-0 p-0 ms-2 shadow-lg flex-1">
                 <div class="card-header bg-[#60a5fa] bg-gradient text-white ps-2">
-                  <p class="uppercase text-sm">Personal Details</p>
+                  <p class="uppercase text-xs">Payment Details</p>
                 </div>
-                <div class="card-body p-1">
-                  <!-- <div class="col-6"> -->
-                  <div class="row pb-2 p-2">
-                    <div class="col-md-12 pb-2 pe-2 ps-2">
-                      <div class="card border-1 p-0">
-                        <div class="card-header  d-flex justify-between p-2 py-1 bg-slate-300">
-                          <p class="text-blue-500 text-sm"> Guest Company Details</p>
-                        </div>
-                        <div class="card-body p-1">
-                          <div class="row">
-                            <div class="col-md-6">
-                              <label for="company" class="form-label">Company</label>
-                              <input type="text" class="form-control form-control-sm" id="company"
-                                formControlName="Company" placeholder="Company Name" />
-                            </div>
-                            <div class="col-md-6">
-                              <label for="companyGSTIN" class="form-label">GSTIN</label>
-                              <input type="text" class="form-control form-control-sm" id="companyGSTIN"
-                                formControlName="CompanyGSTIN" placeholder="Company GSTIN" />
-                            </div>
-                            <div class="col-md-12">
-                              <label for="companyAddress" class="form-label">Company Address</label>
-                              <input type="text" class="form-control form-control-sm" id="companyAddress"
-                                formControlName="CompanyAddress" placeholder="Company Address" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <label for="firstName" class="form-label">First Name</label>
-                      <input type="text" class="form-control form-control-sm" id="firstName" formControlName="FirstName"
-                        placeholder="First Name" />
-                    </div>
-                    <div class="col-md-6">
-                      <label for="lastName" class="form-label">Last Name</label>
-                      <input type="text" class="form-control form-control-sm" id="lastName" formControlName="LastName"
-                        placeholder="Last Name" />
-                    </div>
-                    <div class="col-md-6">
-                      <label for="emailId" class="form-label">Email</label>
-                      <input type="email" class="form-control form-control-sm" id="emailId" formControlName="EmailId"
-                        placeholder="Email" />
-                    </div>
-                    <div class="col-md-6 d-inline">
-                      <label for="Gender" class="form-label">Gender</label>
-                      <ng-select appearance="outline" placeholder="Gender" id="Gender" class="custom"
-                        formControlName="Gender" notFoundText="No items found">
-                        <ng-option value="MALE">MALE</ng-option>
-                        <ng-option value="FEMALE">FEMALE</ng-option>
-                        <ng-option value="TRANSGENDER">TRANSGENDER</ng-option>
-                      </ng-select>
-                    </div>
-                    <div class="d-flex justify-content-between ">
-                      <div class="col-md-6 col-sm-12    d-inline ">
-                        <label for="mobileNo" class="form-label">Mobile No</label>
-                        <input type="text" class="form-control form-control-sm" id="mobileNo" formControlName="MobileNo"
-                          placeholder="Mobile No" />
-                      </div>
-                      <div class="justify-content-between content-end">
-                        <!-- <p-button label="More" icon="pi pi-plus-circle" styleClass="bg-blue-500/60"
-                            severity="secondary" (click)="addGuest()" size="small" /> -->
-                        <button type="button"
-                          class="bg-gray-300 hover:bg-gray-400 text-sm text-gray-800 font-semibold  py-2 px-2 rounded inline-flex items-center gap-2"
-                          (click)="addGuest()">
-                          <i class="pi pi-plus font-semibold text-xs" style="color: var(--primary-color)"></i>
-                          <p class="font-sm">Member</p>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="flex flex-col py-1 ">
-                      <form [formGroup]="moreGuestForm" class="pe-0 w-fill">
-                        <div formArrayName="guests"
-                          [ngClass]="{'ng-invalid': 'remove-invalid','ng-valid': 'remove-invalid'}">
-                          <div *ngFor="let user of guests.controls; let i = index" [formGroupName]="i"
-                            class="justify-between mb-2">
-                            <app-more-guest [guestForm]="user" [recordNo]=i
-                              (removeUser)="removeUser(i)"></app-more-guest>
-                          </div>
-                        </div>
-                      </form>
-
-                    </div>
-
-                  </div>
-                  <!-- </div> -->
-                </div>
-              </div>
-              <div class="card shadow-lg border-0 p-0 ms-2 flex-1">
-                <div class="card-header  bg-[#60a5fa] bg-gradient text-white ps-2">
-                  <p class="uppercase text-sm">Contact Details</p>
-                </div>
-                <div class="card-body p-2 pt-0">
-                  <app-address [form]="newGuestForm"> </app-address>
-                  <div class="flex flex-column  py-2">
-                    <div class="card">
-                      <div class="card-header bg-[#60a5fa] bg-gradient text-white">
-                        <p class="text-sm font-semibold">Invoice Printing Option(s)</p>
-                      </div>
-                      <div class="card-body bg-blue-100 p-2">
-                        <div class="flex flex-row gap-3 text-sm font-semibold">
-                          <p class="pb-2 flex-grow-1">
-                            <label for="invoiceNo" class="form-label">Invoice No</label>
-                            <input type="text" class="form-control form-control-sm" id="invoiceNo"
-                              formControlName="InvoiceNo" placeholder="Invoice No" />
-                          </p>
-                          <p class="gap-2 pt-5">
-                            <p-checkbox value="Manual Invoice" class="me-2" inputId="cd" variant="filled"
-                              (onChange)="onManualInvoiceChange()" [binary]="true" formControlName="ManualInvoice" />
-                            <label for="cd">Manual</label>
-                          </p>
-                        </div>
-                        <div class="flex flex-row gap-3 text-sm font-semibold">
-                          <p class="gap-2">
-                            <p-checkbox value="Company Details" class="me-2" inputId="cd" variant="filled"
-                              [binary]="true" formControlName="Print_CD" />
-                            <label for="cd">Company Details</label>
-                          </p>
-                          <p class="gap-2">
-                            <p-checkbox value="Comments" inputId="comment" class="me-2" variant="filled" [binary]="true"
-                              formControlName="Print_Comments" />
-                            <label for="comment">Comments</label>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-          <div class="flex flex-row">
-            <div class="flex flex-column py-2 pe-2 flex-grow-1">
-              <div class="card">
-                <div class="card-header bg-[#60a5fa] bg-gradient text-white">
-                  <p class="text-sm font-semibold">Comments</p>
-                </div>
-                <div class="card-body p-1  bg-blue-100">
-                  <textarea pInputTextarea rows="w" variant="outlined" class="form-control form-control-sm"
-                    formControlName="Comments" id="comments" placeholder="Comments / Remarks"></textarea>
+                <div class="card-body pt-1">
+                  <app-payment-details [form]="newGuestForm" class="font-semibold"></app-payment-details>
                 </div>
               </div>
             </div>
+          </div>
+          <div class="flex pt-4 flex-row justify-content-end gap-2 flex-shrink-0">
+            <div class="flex-shrink-0">
+              <p-button (onClick)="prevCallback.emit()" label="Back" class="p-button p-button-primary p-button-sm"
+                type="button" type="button" />
+            </div>
+            <p-button (onClick)="onSaveBooking($event)" [size]="'small'" conPos="right" label="Save" type="button"
+              class="p-button p-button-primary p-button-sm" />
+            <p-button [size]="'small'" conPos="right" label="Invoice" type="button" class="p-button p-button-primary"
+              [disabled]="!isBookigDataSaved"
+              (onClick)="onInvoiceClick(newGuestForm.controls.GuestId.value!, newGuestForm.controls.InvoiceNo.value!)" />
+            <p-button (onClick)="nextCallback.emit()" [size]="'small'" iconPos="right" label="Continue" type="button"
+              [disabled]="!isBookigDataSaved" class="p-button  p-button-primary" type="button" />
 
           </div>
-        </div>
-        <div class="flex align-content-end justify-around text-end pt-2 pb-2">
-          <div class="col-10 text-end">
-          </div>
-          <div class="col-2 text-end">
-            <p-button label="Continue" icon="pi pi-arrow-right" iconPos="right" size="small" [raised]="true"
-              (onClick)="nextCallback.emit()" />
-          </div>
-        </div>
-      </ng-template>
-    </p-stepperPanel>
-    <p-stepperPanel header="Stay & Payment">
-      <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"
-        let-index="index">
-        <div class="flex flex-column">
-          <div class="border-0 flex flex-row">
-            <div class="card border-0 p-0 shadow-lg flex-1">
-              <div class="card-header   bg-[#60a5fa] text-white ps-2">
-                <p class="uppercase text-sm">Stay Details</p>
-              </div>
-              <div class="card-body">
-                <app-stay-guest [guestList]="savedGuest" [form]="newGuestForm"></app-stay-guest>
-              </div>
-            </div>
-            <div class="card border-0 p-0 ms-2 shadow-lg flex-1">
-              <div class="card-header bg-[#60a5fa] bg-gradient text-white ps-2">
-                <p class="uppercase text-sm">Payment Details</p>
-              </div>
-              <div class="card-body pt-1">
-                <app-payment-details [form]="newGuestForm"></app-payment-details>
+        </ng-template>
+      </p-stepperPanel>
+      <p-stepperPanel header="ID Proof">
+        <ng-template let-index="index" let-prevCallback="prevCallback" pTemplate="content">
+          <div class="flex flex-column">
+            <div class="border-0  align-items-center font-xs">
+              <div class="card border-0 p-0 ms-2 shadow-lg">
+                <div class="card-header bg-[#60a5fa] bg-gradient text-white ps-2">
+                  <p class="uppercase text-xs">ID Proof Details</p>
+                </div>
+                <div class="card-body">
+                  <app-id-proof [form]="newGuestForm" class="font-semibold"></app-id-proof>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="flex pt-4 flex-row justify-content-end">
-          <p-button severity="secondary" pRipple label="Back" [size]="'small'" icon="pi pi-arrow-left" class="pe-2"
-            (onClick)="prevCallback.emit()" />
-          <p-button label="Continue" [size]="'small'" [raised]="true" icon="pi pi-arrow-right" iconPos="right"
-            (onClick)="nextCallback.emit()" />
-
-        </div>
-      </ng-template>
-    </p-stepperPanel>
-    <p-stepperPanel header="ID Proof">
-      <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
-        <div class="flex flex-column">
-          <div class="border-0  align-items-center font-medium">
-            <div class="card border-0 p-0 ms-2 shadow-lg">
-              <div class="card-header bg-[#60a5fa] bg-gradient text-white ps-2">
-                <p class="uppercase text-sm">ID Proof Details</p>
-              </div>
-              <div class="card-body">
-                <app-id-proof [form]="newGuestForm"></app-id-proof>
-              </div>
-            </div>
+          <div class="flex justify-content-end flex-wrap gap-2 py-2">
+            <p-button (onClick)="prevCallback.emit()" icon="pi pi-arrow-left" label="Back" size="small"
+              class="p-button  p-button-primary" />
+            <!-- <p-button [loading]="loading" icon="pi pi-save" label="Save" size="small" type="button"
+            class="p-button  p-button-primary" />
+          <p-button (onClick)="generateInvoice()" [loading]="loading" icon="pi pi-receipt"
+            class="p-button  p-button-primary" label="Generate" size="small" /> -->
           </div>
-        </div>
-        <div class="flex justify-content-end flex-wrap gap-2 py-2">
-          <p-button label="Back" icon="pi pi-arrow-left" size="small" (onClick)="prevCallback.emit()" />
-          <p-button label="Save" icon="pi pi-save" size="small" type="submit" [loading]="loading" [raised]="true" />
-          <p-button label="Generate" icon="pi pi-receipt" size="small" (onClick)="generateInvoice()" [loading]="loading"
-            [raised]="true" />
-        </div>
-      </ng-template>
-    </p-stepperPanel>
-  </p-stepper>
-
-</form>
+        </ng-template>
+      </p-stepperPanel>
+    </p-stepper>
+  </form>
+</div>

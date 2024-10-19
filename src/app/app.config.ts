@@ -1,9 +1,22 @@
 import { ApplicationConfig, importProvidersFrom, provideExperimentalZonelessChangeDetection } from '@angular/core';
-import { PreloadAllModules, provideRouter, withComponentInputBinding, withHashLocation, withPreloading, withRouterConfig } from '@angular/router';
-import { NgHttpLoaderModule } from 'ng-http-loader';
+import { provideNgxMask, NgxMaskDirective } from 'ngx-mask';
+import {
+  PreloadAllModules,
+  provideRouter,
+  withComponentInputBinding,
+  withHashLocation,
+  withPreloading,
+  withRouterConfig
+} from '@angular/router';
+import { NgHttpLoaderModule, pendingRequestsInterceptor$ } from 'ng-http-loader';
 import { routes } from './app.routes';
-import { provideClientHydration, withEventReplay, withHttpTransferCacheOptions } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+  withInterceptorsFromDi
+} from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideNgxWebstorage, withLocalStorage, withNgxWebstorageConfig, withSessionStorage } from 'ngx-webstorage';
 import { ToastrService, provideToastr } from 'ngx-toastr';
@@ -14,10 +27,10 @@ import { AuthService } from './authentication/services/auth.service';
 import { StorageService } from './_services/storage.service';
 import { ServerErrorsInterceptor } from './_helpers/server_error/server-errors.interceptor';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
-import { provideIonicAngular } from '@ionic/angular/standalone';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
@@ -31,8 +44,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient( withFetch(), withInterceptors( [authInterceptor, loggingInterceptor] ) ),
     provideRouter( routes,
       withComponentInputBinding(),
-      withPreloading( PreloadAllModules ),
-      withRouterConfig( { onSameUrlNavigation: 'reload' } )
+      withPreloading( PreloadAllModules )
     ),
     // provideClientHydration(withHttpTransferCacheOptions({
     //   includePostRequests: true
@@ -60,7 +72,8 @@ export const appConfig: ApplicationConfig = {
     JwtHelperService,
     StorageService,
     ToastrService,
-    MessageService
+    MessageService,
+    NgxMaskDirective
   ]
 };
 

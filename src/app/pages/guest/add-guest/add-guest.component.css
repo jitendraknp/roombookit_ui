@@ -3,25 +3,6 @@
     margin: 0 0.5rem 0 0 !important;
     width: auto !important;
 }
-.p-button.p-button-sm {
-    font-size: 0.875rem !important;
-    padding: 0.4375rem 0.875rem !important;
-}
-/* ion-icon {
-  color: white;
-  /* color: #039BE5; */
-p-button {
-    margin: 0 !important;
-    display: inline-flex !important;
-    cursor: pointer !important;
-    -webkit-user-select: none !important;
-    user-select: none !important;
-    align-items: center !important;
-    vertical-align: bottom !important;
-    text-align: center !important;
-    overflow: hidden !important;
-    position: relative !important;
-}
 
 .custom-tooltip {
   background-color: #039BE5 !important;
@@ -31,7 +12,11 @@ div.ng-valid,
 div.ng-invalid {
   border: 0px solid white;
 }
-
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
 .accordion-button::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-plus' viewBox='0 0 16 16'%3E%3Cpath d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z'/%3E%3C/svg%3E");
   transition: all 0.5s;
@@ -40,3 +25,26 @@ div.ng-invalid {
 .accordion-button:not(.collapsed)::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-dash' viewBox='0 0 16 16'%3E%3Cpath d='M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z'/%3E%3C/svg%3E");
 }
+.p-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    padding: 0.1rem 0.5rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.p-button-primary {
+    /* background-color: var(--primary-color-dark); */
+    color: #fff;
+    /* border: 1px solid var(--primary-color); */
+}
+
+.p-button-primary:hover {
+    background-color: #007bff;
+    /* border-color: var(--primary-color-light); */
+}
+ 

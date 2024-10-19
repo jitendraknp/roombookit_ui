@@ -1,10 +1,12 @@
+import { GeneratedInvoice } from "./guest";
+
 export interface GuestStayDetail {
   Id?: string;
   GuestsId: string;
-  CheckInDate: string;
+  CheckInDate?: string;
   CheckOutDate: string;
   RoomTypeId?: number;
-  RoomNoId: string;
+  RoomNoId: string[];
   NoOfGuests: number;
   NoOfAdults: number;
   NoOfChildren: number;
@@ -12,4 +14,6 @@ export interface GuestStayDetail {
   TotalAmount: number;
   Discount: number;
   NoOfDays: number;
+  Invoice?: GeneratedInvoice;
+  InvoiceNo?: string;
 }

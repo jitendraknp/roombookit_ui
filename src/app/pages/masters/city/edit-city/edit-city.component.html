@@ -1,45 +1,48 @@
-<form [formGroup]="editCityForm" (ngSubmit)="onSubmit()">
-    <div class="card border-0 shadow-lg m-0">
-        <div class="card-header d-flex justify-content-between align-items-center bg-primary bg-gradient text-white">
-            <h3 class="card-title">Edit City</h3>
-            <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="onClose()"></button>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="mb-3 col-12 col-md-12">
-                    <label for="cityName" class="form-label">City Name</label>
-                    <input type="text" class="form-control" id="cityName" formControlName="Name"
-                        placeholder="City Name" />
-                </div>
-                <div class="mb-3 col-md-6 col-12 mt-1">
-                    <label for="cityCode" class="form-label">City Code</label>
-                    <input type="text" class="form-control" id="cityCode" formControlName="Code"
-                        placeholder="City Code" />
-                </div>
-                <div class="col-md-6 col-md-6 mt-1">
-                    <label for="cityCode" class="form-label">Is Active</label>
-                    <div class="input-group input-group">
-                        <div class="input-group-text">
-                            <input class="form-check-input mt-0" type="checkbox" formControlName="Is_Active">
-                        </div>
-                        <input type="text" class="form-control" [value]="activeValue" disabled>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 col-12 pb-2">
-                    <label for="city" class="form-label">State</label>
-                    <ng-select appearance="outline" placeholder="Select State" class="custom" formControlName="StateId"
-                        (change)="onCityChange($event)" notFoundText="No items found">
-                        @for(state of states; track state.Id) {
-                        <ng-option [value]="state.Id">{{state.Name}} ({{state.Code}})</ng-option>
-                        }
-                    </ng-select>
-                </div>
-            </div>
-        </div>
-        <div class="card-footer text-end">
-            <button type="submit" class="btn btn-primary shadow-lg">Update</button>
-        </div>
+<form (ngSubmit)="onSubmit()" [formGroup]="editCityForm">
+  <p-toast position="top-center" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'"
+    [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'" />
+  <div class="card border-0 shadow-lg m-0">
+    <div class="card-header d-flex justify-content-between align-items-center bg-primary bg-gradient text-white">
+      <h3 class="card-title">Edit City</h3>
+      <!-- <button (click)="onClose()" aria-label="Close" class="btn-close btn-close-white" type="button"></button> -->
+      <a (click)="onClose()" href="javascript:void(0);">
+        <i class="pi pi-times" style="color: white"></i>
+      </a>
     </div>
+    <div class="card-body">
+      <div class="row text-sm">
+        <div class="mb-3 col-md-4">
+          <label class="form-label" for="cityName">City Name</label>
+          <input class="form-control form-control-sm" formControlName="Name" id="cityName" placeholder="City Name"
+            type="text" />
+        </div>
+        <div class="mb-3 col-md-4 mt-1">
+          <label class="form-label" for="cityCode">City Code</label>
+          <input class="form-control form-control-sm" formControlName="Code" id="cityCode" placeholder="City Code"
+            type="text" />
+        </div>
+        <div class="col-md-4 pb-2">
+          <label class="form-label" for="state">State</label>
+          <ng-select (change)="onCityChange($event)" appearance="outline" class="custom" formControlName="StateId"
+            id="state" notFoundText="No items found" placeholder="Select State">
+            @for (state of states; track state.Id) {
+            <ng-option [value]="state.Id">{{ state.Name }} ({{ state.Code }})</ng-option>
+            }
+          </ng-select>
+        </div>
+        <div class="col-md-4 mt-1">
+          <label class="form-label" for="cityCode">Is Active</label>
+          <div class="input-group input-group">
+            <div class="input-group-text">
+              <input class="form-check-input mt-0" formControlName="Is_Active" type="checkbox">
+            </div>
+            <input [value]="activeValue" class="form-control" disabled type="text">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-end">
+      <button class="btn btn-primary shadow-lg btn-sm" type="submit">Update</button>
+    </div>
+  </div>
 </form>

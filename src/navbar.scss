@@ -1,3 +1,130 @@
+// @font-face {
+//   font-family: "Inter var";
+//   font-weight: 100 900;
+//   font-display: swap;
+//   font-style: normal;
+//   font-named-instance: "Regular";
+//   src: url("../public/fonts/Inter-roman.var.woff2") format("woff2");
+// } 
+
+.owl-dt-calendar-container {
+  background-color: #f0f0f0;
+  font-size: 16px !important;
+}
+
+.owl-dt-calendar-header {
+  // background-color: #ff5722;
+  color: black;
+}
+
+.owl-dt-control-button {
+  color: #ff9800;
+}
+
+.owl-dt-calendar-cell-content {
+  color: #333;
+}
+
+.owl-dt-calendar-cell:hover .owl-dt-calendar-cell-content {
+  background-color: #ffcc80;
+  border-radius: 8px;
+}
+#owl-dt-picker > div.owl-dt-container-inner > owl-date-time-timer > owl-date-time-timer-box> label{
+    font-size: 16px !important;
+}
+.p-toast .p-toast-message .p-toast-message-content{
+  padding: 0.5rem !important;
+}
+ .p-divider.p-divider-vertical{
+      margin: 0 0.2rem !important;
+      
+ }
+.p-toast-message-content{
+  // background: #f9f9f9 !important; 
+}
+.p-datatable .p-datatable-thead > tr > th {
+    text-align: left !important;
+    padding: 1rem 1rem !important;
+    border: 1px solid #e9ecef !important;
+    border-width: 0 0 1px 0 !important;
+    font-weight: 600  !important;
+    color: #495057 !important;
+    background: #f8f9fa !important;
+    transition: box-shadow 0.2s;
+}
+.p-toast .p-toast-message .p-toast-message-content .p-toast-message-icon{
+  font-size: 0.5rem !important;
+}
+.p-divider-solid.p-divider-vertical:before {
+    border-left-style: solid !important;
+}
+.p-icon{
+      width: 1rem !important;
+    height: 1rem !important;
+}
+.p-toast .p-toast-message .p-toast-icon-close{
+     width: 1rem !important;
+    height: 1rem !important;
+}
+.p-toast .p-toast-message .p-toast-message-content .p-toast-detail{
+  margin: 0.3rem 0 0 0 !important;
+}
+.p-toast-detail{
+   color: black !important;
+}
+
+// .owl-dt-timer-content{
+//   font-size: 14px !important;
+//   padding: 0 !important;
+// }
+// .owl-dt-timer-divider{
+//   height: 75% !important;
+// }
+// .owl-dt-calendar-cell-selected .owl-dt-calendar-cell-content {
+//   // background-color: #ff9800;
+//   color: white;
+// }
+.owl-dt-timer-box{
+  height: 75% !important;
+}
+// .owl-dt-timer{
+//       height: 4.5em !important;
+// }
+// .owl-dt-calendar-table .owl-dt-calendar-header .owl-dt-calendar-table-divider{
+//       padding-bottom: .1em !important;
+// }
+// .owl-dt-calendar-cell{
+//   padding: 1% !important;
+//   width: 1.2857% !important;
+// }
+ 
+// .owl-dt-calendar-table .owl-dt-calendar-cell-content{
+//   height: 64% !important;
+//       width: 64% !important;
+//       top:1% !important;
+//       bottom:1% !important;
+// }
+// .owl-dt-control-button{
+//     font-size: 0.8em !important;
+// }
+.owl-dt-timer{
+  padding: 0 !important;
+}
+.owl-dt-timer-content{
+  flex: 0 0 auto !important;
+}
+.owl-dt-timer-content .owl-dt-timer-input{
+  font-size: 0.8em !important;
+  padding: .1em !important;
+}
+.owl-dt-control-arrow-button .owl-dt-control-button-content{
+      width: 1em !important;
+    height: 1em !important;
+}
+ .custom-button-small {
+  padding: 5px 5px;
+  font-size: 10px;
+}
 .p-component{
   font-size:0.8rem !important;
 }
@@ -9,8 +136,14 @@
     list-style-type: none  !important;
 }
 .p-button.p-button-sm {
-    font-size: 0.875rem !important;
+    // font-size: 0.875rem !important;
     /* padding: 0.65625rem 1.09375rem !important; */
+}
+.p-dialog .p-dialog-header{
+  padding: 1rem !important;
+}
+.p-dialog .p-dialog-content{
+  padding: 0 0.5rem 0.1rem 0.5rem !important;
 }
 .p-stepper .p-stepper-header .p-stepper-action .p-stepper-title {
     font-weight: 700 !important;
@@ -139,14 +272,14 @@
     color: #4b5563;
   }
 .p-button {
-    color: #ffffff !important;
-    background-color: #3B82F6 !important;
-    border: 1px solid #3B82F6;
-    padding: 0.75rem 1.25rem;
-    font-size: 1rem;
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
-    border-radius: 6px;
-    outline-color: transparent;
+    // color: #ffffff !important;
+    // background-color: #3B82F6 !important;
+    // border: 1px solid #3B82F6;
+    // padding: 0.75rem 1.25rem;
+    // font-size: 1rem;
+    // transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    // border-radius: 6px;
+    // outline-color: transparent;
 }
 html,
 body {

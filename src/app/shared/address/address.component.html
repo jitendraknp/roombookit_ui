@@ -6,30 +6,20 @@
   </div>
   <div class="col-md-6 col-sm-6 col-xs-12">
     <label for="city" class="form-label">City</label>
-    <ng-select appearance="outline" placeholder="Select City" class="text-sm" formControlName="CityId"
-      (change)="onCityChange($event)" notFoundText="No items found">
-      @for(city of cities; track city.Id) {
-      <ng-option [value]="city.Id">{{city.Name}} ({{city.Code}})</ng-option>
-      }
+    <ng-select appearance="outline" placeholder="Select City" class="text-sm" formControlName="CityId" [items]="cities"
+      bindLabel="Name" bindValue="Id" (change)="onCityChange($event)" notFoundText="No items found" [clearable]="false">
+
     </ng-select>
   </div>
   <div class="col-md-6 col-sm-6 col-xs-12">
-    <label for="stateId" class="form-label">State</label>
-    <ng-select appearance="outline" placeholder="Select State" id="stateId" class="text-sm" formControlName="StateId"
-      notFoundText="No items found">
-      @for(state of states; track state.Id) {
-      <ng-option [value]="state.Id">{{state.Name}} ({{state.Code}})</ng-option>
-      }
-    </ng-select>
+    <label class="form-label font-semibold" for="addguest_state">State</label>
+    <input class="form-control form-control-sm font-semibold" id="addguest_state" type="text"
+      formControlName="StateId" />
   </div>
   <div class="col-md-6 col-sm-6 col-xs-12">
-    <label for="countryId" class="form-label">Country</label>
-    <ng-select appearance="outline" placeholder="Select Country" id="countryId" class="text-sm"
-      formControlName="CountryId" notFoundText="No items found">
-      @for(country of countries; track country.Id) {
-      <ng-option [value]="country.Id">{{country.Name}} ({{country.Code}})</ng-option>
-      }
-    </ng-select>
+    <label class="form-label font-semibold" for="addguest_country">Country</label>
+    <input class="form-control form-control-sm font-semibold" id="addguest_country" type="text"
+      formControlName="CountryId" />
   </div>
   <div class="col-md-6   col-sm-6 col-xs-12">
     <label for="pinCode" class="form-label">Pincode</label>

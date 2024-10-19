@@ -11,3 +11,98 @@
 .p-panel-content {
   padding-top: 0px !important;
 }
+
+.p-datatable {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ddd;
+    font-family: 'Arial', sans-serif;
+    font-weight: 400;
+}
+ .p-datatable-thead > tr > th {
+    background-color: #60a5fa;
+    color: white !important;
+    padding: 2px;
+    text-align: left;
+   
+    border-bottom: 2px solid #ccc;
+}
+.p-datatable .p-datatable-tbody > tr {
+    border-bottom: 1px solid #ddd;
+      font-weight: normal !important;
+}
+.p-datatable-tbody > tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+.p-datatable .p-datatable-tbody > tr:nth-child(even) {
+    background-color: #ffffff;
+}
+/* Customize table cells */
+.p-datatable .p-datatable-tbody > tr > td {
+    padding: 4px;
+    text-align: left;
+    color: #555;
+}
+
+/* Hover effect for rows */
+.p-datatable-tbody > tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Customize buttons in table cells */
+.p-datatable .p-button {
+    font-size: 12px;
+    padding: 4px 8px;
+}
+
+/* Customize pagination */
+.p-paginator .p-paginator-pages .p-paginator-page {
+    color: #007bff;
+    border-radius: 4px;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page:hover {
+    background-color: #e9ecef;
+}
+
+/* Customize selected row */
+ .p-datatable .p-datatable-tbody > tr.p-highlight {
+    background-color: #d3e5ff;
+    color: #333;
+}
+.p-datatable .p-datatable-thead > tr > th{
+    padding: 4px !important;
+    background-color: #60a5fa !important;
+        color: white !important;
+}
+ .small-button {
+  font-size: 0.75rem; /* Adjust the font size */
+  padding: 0.25rem 0.5rem; /* Adjust the padding */
+  min-width: 1.5rem; /* Set a minimum width if desired */
+  margin-left: 5px; /* Space between buttons */
+}
+.available {
+  color: green;
+  font-weight: bold;
+}
+
+.booked {
+  color: red;
+  font-weight: bold;
+}
+.white-card {
+  background-color: white !important; /* Ensure it overrides any other styles */
+}
+.gradient-card {
+  /* Choose one of the gradients below */
+  background: linear-gradient(135deg, #add8e6, #4682b4); /* Light Blue to Dark Blue */
+  /* background: radial-gradient(circle, #87cefa, #000080); /* Sky Blue to Navy Blue */
+  /* background: linear-gradient(45deg, #40e0d0, #0000ff); /* Turquoise to Royal Blue */
+  /* background: linear-gradient(90deg, #1e90ff, #00bfff, #4169e1); /* Multi-stop Gradient */
+  /* background: linear-gradient(180deg, rgba(0, 0, 139, 0.8), rgba(70, 130, 180, 0.8)); /* Dark Blue to Light Blue with Transparency */
+  
+  color: white; /* Ensure text is readable */
+  padding: 20px; /* Add padding for aesthetics */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+}

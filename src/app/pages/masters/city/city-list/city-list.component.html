@@ -1,34 +1,81 @@
-<li class="list-group-item d-flex justify-content-between align-items-start border-0 shadow-lg mb-2 rounded">
-  <div class="col-md-3">
-    <span class="d-flex justify-content-left text-info">City Name</span>
-    <span class="d-flex  justify-content-left">{{cityDetail.Name| uppercase}}</span>
+<div class="flex flex-column  pb-1 h-max">
+  <div class="flex">
+    <input class="form-control" placeholder="Search city" type="text">
   </div>
-  <div class="col-md-3">
-    <span class=" d-flex justify-content-left text-info fw-500">City Code</span>
-    <span class="d-flex justify-content-left fw-600">{{cityDetail.Code| uppercase}}</span>
+
+  <div class="flex flex-row py-2 px-1 gap-8 ">
+    <p class="text-sm font-semibold align-content-center">
+      Total City : <span class="text-blue-600/100 text-xs py-0.5 px-1"><p-badge
+          [value]="cities==null?'0':cities!.length" /></span>
+    </p>
+    <p class="justify-content-end flex flex-1">
+      <p-button (click)="addCity()" label="Add City" size="small" [ngClass]="'btn btn-sm btn-primary'">
+      </p-button>
+    </p>
   </div>
-  <div class="col-md-3">
-    <span class=" d-flex justify-content-left text-info fw-500">State</span>
-    <span class="d-flex justify-content-left fw-600">{{cityDetail.States?.Name | uppercase}}
-      ({{cityDetail.States?.Code}})</span>
-  </div>
-  <div class="d-flex col-md-3 text-end">
-    <div class="col gy-3 col-md-4 text-end">
-      <span [ngClass]="{'btn-outline-success': cityDetail.Is_Active, 'btn-outline-danger': !cityDetail.Is_Active}"
-        class="btn btn-sm shadow-lg">
-        @if(cityDetail.Is_Active){
-        <i class="bi bi-check2"></i>
-        } @else {
-        <i class="bi bi-file-earmark-x"></i>
-        }
-      </span>
+  @for (c of cities | paginate: {
+  itemsPerPage: 5,
+  currentPage: p,
+  totalItems: cities.length
+  }; track c.Name) {
+  <div class="profile-page">
+    <div class="card profile-header bg-gradient-light my-2 flex">
+      <div class="flex flex-shrink-0 w-100">
+        <div class="flex-1 flex px-2">
+          <div class="profile-image float-md-right py-1">
+            <img src="image/room.jpg" alt="">
+          </div>
+        </div>
+        <div class="flex-1 flex px-5  py-2">
+          <div class="flex-col">
+            <p class="text-blue-500 text-sm">City Name</p>
+            <p class="text-sm text-center font-semibold pt-1.5">{{ c?.Name }}</p>
+          </div>
+        </div>
+        <div class="flex-1 flex px-5 py-2">
+          <div class="flex-col">
+            <p class="text-blue-500 text-sm">City Code</p>
+            <p class="text-sm text-center font-semibold  pt-1.5">{{ c?.Code }}</p>
+          </div>
+        </div>
+        <div class="flex-1 flex gap-4  py-2 justify-content-end px-2.5">
+          <p class="text-blue-500 text-sm">
+            <a class="d-inline hover:text-orange-400" href="javascript:void(0);">
+              @if (c?.Is_Active) {
+              <i class="pi pi-flag" style="font-size: 0.8rem;" pTooltip="Active" tooltipPosition="top"
+                tooltipStyleClass="text-xs"></i>
+              } @else {
+              <i class="pi pi-flag-fill text-red-500" style="font-size: 0.8rem" pTooltip="In Active"
+                tooltipPosition="top" tooltipStyleClass="text-xs"></i>
+              }
+            </a>
+          </p>
+          <p class="text-blue-500 text-sm">
+            <a class="d-inline hover:text-orange-400" href="javascript:void(0);" (click)="onCityEdit(c?.Id!)">
+              <i class="pi pi-pencil" style="font-size: 0.8rem" pTooltip="Edit City" tooltipPosition="top"
+                [tooltipStyleClass]="'text-xs'"></i>
+            </a>
+          </p>
+          <p class="text-blue-500 text-sm">
+            <a class="d-inline hover:text-slate-400" href="javascript:void(0);">
+
+              <i class="pi pi-trash" style="font-size: 0.8rem; color:red;" pTooltip="Delete" tooltipPosition="top"
+                [tooltipStyleClass]="'text-xs'"></i>
+
+            </a>
+          </p>
+        </div>
+      </div>
+
     </div>
-    <div class="col gy-3 col-md-4 text-center">
-      <a class="btn btn-sm  btn-outline-primary shadow-lg" [routerLink]="['edit',cityDetail.Id]"><i
-          class="bi bi-pencil-fill"></i> </a>
-    </div>
-    <div class="col gy-3 col-md-4 text-start">
-      <a class="btn btn-sm  btn-outline-danger shadow-lg"><i class="bi bi-trash"></i> </a>
-    </div>
   </div>
-</li>
+  }
+  @if (cities == null) {
+  <app-no-records-found></app-no-records-found>
+  }
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end text-sm">
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </ul>
+  </nav>
+</div>

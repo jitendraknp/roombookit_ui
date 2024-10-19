@@ -1,12 +1,12 @@
-import { Component, Input } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
-import { RouterModule } from '@angular/router';
-import { CardDetails } from '../../models/card_details';
-import { CommonModule } from '@angular/common';
+import {Component, Input} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {CardDetails} from '../../models/card_details';
+import {CommonModule} from '@angular/common';
+
 @Component({
   selector: 'app-common-card',
   standalone: true,
-  imports: [MatIconModule, RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule],
   templateUrl: './common-card.component.html',
   styleUrl: './common-card.component.css'
 })

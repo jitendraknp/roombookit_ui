@@ -1,59 +1,9 @@
-<div class="container-fluid v-h-98">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="row">
-        <input type="text" placeholder="Search city" class="form-control">
-      </div>
-      <div class="row pt-4 pb-2">
-        <div class="col-md-6">
-          <h2 class="heading">All Cities</h2>
-        </div>
-        <div class="col-md-6 text-end">
-          <a class="btn btn-outline-primary btn-sm  btn-add-new-contact shadow-lg" [routerLink]="['add']">
-            <ion-icon name="person-add-sharp"></ion-icon> Add City</a>
-        </div>
-      </div>
-    </div>
-    <div class="row pe-0">
-      <div class="col-md-8 pe-0">
-        @defer(){
-        <ul class="list-group  pb-2">
-          @for (item of cities | paginate: { itemsPerPage: 5,
-          currentPage: p ,totalItems: cities.length};
-          track $index) {
-          <app-city-list [cityDetail]="item"></app-city-list>
-          }
-          @if(cities.length==0) {
-          <app-no-records-found [message]="message"></app-no-records-found>
-          }
-        </ul>
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-end">
-            <pagination-controls (pageChange)="p = $event"></pagination-controls>
-          </ul>
-        </nav>
-        }
-        <!-- @placeholder (minimum 500ms) {
-        <div class="d-flex justify-content-center">
-          <div class="spinner-border  text-warning " role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
-        }
-        @loading (after 10ms; minimum 1s) {
-        <div class="d-flex justify-content-center">
-          <div class="spinner-border  text-info d-flex justify-content-center" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
-        } -->
-        @error {
-        <app-no-records-found message="Failed to load data."></app-no-records-found>
-        }
-      </div>
-      <div class="col-md-4 pe-0 ps-1">
-        <router-outlet></router-outlet>
-      </div>
-    </div>
-  </div>
+@defer (on immediate) {
+<div class="p-2">
+  <router-outlet></router-outlet>
 </div>
+} @placeholder (minimum 2000ms) {
+<p-progressBar mode="indeterminate" [style]="{'height': '2px'}" />
+} @error {
+<p>Failed to load data</p>
+}

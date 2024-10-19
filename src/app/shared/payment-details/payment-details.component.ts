@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { addIcons } from "ionicons";
 import { ButtonModule } from 'primeng/button';
 import { GuestService } from '../../_services/guest.service';
 import { PaymentDetail } from '../../models/payment-detail';
+
 @Component( {
   selector: 'app-payment-details',
   standalone: true,
@@ -17,39 +17,12 @@ import { PaymentDetail } from '../../models/payment-detail';
   styleUrl: './payment-details.component.css'
 } )
 export class PaymentDetailsComponent implements OnInit {
-  onGstChange ( $event: any ) {
-    // this.gstControl.valueChanges.subscribe( value => {
-
-    let totalAmount = Number( this.form.controls["TotalAmount"].value );
-    if ( Number( $event ) == 1 ) {
-      this.form.controls["ExcGST"].patchValue( totalAmount );
-    }
-    else {
-      let gstAmount: number = ( totalAmount * Number( $event ) / 100 ) + Number( totalAmount );
-      this.form.controls["ExcGST"].patchValue( gstAmount );
-      // } );
-    }
-  }
-  constructor( private guestService: GuestService ) {
-
-  }
   @Input() public form!: FormGroup;
   gstControl = new FormControl( 12 );
-  ngOnInit (): void {
-    this.paymentDetailsForm.controls.PaymentMode.valueChanges.subscribe( value => {
-      if ( value == "1" || value == "3" ) {
-        this.paymentDetailsForm.controls.TransactionNo.enable();
-        this.paymentDetailsForm.controls.TransactionNo.addValidators( [Validators.required] );
-      }
-      else
-        this.paymentDetailsForm.controls.TransactionNo.disable();
-      this.paymentDetailsForm.controls.TransactionNo.removeValidators( [Validators.required] );
-    } );
-  };
   paymentDetailsForm = new FormGroup( {
     // RatePerNight: new FormControl<number>( { value: 0, disabled: true }, [Validators.required] ),
     AmountToPay: new FormControl<number>( { value: 0, disabled: true } ),
-    GSTPercentage: new FormControl<number>( 12 ),
+    GSTPercentage: new FormControl<number>( { value: 12, disabled: true } ),
     IncGST: new FormControl( 0 ),
     ExcGST: new FormControl( 0 ),
     CGST: new FormControl( 0 ),
@@ -57,11 +30,40 @@ export class PaymentDetailsComponent implements OnInit {
     UTGST: new FormControl( 0 ),
     IGST: new FormControl( 0 ),
     Id: new FormControl( '' ),
-    PaymentMode: new FormControl( null, [Validators.required] ),
+    PaymentMode: new FormControl( 1, [Validators.required] ),
     AmountPaid: new FormControl<number>( 0, [Validators.required] ),
     BalanceAmount: new FormControl<number>( { value: 0, disabled: true }, [Validators.required] ),
     TransactionNo: new FormControl<string>( { value: '', disabled: true }, [Validators.required] ),
   } );
+
+  constructor( private guestService: GuestService ) {
+
+  }
+
+  onGstChange ( $event: any ) {
+    // this.gstControl.valueChanges.subscribe( value => {
+
+    let totalAmount = Number( this.form.controls["TotalAmount"].value );
+    if ( Number( $event ) == 1 ) {
+      this.form.controls["ExcGST"].patchValue( totalAmount );
+    } else {
+      let gstAmount: number = ( totalAmount * Number( $event ) / 100 ) + Number( totalAmount );
+      this.form.controls["ExcGST"].patchValue( gstAmount );
+      // } );
+    }
+  }
+
+  ngOnInit (): void {
+
+    this.paymentDetailsForm.controls.PaymentMode.valueChanges.subscribe( value => {
+      if ( value == 1 || value == 3 ) {
+        this.paymentDetailsForm.controls.TransactionNo.enable();
+        this.paymentDetailsForm.controls.TransactionNo.addValidators( [Validators.required] );
+      } else
+        this.paymentDetailsForm.controls.TransactionNo.disable();
+      this.paymentDetailsForm.controls.TransactionNo.removeValidators( [Validators.required] );
+    } );
+  };
 
   onSubmit () {
     console.log( this.paymentDetailsForm );

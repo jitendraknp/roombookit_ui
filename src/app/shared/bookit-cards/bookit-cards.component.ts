@@ -1,14 +1,11 @@
-import { Component, Input, ViewEncapsulation, input } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button'
-import { CommonModule } from '@angular/common';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatIconModule } from '@angular/material/icon';
-import { RouterModule } from '@angular/router';
+import {Component, Input, ViewEncapsulation, input} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterModule} from '@angular/router';
+
 @Component({
   selector: 'app-bookit-cards',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, CommonModule, MatDividerModule, MatIconModule, RouterModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './bookit-cards.component.html',
   styleUrl: './bookit-cards.component.css',
   encapsulation: ViewEncapsulation.Emulated

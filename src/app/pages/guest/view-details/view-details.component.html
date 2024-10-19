@@ -1,0 +1,49 @@
+<div class="card shadow-blue-200 shadow-md border-0 p-2">
+    <div class="card-body p-1 gap-2 flex flex-column">
+        <div class="flex  flex-column w-50 shadow-sm p-2">
+            <div class="flex flex-row gap-2">
+                <div class="flex-grow-1">
+                    <label class="form-label font-semibold" for="guestname">Guest Name</label>
+                    <input [value]="selectedItem?.value?.SearchResult"
+                        class="form-control form-control-sm font-semibold" disabled id="guestname" type="text" />
+                </div>
+            </div>
+        </div>
+        <div>
+            <p-table [value]="guests" #table responsiveLayout="scroll" [columns]="cols"
+                [exportHeader]="'customExportHeader'">
+                <ng-template pTemplate="caption">
+                    <div style="text-align: left">
+                        <p-button icon="pi pi-external-link" label="Export" (onClick)="table.exportCSV()" />
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th> Invoice No</th>
+                        <th>Check-In</th>
+                        <th>Check-Out</th>
+                        <th>Address</th>
+                        <th>Action</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-guest let-rowIndex="rowIndex">
+                    <tr>
+                        <td class="text-center text-xs font-semibold">{{ guest?.InvoiceNo }}</td>
+                        <td>{{ guest.CheckInDate }}</td>
+                        <td>{{ guest.CheckOutDate }}</td>
+                        <td>{{ guest.Guests.Address }}</td>
+                        <td>
+                            <a href="javascript:void(0);"
+                                styleClass="size-2  text-xs font-medium hover:bg-secondary/90 text-secondary-foreground cursor-pointer"
+                                (click)="onPrintClick(guest.Id,guest.InvoiceNo)" [pTooltip]="'Print invoice'"
+                                [tooltipPosition]="'top'" variant="transparent" [tooltipStyleClass]="'text-xs'">
+                                <i class="pi pi-print" style="color: var(--primary-color)"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

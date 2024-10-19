@@ -1,121 +1,93 @@
-<!-- Sidebar  -->
-<nav id="sidebar" class="shadow-lg rounded">
-  <div class="sidebar-header">
-    <h3 class="d-flex">
-      <img class="img-fluid" src="/image/bookkaro-logo.ico" />
-      <span class="img-fluid">Book Karlo</span>
-    </h3>
-  </div>
-  <p-panelMenu [model]="items" [multiple]="false">
-    <ng-template pTemplate="item" let-item>
-      <ng-container *ngIf="item.route; else urlRef">
-        <a pRipple routerLink="{item.route}" [routerLinkActive]="'true'" class="flex align-items-center
-                cursor-pointer text-color px-3 py-2">
-          <i [class]="item.icon + ' text-primary opacity-10'"></i>
-          <span [class]="item.icon"></span>
-          <span class="ml-2 text-color">{{ item.Label }}</span>
-        </a>
-      </ng-container>
-      <ng-template #urlRef>
-        <a *ngIf="item.url; else noLink" [routerLink]="item.url" class="flex align-items-center
-                cursor-pointer text-color px-3 py-2">
-          <i [class]="item.icon + ' text-primary'"></i>
-          <!-- <span [class]="item.icon"></span> -->
-          <span class="ml-2 cursor-pointer">{{ item.label }} </span>
-        </a>
-        <ng-template #noLink>
-          <span class="flex align-items-center cursor-pointer text-color px-3 py-2">
-            <!-- <span [class]="item.icon"></span> -->
-            <i [class]="item.icon + ' text-primary'"></i>
-            <span class="ml-2 font-semibold">{{ item.label }}</span>
-            <i *ngIf="item.items" class="pi pi-angle-down text-primary ml-auto"></i>
-          </span>
-        </ng-template>
-      </ng-template>
-    </ng-template>
-  </p-panelMenu>
-  <!--
-  <ul class="list-unstyled components nav">
-    @for(m of menuDTO; track m.Id){
-    @if(m.Childs.length==0 ){
-    <li class="nav-item nav-profile border-bottom">
-      <a [routerLink]="[m.Location]" class="">
-        <i class="material-icons">{{m.IconName}}</i><span>{{m.Name}}</span></a>
-    </li>
-    }
-    @else {
-    <li class="nav-item dropdown border-bottom">
-      <a href="javascript:void(0);" id="{{m.Id}}" (click)="toggleCollapse()" data-toggle="collapse"
-        data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">
-        <i class="material-icons">{{m.IconName}}</i><span>{{m.Name}}</span></a>
-      <ul class="dropdown-menu" [ngClass]="{ 'collapse': isMenuCollapsed, 'show': !isMenuCollapsed }"
-        class="collapse menu lst-style-none ps-4">
-        @for(c of m.Childs; track c.Id){
-        <li [attr.id]="c.Id" class="pl-8">
-          <a id="{{c.Id}}" [routerLink]="[c.Location]" routerLinkActive="active-link"
-            class="dropdown-item pt-1 pb-1">{{c.Name}}</a>
-        </li>
-        }
-      </ul>
-    </li>
-    }
-    }
-  </ul> -->
+<div class="min-h-screen flex flex-col">
+  <header class="bg-gray-800 text-white sticky top-0 z-10">
+    <div class="top-navbar fixed-top">
+      <div class="navbar navbar-expand-lg p-0">
+        <div class="container-fluid d-flex">
+          <button class="d-xl-block d-lg-block d-md-mone d-none" id="sidebarCollapse" (click)="toggleSidebar1()"
+            type="button">
+            <svg class="bi bi-list" fill="currentColor" height="30" viewBox="0 0 16 16" width="30"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
+                fill-rule="evenodd" />
+            </svg>
+          </button>
+          <p class="text-white"> Dashboard
+            <span class="italic"> ({{ hotelName }})</span>
+          </p>
+          <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+            class="d-inline-block d-lg-none ml-auto more-button" data-target="#navbarSupportedContent"
+            data-toggle="collapse" type="button">
+          </button>
 
-</nav>
-<!-- Page Content  -->
-<div id="content">
-  <div class="top-navbar fixed-top">
-    <div class="navbar navbar-expand-lg p-0">
-      <div class="container-fluid d-flex">
-        <button type="button" id="sidebarCollapse" class="d-xl-block d-lg-block d-md-mone d-none">
-          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list"
-            viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
-          </svg>
-        </button>
-        <p class="text-white"> Dashboard
-          <span class="italic"> ({{hotelName}})</span>
-        </p>
-        <button class="d-inline-block d-lg-none ml-auto more-button" type="button" data-toggle="collapse"
-          data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-          aria-label="Toggle navigation">
-          <span class="material-icons">more_vert</span>
-        </button>
+          <div class="collapse navbar-collapse d-lg-block d-xl-block d-sm-none d-md-none d-none"
+            id="navbarSupportedContent">
 
-        <div class="collapse navbar-collapse d-lg-block d-xl-block d-sm-none d-md-none d-none"
-          id="navbarSupportedContent">
-          <div ngbDropdown display="dynamic" placement="bottom-end" container="body">
-            <button type="button" class="btn btn-outline-warning shadow-lg btn-sm" id="userProfileMenu"
-              ngbDropdownToggle>
-              <span class="heading">
-                <img class="avatar  avatar-sm" src="/image/employee.jpg" />
-              </span>
-            </button>
-            <div ngbDropdownMenu="userProfileMenu">
-              <a ngbDropdownItem class="btn btn-info btn-sm"><ion-icon name="person-outline"></ion-icon>
-                Profile</a>
-              <a ngbDropdownItem class="btn btn-info btn-sm"><ion-icon name="settings-outline"></ion-icon>
-                Account Settings</a>
-              <a ngbDropdownItem [routerLink]="['logout']" class="btn btn-info btn-sm"><ion-icon
-                  name="log-out-outline"></ion-icon>
-                LogOut</a>
-            </div>
           </div>
+          <p-toolbar class="custom-toolbar">
+            <div class="p-toolbar-group-right">
+              <p-menu #menu [model]="profile_items" [styleClass]="'font-semibold'" appendTo="body"
+                popup="true"></p-menu>
+              <p-avatar (click)="menu.toggle($event)" class="pointer-cursor" label="SA" shape="circle"
+                size="normal"></p-avatar>
+            </div>
+          </p-toolbar>
         </div>
       </div>
     </div>
-  </div>
-  <div class="main-content pe-1 pb-4 ps-1">
-    <app-breadcrumb></app-breadcrumb>
-    <div class="container-fluid cf ps-0">
+  </header>
+  <!-- Main Wrapper -->
+  <div class="flex flex-grow overflow-hidden">
+    <aside class=" text-white transition-all duration-300 h-full"
+      [ngClass]="isCompressed ? 'compressed-sidebar' : 'expanded-sidebar'">
+      <div class="sidebar-header" style="width: 200px;">
+        <h3 class="flex flex-row items-center">
+          <img class="img-fluid" src="/image/bookkaro-logo.ico" />
+          <span class="img-fluid text-sm text-center">Book Karlo</span>
+        </h3>
+      </div>
+      <nav class="pt-2">
+        <p-panelMenu [model]="items" [multiple]="false">
+          <ng-template let-item pTemplate="item">
+            <ng-container *ngIf="item.route; else urlRef">
+              <a [routerLinkActive]="'true'" class="flex align-items-center
+                      cursor-pointer text-color px-3 py-2" pRipple routerLink="{item.route}">
+                <i [class]="item.icon + ' text-primary opacity-10'"></i>
+                <span [class]="item.icon"></span>
+                <span class="ml-2 text-color">{{ item.Label }}</span>
+              </a>
+            </ng-container>
+            <ng-template #urlRef>
+              <a *ngIf="item.url; else noLink" [routerLink]="item.url" class="flex align-items-center
+                      cursor-pointer text-color px-3 py-2">
+                <i [class]="item.icon + ' text-primary'"></i>
+                <!-- <span [class]="item.icon"></span> -->
+                <span class="ml-2 cursor-pointer">{{ item.label }} </span>
+              </a>
+              <ng-template #noLink>
+                <span class="flex align-items-center cursor-pointer text-color px-3 py-2">
+                  <!-- <span [class]="item.icon"></span> -->
+                  <i [class]="item.icon + ' text-primary'"></i>
+                  <span class="ml-2 font-semibold">{{ item.label }}</span>
+                  <i *ngIf="item.items" class="pi pi-angle-down text-primary ml-auto"></i>
+                </span>
+              </ng-template>
+            </ng-template>
+          </ng-template>
+        </p-panelMenu>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-grow overflow-x-hidden overflow-y-auto  pt-2 px-2 py-2">
+
+      <!-- Angular Router Outlet -->
       <router-outlet></router-outlet>
-
-      <app-footer></app-footer>
-
-    </div>
-
+    </main>
   </div>
 
+  <!-- Sticky Footer -->
+  <footer class="bg-blue-200">
+    <app-footer></app-footer>
+  </footer>
 </div>

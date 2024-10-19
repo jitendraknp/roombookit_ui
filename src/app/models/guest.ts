@@ -12,23 +12,23 @@ export interface Guest extends GuestBaseEntity {
   LastName: string;
   Gender: string;
   Address: string;
-  EmailId: string;
+  EmailId?: string;
   MobileNo: string;
   Is_Active: boolean;
   CityId: string;
   City?: City;
   StateId: string;
   State?: States;
-  CoutntryId: string;
-  Coutntry?: Country;
+  CountryId: string;
+  Country?: Country;
   PinCode: string;
   FormatCreatedDate?: string;
   CreatedBy?: string;
   QRString?: string;
   IdentificationDetail?: IdentificationDetail[] | null;
   PaymentDetail?: PaymentDetail | null;
-  GuestsStayDetail?: GuestStayDetail | null;
-  GeneratedInvoice?: GeneratedInvoice | null;
+  GuestsStayDetail?: GuestStayDetail[];
+  Invoice?: GeneratedInvoice[];
 }
 
 export interface GeneratedInvoice {
@@ -46,4 +46,25 @@ export interface DashboardGuestDetails {
   CheckInTime?: string;
   CheckOutDate?: string;
   CheckOutTime?: string;
+}
+export interface ExistingGuestDetails {
+  GuestId: string;
+  InvoiceNo: string;
+  GuestAddresses?: GuestAddress;
+  RoomDetails?: RoomDetails[];
+}
+export interface GuestAddress {
+  GuestId: string;
+  Id?: string;
+  Address?: string;
+  PhoneNo?: string;
+  CityId?: string;
+  CityName?: string;
+  CompantAddress?: string;
+}
+export interface RoomDetails {
+  RoomId: string;
+  RoomNo?: string;
+  Rent?: number;
+
 }

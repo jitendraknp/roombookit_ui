@@ -1,8 +1,8 @@
 <form class="row" [formGroup]="form">
-  <div class="col-md-6 col-6 pb-2">
+  <div class="col-md-6  pb-2">
     <label for="gstRate" class="form-label">GST Rate</label>
     <ng-select appearance="outline" placeholder="Select GST Rate" id="gstRate" class="custom" [formControl]="gstControl"
-      (change)="onGstChange($event)" formControlName="GSTPercentage" notFoundText="No items found">
+      (change)="onGstChange($event)" formControlName="GSTPercentage" notFoundText="No items found" [clearable]="false">
       <ng-option [value]="1">0%</ng-option>
       <ng-option [value]="5">5%</ng-option>
       <ng-option [value]="12" selected>12%</ng-option>
@@ -10,7 +10,7 @@
       <ng-option [value]="28">28%</ng-option>
     </ng-select>
   </div>
-  <div class="col-md-6 col-6 pb-2">
+  <div class="col-md-6  pb-2">
     <label for="excGSTRate" class="form-label">After GST (&#8377;)</label>
     <input type="number" class="form-control form-control-sm" id="excGSTRate" formControlName="ExcGST"
       placeholder="Total Amount" />
@@ -20,29 +20,29 @@
     <input type="number" class="form-control form-control-sm" id="incGSTRate" formControlName="IncGST"
       placeholder="Total Amount" />
   </div> -->
-  <div class="col-md-6 col-6 pb-2">
+  <div class="col-md-6  pb-2">
     <label for="advancePayment" class="form-label">Payment Mode</label>
     <ng-select appearance="outline" placeholder="Payment Mode" id="paymentMode" class="custom"
-      formControlName="PaymentMode" notFoundText="No items found">
-      <ng-option [value]="1" selected>Cash</ng-option>
+      formControlName="PaymentMode" notFoundText="No items found" [clearable]="false">
+      <ng-option [value]="1">Cash</ng-option>
       <ng-option [value]="2">Credit Card</ng-option>
       <ng-option [value]="3">Debit Card</ng-option>
       <ng-option [value]="4">Net Banking</ng-option>
       <ng-option [value]="5">UPI</ng-option>
     </ng-select>
   </div>
-  <div class="col-md-6 col-6 pb-2">
+  <div class="col-md-6  pb-2">
     <label for="transactionNo" class="form-label">Transaction No</label>
     <input type="text" class="form-control form-control-sm" id="transactionNo" formControlName="TransactionNo"
       placeholder="Transaction No" />
   </div>
-  <div class="col-md-6 col-6 pb-2">
-    <label for="advancePayment" class="form-label">Advance Payment</label>
+  <div class="col-md-6  pb-2">
+    <label for="advancePayment" class="form-label">Amount Paid</label>
     <input type="number" class="form-control form-control-sm" id="advancePayment" formControlName="AmountPaid"
-      placeholder="Advance Payment" />
+      placeholder="Amount Paid" />
   </div>
 
-  <div class="col-md-6 col-6">
+  <div class="col-md-6 ">
     <label for="balancePayment" class="form-label">Balance </label>
     <input type="number" class="form-control form-control-sm" id="balancePayment" formControlName="BalanceAmount"
       placeholder="Balance Payment" />
@@ -71,7 +71,5 @@
         placeholder="Integrated Goods and Services Tax " />
     </div>
   </div>
-  <!-- <div class="col-md-6 col-6 align-content-end text-end">
-    <p-button [size]="'small'" [label]="'Save'" [icon]="'pi pi-save'" (onClick)="onSubmit()"></p-button>
-  </div> -->
+  <!-- <p class="text-xs text-gray-400 italic">For internal use: {{this.form.controls["PaymentDetailsId"].value}}</p> -->
 </form>

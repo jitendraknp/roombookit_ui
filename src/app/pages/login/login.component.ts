@@ -4,15 +4,15 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../authentication/services/auth.service';
 import { StorageService } from '../../_services/storage.service';
 import { CommonModule, NgIf } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
+// import { ToastrService } from 'ngx-toastr';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { AuthGuardService } from '../../authentication/services/auth-guard.service';
 import { map } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-
-
+import { InputTextModule } from 'primeng/inputtext';
+import { ConfirmationService, MessageService } from 'primeng/api';
 @Component( {
   selector: 'app-login:not(p)',
   standalone: true,
@@ -23,6 +23,7 @@ import { RippleModule } from 'primeng/ripple';
     ButtonModule,
     RippleModule,
     ToastModule,
+    InputTextModule,
     NgIf],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -30,7 +31,8 @@ import { RippleModule } from 'primeng/ripple';
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService,
     AuthService,
-    AuthGuardService
+    AuthGuardService,
+    MessageService
   ]
 } )
 
@@ -41,13 +43,14 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   roles: string[] = [];
   storageService = inject( StorageService );
-  toasterService = inject( ToastrService );
+  // toasterService = inject( ToastrService );
   invalidCredentialMsg = '';
   retUrl = '';
   isUserLogout: any = false;
   constructor(
     private authService: AuthService,
     private router: Router,
+    private messageService: MessageService,
     private route: ActivatedRoute, ) {
   }
 
@@ -79,15 +82,17 @@ export class LoginComponent implements OnInit {
           } else {
 
             this.invalidCredentialMsg = 'Invalid Credentials. Try again.';
-            this.toasterService.error( this.invalidCredentialMsg, 'Error' ).onAction.subscribe( action => {
-              this.router.navigate( ['login'], { queryParams: [{ returnUrl: this.retUrl }] } );
-            } );
+            this.messageService.add( { severity: 'error', summary: 'Error', detail: this.invalidCredentialMsg } );
+            // this.toasterService.error( this.invalidCredentialMsg, 'Error' ).onAction.subscribe( action => {
+            //   this.router.navigate( ['login'], { queryParams: [{ returnUrl: this.retUrl }] } );
+            // } );
           }
         }
       );
     }
     else {
-      this.toasterService.warning( "Please provide credentials", "Warning" );
+      // this.toasterService.warning( "Please provide credentials", "Warning" );
+      this.messageService.add( { severity: 'error', summary: 'Credentials', detail: "Please provide credentials" } );
     }
   }
 }

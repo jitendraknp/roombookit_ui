@@ -1,18 +1,18 @@
-import { NgOptimizedImage } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { NgHttpLoaderModule } from 'ng-http-loader';
-import { ToastrModule } from 'ngx-toastr';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { FooterComponent } from './shared/footer/footer/footer.component';
-import { ToastModule } from 'primeng/toast';
+import {NgOptimizedImage} from '@angular/common';
+import {Component} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
+import {NgHttpLoaderComponent} from 'ng-http-loader';
+import {ToastrModule} from 'ngx-toastr';
+import {NgxPaginationModule} from 'ngx-pagination';
+import {FooterComponent} from './shared/footer/footer/footer.component';
+import {ToastModule} from 'primeng/toast';
 
-@Component( {
+@Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     RouterOutlet,
-    NgHttpLoaderModule,
+    NgHttpLoaderComponent,
     ToastrModule,
     NgOptimizedImage,
     NgxPaginationModule,
@@ -22,7 +22,7 @@ import { ToastModule } from 'primeng/toast';
 
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
-} )
+})
 export class AppComponent {
   title = 'Book Room';
 }

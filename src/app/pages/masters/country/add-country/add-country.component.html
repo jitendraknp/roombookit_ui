@@ -1,24 +1,33 @@
-<form [formGroup]="countryForm" (ngSubmit)="onSubmit()">
+<form (ngSubmit)="onSubmit()" [formGroup]="countryForm">
+  <p-toast position="top-center" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'"
+    [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'" />
   <div class="card border-0 shadow-lg m-0">
     <div class="card-header  d-flex justify-content-between align-items-center bg-primary bg-gradient text-white">
       <p class="uppercase text-sm">Add Country</p>
-      <ion-icon name="close" class="cursor-pointer" (click)="onClose()"></ion-icon>
-      <!-- <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="onClose()"></button> -->
+      <a (click)="onClose()" href="javascript:void(0);">
+        <i class="pi pi-times" style="color: white"></i>
+      </a>
     </div>
     <div class="card-body">
-      <div class="row">
-        <div class="mb-3 col-md-12 col-12 col-sm-12 col-xs-12 col-lg-12  col-xl-12 ">
-          <label for="countryName" class="form-label">Country Name</label>
-          <input type="text" class="form-control" id="countryName" formControlName="Name" placeholder="Country Name" />
+      <div class="flex  gap-2 justify-content-around">
+        <div class="flex flex-grow-1">
+          <div class="flex flex-col text-sm flex-1">
+            <label class="form-label" for="countryName">Country Name</label>
+            <input class="form-control form-control-sm" formControlName="Name" id="countryName" pInputText
+              type="text" />
+          </div>
         </div>
-        <div class="mb-3 col-md-12 col-12 col-sm-12 col-xs-12  col-lg-12  col-xl-12">
-          <label for="countryCode" class="form-label">Code</label>
-          <input type="text" class="form-control" id="countryCode" formControlName="Code" placeholder="Code" />
+        <div class="flex  flex-grow-1">
+          <div class="flex flex-col text-sm">
+            <label class="form-label" for="countryCode">Code</label>
+            <input class="form-control form-control-sm" formControlName="Code" id="countryCode" type="text" />
+          </div>
+        </div>
+        <div class="flex align-items-end justify-items-end content-baseline py-2">
+          <button class="btn btn-primary btn-sm" type="submit">Save</button>
         </div>
       </div>
     </div>
-    <div class="card-footer text-end">
-      <button type="submit" class="btn btn-primary btn-sm" [disabled]="!countryForm.valid">Add</button>
-    </div>
+
   </div>
 </form>

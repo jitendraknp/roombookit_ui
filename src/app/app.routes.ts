@@ -14,127 +14,132 @@ import { guestDataResolver } from './pages/guest/guest-data.resolver';
 import { JoinRoomComponent } from './pages/join-room/join-room.component';
 import { ChatComponent } from './pages/chat/chat.component';
 import { LogutComponent } from './pages/logut/logut.component';
+import { CountryComponent } from "./pages/masters/country/country.component";
+import { CountryListComponent } from "./pages/masters/country/country-list/country-list.component";
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import( './shared/layout/layout.component' ).then(m => m.LayoutComponent),
+    loadComponent: () => import( './shared/layout/layout.component' ).then( m => m.LayoutComponent ),
     runGuardsAndResolvers: 'paramsChange',
     // component: LayoutComponent,
-    canActivate: [(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
-      inject(AuthGuardService).canActivate(route, state)],
-    canActivateChild: [(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
-      inject(AuthGuardService).canActivateChild(route, state)],
+    canActivate: [( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ) =>
+      inject( AuthGuardService ).canActivate( route, state )],
+    canActivateChild: [( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ) =>
+      inject( AuthGuardService ).canActivateChild( route, state )],
     children: [
-      {path: '', component: DashboardComponent, data: {breadcrumb: 'dashboard'}},
+      { path: '', component: DashboardComponent },
       {
         path: 'hotel-setup', component: HotelSetupComponent
       },
-      {path: 'chat', component: ChatComponent},
+      { path: 'chat', component: ChatComponent },
       {
         path: 'logout',
-        component: LogutComponent
+        component: LoginComponent
       },
-      {path: 'join-room', component: JoinRoomComponent},
-      {path: 'dashboard', component: DashboardComponent, data: {breadcrumb: 'dashboard'}},
+      { path: 'join-room', component: JoinRoomComponent },
+      { path: 'dashboard', component: DashboardComponent },
       {
         path: 'country',
-        loadComponent: () => import( './pages/masters/country/country.component' ).then(m => m.CountryComponent),
-        data: {breadcrumb: 'country'},
+        loadComponent: () => import( './pages/masters/country/country.component' ).then( m => m.CountryComponent ),
         children: [
           {
             path: 'add',
-            component: AddCountryComponent,
-            data: {breadcrumb: 'country'}
+            loadComponent: () => import( './pages/masters/country/add-country/add-country.component' ).then( m => m.AddCountryComponent ),
           },
           {
             path: 'edit/:country-id',
-            component: EditCountryComponent
+            loadComponent: () => import( './pages/masters/country/edit-country/edit-country.component' ).then( m => m.EditCountryComponent ),
+          },
+          {
+            path: '',
+            loadComponent: () => import( './pages/masters/country/country-list/country-list.component' ).then( m => m.CountryListComponent ),
           }
         ]
       },
       {
         path: 'city',
-        loadComponent: () => import( './pages/masters/city/city.component' ).then(m => m.CityComponent),
+        loadComponent: () => import( './pages/masters/city/city.component' ).then( m => m.CityComponent ),
         children: [
           {
             path: 'add',
-            loadComponent: () => import( './pages/masters/city/add-city/add-city.component' ).then(m => m.AddCityComponent),
+            loadComponent: () => import( './pages/masters/city/add-city/add-city.component' ).then( m => m.AddCityComponent ),
           },
           {
-            path: 'list',
-            loadComponent: () => import( './pages/masters/city/city-list/city-list.component' ).then(m => m.CityListComponent),
+            path: '',
+            loadComponent: () => import( './pages/masters/city/city-list/city-list.component' ).then( m => m.CityListComponent ),
           },
           {
             path: 'edit/:city-id',
-            loadComponent: () => import( './pages/masters/city/edit-city/edit-city.component' ).then(m => m.EditCityComponent)
+            loadComponent: () => import( './pages/masters/city/edit-city/edit-city.component' ).then( m => m.EditCityComponent )
           }
         ]
       },
       {
         path: 'state',
-        loadComponent: () => import( './pages/masters/states/states.component' ).then(m => m.StatesComponent),
+        loadComponent: () => import( './pages/masters/states/states.component' ).then( m => m.StatesComponent ),
         children: [
           {
-            path: 'list',
-            loadComponent: () => import( './pages/masters/states/state-list/state-list.component' ).then(m => m.StateListComponent),
+            path: '',
+            loadComponent: () => import( './pages/masters/states/state-list/state-list.component' ).then( m => m.StateListComponent ),
           },
           {
             path: 'edit/:state-id',
-            loadComponent: () => import( './pages/masters/states/edit-state/edit-state.component' ).then(m => m.EditStateComponent)
+            loadComponent: () => import( './pages/masters/states/edit-state/edit-state.component' ).then( m => m.EditStateComponent )
           },
           {
             path: 'add',
-            loadComponent: () => import( './pages/masters/states/add-state/add-state.component' ).then(m => m.AddStateComponent),
+            loadComponent: () => import( './pages/masters/states/add-state/add-state.component' ).then( m => m.AddStateComponent ),
           }
         ]
       },
       {
         path: 'users',
-        loadComponent: () => import( './pages/users/users.component' ).then(m => m.UsersComponent),
-        resolve: {user: userListResolver},
+        loadComponent: () => import( './pages/users/users.component' ).then( m => m.UsersComponent ),
+        resolve: { user: userListResolver },
         // component: UsersComponent,
         children: [
           {
             path: 'list',
-            loadComponent: () => import( './pages/users/list-user/list-user.component' ).then(m => m.ListUserComponent),
-            resolve: {user: userListResolver},
+            loadComponent: () => import( './pages/users/list-user/list-user.component' ).then( m => m.ListUserComponent ),
+            resolve: { user: userListResolver },
           },
           {
             path: 'edit/:user-id',
-            loadComponent: () => import( './pages/users/edit-user/edit-user.component' ).then(m => m.EditUserComponent),
-            resolve: {user: editUserResolver}
+            loadComponent: () => import( './pages/users/edit-user/edit-user.component' ).then( m => m.EditUserComponent ),
+            resolve: { user: editUserResolver }
           },
           {
             path: 'add',
-            loadComponent: () => import( './pages/users/add-user/add-user.component' ).then(m => m.AddUserComponent),
+            loadComponent: () => import( './pages/users/add-user/add-user.component' ).then( m => m.AddUserComponent ),
           }
         ]
       },
       {
         path: 'room',
-        loadComponent: () => import( './pages/masters/room/room.component' ).then(m => m.RoomComponent),
+        loadComponent: () => import( './pages/masters/room/room.component' ).then( m => m.RoomComponent ),
         children: [
           {
             path: 'add',
-            loadComponent: () => import( './pages/masters/room/add-room/add-room.component' ).then(m => m.AddRoomComponent),
+            loadComponent: () => import( './pages/masters/room/add-room/add-room.component' ).then( m => m.AddRoomComponent ),
           },
           {
             path: 'edit/:room-id',
-            loadComponent: () => import( './pages/masters/room/edit-room/edit-room.component' ).then(m => m.EditRoomComponent),
+            loadComponent: () => import( './pages/masters/room/edit-room/edit-room.component' ).then( m => m.EditRoomComponent ),
           },
           {
-            path: 'list',
-            loadComponent: () => import( './pages/masters/room/room-list/room-list.component' ).then(m => m.RoomListComponent),
+            path: '',
+            loadComponent: () => import( './pages/masters/room/room-list/room-list.component' ).then( m => m.RoomListComponent ),
           }
         ]
       },
       {
         path: 'guest',
-        resolve: {data: guestDataResolver},
-        data: {breadcrumb: 'guest'},
+        // resolve: {data: guestDataResolver},
+        data: { breadcrumb: 'guest' },
         // component: GuestComponent,
-        loadComponent: () => import( './pages/guest/guest.component' ).then(m => m.GuestComponent),
+        loadComponent: () => import( './pages/guest/guest.component' ).then( m => m.GuestComponent ),
         children: [
           // {
           //   path: 'add-guest',
@@ -148,47 +153,44 @@ export const routes: Routes = [
           // },
           {
             path: 'list',
-            loadComponent: () => import( './pages/guest/guest-list/guest-list.component' ).then(m => m.GuestListComponent).finally(() => {
-            }),
+            loadComponent: () => import( './pages/guest/guest-list/guest-list.component' ).then( m => m.GuestListComponent ).finally( () => {
+            } ),
             pathMatch: 'full'
           }
         ],
       },
       {
         path: 'guest/add-guest',
-        loadComponent: () => import( './pages/guest/add-guest/add-guest.component' ).then(m => m.AddGuestComponent),
+        loadComponent: () => import( './pages/guest/add-guest/add-guest.component' ).then( m => m.AddGuestComponent ),
         title: 'Add Guest',
         pathMatch: 'full'
       },
       {
         path: 'guest/edit/:guest-id',
-        loadComponent: () => import( './pages/guest/edit-guest/edit-guest.component' ).then(m => m.EditGuestComponent),
+        loadComponent: () => import( './pages/guest/edit-guest/edit-guest.component' ).then( m => m.EditGuestComponent ),
         title: 'Edit Guest',
         pathMatch: 'full'
+      },
+      {
+        path: 'report',
+        data: { breadcrumb: 'reports' },
+        loadComponent: () => import( './pages/reports/gst-report/gst-report.component' ).then( m => m.GstReportComponent ),
+        children: [
+          {
+            path: 'gst-report',
+            loadComponent: () => import( './pages/reports/gst-report/gst-report.component' ).then( m => m.GstReportComponent ),
+            title: 'GST Report',
+            pathMatch: 'full'
+          }
+        ]
       }
 
     ]
   },
   {
-    path: 'report',
-    data: {breadcrumb: 'reports'},
-    loadComponent: () => import( './shared/layout/layout.component' ).then(m => m.LayoutComponent),
-    canActivate: [(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
-      inject(AuthGuardService).canActivate(route, state)],
-    canActivateChild: [(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
-      inject(AuthGuardService).canActivateChild(route, state)],
-    children: [
-      {
-        path: 'gst-report',
-        loadComponent: () => import( './pages/reports/gst-report/gst-report.component' ).then(m => m.GstReportComponent),
-        title: 'GST Report',
-        pathMatch: 'full'
-      }
-    ]
-  },
-  {
     path: 'login',
-    loadComponent: () => import( './pages/login/login.component' ).then(m => m.LoginComponent),
+    loadComponent: () => import( './pages/login/login.component' ).then( m => m.LoginComponent ),
   },
-  {path: '**', redirectTo: '/login'}
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: '**', redirectTo: '/login' }
 ];

@@ -1,67 +1,91 @@
 <form class="row" [formGroup]="form">
+  <p-toast position="top-center" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'"
+    [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'" />
   <div class="col-md-6 pb-2">
     <!-- (dateTimeChange)="selectedChanged($event)"   [min]="min"-->
     <label for="checkInDate" class="form-label">Check In Date</label>
-    <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" class="form-control form-control-sm"
-      formControlName="CheckInDate" aria-owns="owl-dt-picker-0">
-    <owl-date-time #dt1 aria-owns="owl-dt-picker-1" [hour12Timer]="false"></owl-date-time>
+    <input pInputText type="text" class="form-control form-control-sm text-sm" formControlName="CheckInDate"
+      ID="CheckInDate" mask="00/00/0000 00:00 AA" [dropSpecialCharacters]="false" placeholder="Check In Date" />
+    <!-- <p *ngIf="form.get('CheckInDate')?.invalid"
+      class="text-xs error-message text-end text-red-400  italic font-semibold text-opacity-50">dd/mm/yyyy
+      hh:mm am/pm</p> -->
+    <p *ngIf="form.get('CheckInDate')?.invalid">
+      <small class="text-red-400" *ngIf="form.get('CheckInDate')?.errors?.['pattern']">Use DD/MM/YY HH:MM AM/PM</small>
+    </p>
   </div>
   <div class="col-md-6  pb-2">
     <label for="checkOutDate" class="form-label">Check Out Date</label>
-    <!-- [min]="minCheckOutDate" -->
-    <input [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" class="form-control form-control-sm"
-      formControlName="CheckOutDate" aria-owns="owl-dt-picker-4">
-    <owl-date-time #dt2 aria-owns="owl-dt-picker-5"></owl-date-time>
+    <input pInputText type="text" class="form-control form-control-sm text-sm" formControlName="CheckOutDate"
+      mask="00/00/0000 00:00 AA" [dropSpecialCharacters]="false" placeholder="Check In Date" />
+    <p *ngIf="form.get('CheckOutDate')?.invalid">
+      <small class="text-red-400" *ngIf="form.get('CheckOutDate')?.errors?.['pattern']">Use DD/MM/YY HH:MM AM/PM</small>
+    </p>
   </div>
   <div class="col-md-12  pb-2">
-    <label for="roomNoId" class="form-label">Room No / Floor / Type</label>
-    <ng-select appearance="outline" placeholder="Select Room No" id="roomNoId" class="custom" formControlName="RoomNoId"
-      (change)="onRoomChange($event)" notFoundText="No items found">
-      @for(room of rooms; track room.Id) {
-      <ng-option [value]="room.Id">
-        Room-{{room.RoomNo}} / Floor-{{room.FloorNo}} / {{room.Type}}
-      </ng-option>
-      }
+    <label for="roomNoId" class="form-label">Room No / Floor / Type </label>
+    <ng-select [multiple]="true" [searchable]="true" appearance="outline" placeholder="Select Room No" id="roomNoId"
+      [items]="rooms" (remove)="onRoomRemove($event)" [clearable]="false" class="custom" formControlName="RoomId"
+      bindLabel="RoomNo" bindValue="Id" (change)="onRoomChange($event)" notFoundText="No items found">
     </ng-select>
+    <p class="text-xs italic font-semibold text-blue-400 text-end">Only available room(s) will come.</p>
+    <div class="pt-2">
+      <p-table [value]="selectedRooms" *ngIf="selectedRooms.length>0">
+        <ng-template pTemplate="header" class="text-xs">
+          <tr>
+            <th class="text-xs">No</th>
+            <th class="text-xs">Floor</th>
+            <th class="text-xs">Rent</th>
+            <th class="text-xs">Days</th>
+            <th class="text-xs">Amount</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-room>
+          <tr>
+            <td>{{ room.RoomNo }}</td>
+            <td>{{ room.Floor }}</td>
+            <td>&#8377;{{ room.Rent }}</td>
+            <td>{{ room.TotalDays }}</td>
+            <td>&#8377;{{ room.TotalAmount }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
   </div>
-  <div class="col-md-6  pb-2">
+  <div class="col-md-4  pb-2">
     <label for="ratePerNight" class="form-label">Rate (&#8377;)</label>
     <input type="number" class="form-control form-control-sm" id="ratePerNight" formControlName="RatePerNight"
       placeholder="Rate Per Night" />
   </div>
-  <div class="col-md-6  pb-2">
+  <div class="col-md-4  pb-2">
     <label for="totalAmount" class="form-label">Total (&#8377;)</label>
     <input type="number" class="form-control form-control-sm" id="totalAmount" formControlName="TotalAmount"
       placeholder="Total Amount" />
-  </div>
-  <div class="col-md-4  pb-2">
-    <label for="discount" class="form-label">Discount (&#8377;)</label>
-    <input type="number" class="form-control form-control-sm" id="discount" formControlName="Discount"
-      placeholder="Discount" />
   </div>
   <div class="col-md-4  ">
     <label for="noOfDays" class="form-label">Days</label>
     <input type="number" class="form-control form-control-sm" id="noOfDays" formControlName="NoOfDays"
       placeholder="No Of Days" />
   </div>
-  <div class="col-md-4 pb-2">
+  <div class="col-md-3  pb-2">
+    <label for="discount" class="form-label">Discount (&#8377;)</label>
+    <input type="number" class="form-control form-control-sm" id="discount" formControlName="Discount"
+      placeholder="Discount" />
+  </div>
+  <div class="col-md-3 pb-2">
     <label for="noOfAdults" class="form-label"># Adults</label>
     <input type="number" class="form-control form-control-sm" id="noOfAdults" formControlName="NoOfAdults"
       placeholder="No Of Adults" />
   </div>
-  <div class="col-md-4  pb-2">
+  <div class="col-md-3  pb-2">
     <label for="noOfChildren" class="form-label"># Children</label>
     <input type="number" class="form-control form-control-sm" id="noOfChildren" formControlName="NoOfChildren"
       placeholder="No Of Children" />
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-3">
     <label for="noOfGuests" class="form-label"># Guests</label>
     <input type="number" class="form-control form-control-sm" id="noOfGuests" formControlName="NoOfGuests"
       placeholder="Total No Of Guest" />
   </div>
-
-  <!-- <div class="col-md-3 col-3  align-content-end text-end">
-    <p-button [size]="'small'" [label]="'Save'" [icon]="'pi pi-save'" (onClick)="onSubmit()"></p-button>
-  </div> -->
+  <!-- <p class="text-xs text-gray-400 italic">For internal use: {{this.form?.controls["GuestStayDetailId"]?.value}}</p> -->
 </form>

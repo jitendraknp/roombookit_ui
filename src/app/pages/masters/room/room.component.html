@@ -1,51 +1,9 @@
-<div class="container-fluid p-0" style="height: 98vh;">
-  <div class="col-md-12">
-    <div class="page-people-directory">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="well">
-            <div class="row">
-              <div class="col-md-12">
-                <input type="text" placeholder="Search room" class="form-control">
-              </div>
-            </div>
-            <div class="row pt-4 pb-2">
-              <div class="col-md-2">
-                <p class="font-normal">
-                  All Rooms <span class="text-blue-600/100"> ({{rooms==null?'0':rooms!.length}})</span>
-                </p>
-              </div>
-              <div class="col-md-2">
-                <p class="font-normal">Available Rooms</p>
-              </div>
-              <div class="col-md-2">
-                <p class="font-normal">Booked Rooms</p>
-              </div>
-              <div class="col-md-6 text-end">
-                <a class="btn btn-outline-primary btn-sm  btn-add-new-contact shadow-lg" [routerLink]="['add']">
-                  <ion-icon name="person-add-sharp"></ion-icon> Add Room</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row pe-0">
-          <div class="col-md-8 pe-0">
-            <ul class="list-group contact-group">
-              @for (room of rooms ; track $index) {
-              <!-- <li class="list-group-item fw-bold border-0"> -->
-              <app-room-list [cardDetails]="room" [resetFormSubject]="resetFormSubject"></app-room-list>
-              <!-- </li> -->
-              }
-              @if(rooms==null) {
-              <app-no-records-found></app-no-records-found>
-              }
-            </ul>
-          </div>
-          <div class="col-md-4 pe-0 ps-1">
-            <router-outlet></router-outlet>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+@defer(on immediate){
+<router-outlet ></router-outlet>
+}
+@placeholder (minimum 2000ms) {
+  <p-progressBar mode="indeterminate" [style]="{'height': '2px'}" />
+}
+@error {
+  <p>Failed to load data</p>
+}

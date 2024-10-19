@@ -1,45 +1,105 @@
-<li class=" list-group-item d-flex justify-content-between align-items-start border-0  shadow-lg  mb-2 rounded">
-    <!-- @defer(){ -->
-    <div class="container li-container">
-        <div class="row col-md-3 li-item">
-            <span class=" d-flex justify-content-center text-info">Room No</span>
-            <span class="d-flex justify-content-center">{{cardDetails?.RoomNo| uppercase}}</span>
-        </div>
-        <div class="row col-md-3 col li-item">
-            <span class="d-flex justify-content-center text-info">Floor No</span>
-            <span class="d-flex justify-content-center">{{cardDetails?.FloorNo}}</span>
-        </div>
-        <div class="row col-md-3 co li-iteml">
-            <span class="d-flex justify-content-center text-info">Capacity</span>
-            <span class="d-flex justify-content-center">{{cardDetails?.Capacity}}</span>
-        </div>
-        <div class="row col-md-3 col li-item">
-            <span class="d-flex justify-content-center text-info">Type</span>
-            <span class="d-flex justify-content-center">{{cardDetails?.Type}}</span>
-        </div>
-        <div class="row col-md-3 col li-item">
-            <span class="d-flex justify-content-center text-info">Rent / Night</span>
-            <span class="d-flex justify-content-center">{{cardDetails?.RentPerNight}}</span>
-        </div>
-    </div>
-    <div class="d-flex col-md-3 text-end">
-        <div class="col gy-3 col-md-4 text-end">
-            <span
-                [ngClass]="{'btn-outline-success': cardDetails?.IsActive, 'btn-outline-danger': !cardDetails?.IsActive}"
-                class="btn btn-sm shadow-lg">
-                @if(cardDetails?.IsActive){
-                <i class="bi bi-check2"></i>
-                } @else {
-                <i class="bi bi-file-earmark-x"></i>
+<div class="container-fluid profile-page pe-0 ps-0 pb-1 h-max flex-auto">
+  <div class="flex">
+    <input type="text" placeholder="Search room" class="form-control">
+  </div>
+  <div class="flex flex-row py-2 px-1 gap-8">
+    <p class=" text-sm font-semibold align-content-center">
+      All Rooms : <span class="text-blue-600/100 text-xs py-0.5 px-1"><p-badge
+          [value]="rooms==null ?'0':rooms!.length" /></span>
+    </p>
+    <p class=" text-sm font-semibold  align-content-center">
+      Booked : <span class="text-blue-600/100 text-xs py-0.5 px-1"> <p-badge [value]="bookedRooms" /></span>
+    </p>
+    <p class="text-sm font-semibold  align-content-center">
+      Available : <span class="text-blue-600/100 text-xs py-0.5 px-1"><p-badge [value]="availableRooms" /> </span>
+    </p>
+    <p class="justify-content-end flex flex-1">
+      <p-button label="Add Room" size="small" (click)="addRoom()" [ngClass]="'btn btn-sm btn-primary'">
+      </p-button>
+    </p>
+  </div>
+  <div *ngIf="rooms && rooms.length > 0">
+    @for (r of rooms | paginate: { itemsPerPage: 5,
+    currentPage: p ,totalItems: rooms.length}; track $index) {
+    <div class="profile-page">
+      <div class="card profile-header bg-gradient-light my-2 flex">
+        <div class="flex flex-shrink-0 w-100">
+          <div class="flex-1 flex px-2">
+            <div class="profile-image float-md-right py-1">
+              <img src="image/room.jpg" alt="">
+            </div>
+          </div>
+          <div class="flex-1 flex px-5  py-2">
+            <div class="flex-col">
+              <p class="text-blue-500 text-sm">Room No</p>
+              <p class="text-xs text-center font-semibold pt-1.5">{{r?.RoomNo}}</p>
+            </div>
+          </div>
+          <div class="flex-1 flex px-5 py-2">
+            <div class="flex-col">
+              <p class="text-blue-500 text-sm">Room Type</p>
+              <p class=" text-xs font-semibold  pt-1.5">{{r?.Type}}</p>
+            </div>
+          </div>
+          <div class="flex-1 flex px-5  py-2">
+            <div class="flex-col">
+              <p class="text-blue-500 text-sm">Floor No</p>
+              <p class=" text-xs text-center font-semibold pt-1.5">{{r?.FloorNo}}</p>
+            </div>
+          </div>
+          <div class="flex-1 flex px-5 py-2">
+            <div class="flex-col">
+              <p class="text-blue-500 text-sm">Capacity</p>
+              <p class=" text-xs text-center font-semibold pt-1.5">{{r?.Capacity}}</p>
+            </div>
+          </div>
+          <div class="flex-1 flex px-5 py-2">
+            <div class="flex-col">
+              <p class="text-blue-500 text-sm">Booking</p>
+              <p class="text-gray-500 text-xs text-center font-italic pt-1.5"
+                *ngIf="!r?.AvailablityStatus?.IsAvailable">
+                {{r?.AvailablityStatus?.FromDate}}</p>
+              <p class=" text-xs text-center font-italic pt-1" *ngIf="!r?.AvailablityStatus?.IsAvailable">
+                {{r?.AvailablityStatus?.ToDate}}</p>
+            </div>
+          </div>
+          <div class="flex-1 flex gap-4  py-2">
+            <p class="text-blue-500 text-sm">
+              <a class="d-inline hover:text-orange-400" href="javascript:void(0);">
+                @if(r?.AvailablityStatus?.IsAvailable){
+                <i class="pi pi-flag" style="font-size: 0.8rem;" pTooltip="Available" tooltipPosition="top"
+                  tooltipStyleClass="text-xs"></i>
                 }
-            </span>
+                @else{
+                <i class="pi pi-flag-fill text-red-500" style="font-size: 0.8rem" pTooltip="Not Available"
+                  tooltipPosition="top" tooltipStyleClass="text-xs"></i>
+                }
+              </a>
+            </p>
+            <p class="text-blue-500 text-sm">
+              <a class="d-inline hover:text-orange-400" href="javascript:void(0);" (click)="onRoomEdit(r?.Id!)">
+                <i class="pi pi-pencil" style="font-size: 0.8rem" pTooltip="Edit Room" tooltipPosition="top"
+                  [tooltipStyleClass]="'text-xs'"></i>
+              </a>
+            </p>
+            <p class="text-blue-500 text-sm">
+              <a class="d-inline hover:text-slate-400" href="javascript:void(0);">
+                <i class="pi pi-trash" style="font-size: 0.8rem; color:red;" pTooltip="Delete Room"
+                  tooltipPosition="top" [tooltipStyleClass]="'text-xs'"></i>
+              </a>
+            </p>
+          </div>
         </div>
-        <div class="col gy-3 col-md-4 text-center">
-            <a class="btn btn-sm  btn-outline-primary shadow-lg" [routerLink]="['edit',cardDetails?.Id]"><i
-                    class="bi bi-pencil-fill"></i> </a>
-        </div>
-        <div class="col gy-3 col-md-4 text-start">
-            <a class="btn btn-sm  btn-outline-danger shadow-lg"><i class="bi bi-trash"></i> </a>
-        </div>
+      </div>
     </div>
-</li>
+    }
+  </div>
+  @if(rooms==null) {
+  <app-no-records-found class="text-sm font-semibold"></app-no-records-found>
+  }
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end text-sm">
+      <pagination-controls [autoHide]="true" (pageChange)="p = $event"></pagination-controls>
+    </ul>
+  </nav>
+</div>

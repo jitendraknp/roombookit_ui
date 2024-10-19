@@ -12,46 +12,46 @@ export class CommonService {
   httpOptions = {
     headers: new HttpHeaders( {
       'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
-      'Pragma': 'no-cache',
-      'Expires': 0
     } )
   };
   getCountries (): Observable<ApiResponse> {
     return this.httpClient.get<ApiResponse>( `${ URL }Country`, this.httpOptions );
   }
   getAllStates (): Observable<ApiResponse> {
-    return this.httpClient.get<ApiResponse>( `${ URL }State/All`, this.httpOptions ).pipe( retry( 0 ), catchError( this.handleError ) );
+    return this.httpClient.get<ApiResponse>( `${ URL }State/All`, this.httpOptions );
   }
   getStates ( countryId: string ): Observable<ApiResponse> {
-    return this.httpClient.get<ApiResponse>( `${ URL }State/${ countryId }/country`, this.httpOptions ).pipe( retry( 0 ), catchError( this.handleError ) );
+    return this.httpClient.get<ApiResponse>( `${ URL }State/${ countryId }/country`, this.httpOptions );
   }
   getStateById ( Id: string ): Observable<ApiResponse> {
-    return this.httpClient.get<ApiResponse>( `${ URL }State/${ Id }`, this.httpOptions ).pipe( retry( 0 ), catchError( this.handleError ) );
+    return this.httpClient.get<ApiResponse>( `${ URL }State/${ Id }`, this.httpOptions );
   }
   getCities ( stateId: string ): Observable<ApiResponse> {
-    return this.httpClient.get<ApiResponse>( `${ URL }City/${ stateId }/states`, this.httpOptions ).pipe( retry( 0 ), catchError( this.handleError ) );
+    return this.httpClient.get<ApiResponse>( `${ URL }City/${ stateId }/states`, this.httpOptions );
   }
   getCityById ( Id: string ): Observable<ApiResponse> {
-    return this.httpClient.get<ApiResponse>( `${ URL }City/${ Id }`, this.httpOptions ).pipe( retry( 0 ), catchError( this.handleError ) );
+    return this.httpClient.get<ApiResponse>( `${ URL }City/${ Id }`, this.httpOptions );
   }
   getAllCities (): Observable<ApiResponse> {
-    return this.httpClient.get<ApiResponse>( `${ URL }City/all`, this.httpOptions ).pipe( retry( 0 ), catchError( this.handleError ) );
+    return this.httpClient.get<ApiResponse>( `${ URL }City/all`, this.httpOptions );
   }
   getRoles (): Observable<ApiResponse> {
-    return this.httpClient.get<ApiResponse>( `${ URL }Role/All`, this.httpOptions ).pipe( retry( 0 ), catchError( this.handleError ) );
+    return this.httpClient.get<ApiResponse>( `${ URL }Role/All`, this.httpOptions );
   }
   getMenus (): Observable<ApiResponse> {
-    return this.httpClient.get<ApiResponse>( `${ URL }Menu/GetByRole`, this.httpOptions ).pipe( retry( 0 ), catchError( this.handleError ) );
+    return this.httpClient.get<ApiResponse>( `${ URL }Menu/GetByRole`, this.httpOptions );
   }
   getAllRooms (): Observable<ApiResponse> {
-    return this.httpClient.get<ApiResponse>( `${ URL }Room/all`, this.httpOptions ).pipe( retry( 0 ), catchError( this.handleError ) );
+    return this.httpClient.get<ApiResponse>( `${ URL }Room/all`, this.httpOptions );
+  }
+  getAllAvailableRooms (): Observable<ApiResponse> {
+    return this.httpClient.get<ApiResponse>( `${ URL }Room/all-available`, this.httpOptions );
   }
   updateState ( state: any ): Observable<ApiResponse> {
-    return this.httpClient.put<ApiResponse>( `${ URL }State/update`, state, this.httpOptions ).pipe( retry( 0 ), catchError( this.handleError ) );
+    return this.httpClient.put<ApiResponse>( `${ URL }State/update`, state, this.httpOptions );
   }
   saveState ( state: any ): Observable<ApiResponse> {
-    return this.httpClient.post<ApiResponse>( `${ URL }State/save`, state, this.httpOptions ).pipe( retry( 0 ), catchError( this.handleError ) );
+    return this.httpClient.post<ApiResponse>( `${ URL }State/save`, state, this.httpOptions );
   }
   handleError ( error: HttpErrorResponse ) {
     // StorageService = inject(StorageService)
