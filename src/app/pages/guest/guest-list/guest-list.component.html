@@ -1,128 +1,193 @@
-<div class="container profile-page pe-1 ps-1 pb-1" *ngIf="guestDetails?.FirstName">
+<div class="flex flex-column  pb-1 h-max">
   <p-toast position="top-center" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'"
     [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'" />
-  <div class="card profile-header bg-gradient-light m-0">
-    <div class="body row pb-1">
-      <div class="col-lg-2 col-md-1 col-xs-12 col-sm-4">
-        <div class="profile-image float-md-right py-1">
-          <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
+  <p-card class="w-full">
+    <ng-template pTemplate="header" class="custom-card-header">
+      <div class="flex flex-row justify-between align-items-center">
+        <p class="px-2 text-primary text-sm">
+          {{guestDetails?.FirstName }} {{guestDetails?.LastName}}
+        </p>
+        @if(guestDetails?.Invoice?.[0]?.Status!=="Pending"){
+        <p class="text-sm text-red-500 pe-2">
+          <i pTooltip="{{guestDetails?.Invoice?.[0]?.Status}}" [tooltipPosition]="'top'"
+            [tooltipStyleClass]="'text-xs text-danger'" class="pi pi-exclamation-circle" style="color: red"></i>
+        </p>
+        }
+        @else {
+        <p class="text-sm" style="color: var(--primary-color)">
+          {{ guestDetails?.Invoice?.[0]?.Status }}
+        </p>
+        }
+
+        <div class="ml-auto flex flex-row items-center gap-3">
+          <!-- Edit button with pencil icon, ensure icon is vertically centered -->
+          <div class="flex justify-items-center">
+            <p-button icon="pi pi-pencil" [pTooltip]="'Edit guest'" tooltipPosition="top" [severity]="'primary'"
+              [size]="'small'" [routerLink]="['edit',guestDetails?.Id]"
+              [tooltipStyleClass]="'text-xs  flex items-center'" [rounded]="true" [text]="true"
+              class="p-button-icon-only p-0"></p-button>
+          </div>
+          <!-- Print invoice link -->
+          <ng-container *ngIf="guestDetails?.GuestsStayDetail?.[0]?.InvoiceNo">
+            <p-button icon="pi pi-print" [pTooltip]="'Print invoice'" tooltipPosition="top" [severity]="'primary'"
+              [size]="'small'" (click)="printInvoice(guestDetails?.Id, guestDetails?.GuestsStayDetail?.[0]?.InvoiceNo!)"
+              [tooltipStyleClass]="'text-xs  flex items-center'" [rounded]="true" [text]="true"></p-button>
+
+          </ng-container>
+          <!-- Delete button -->
+          <p-button icon="pi pi-trash" [pTooltip]="'Delete guest'" tooltipPosition="top" [severity]="'primary'"
+            [size]="'small'" [tooltipStyleClass]="'text-xs  flex items-center'" [rounded]="true"
+            [text]="true"></p-button>
+          <!-- Collapse button -->
+          <p-button icon="pi pi-minus" [pTooltip]="'Collapse'" tooltipPosition="top" [severity]="'primary'"
+            [styleClass]=" 'flex items-center'" [size]="'small'" [tooltipStyleClass]="'text-xs'" [rounded]="true"
+            [text]="true"></p-button>
         </div>
       </div>
-      <div class="col-lg-10 col-md-11 col-xs-12 col-sm-8">
-        <ng-container>
-          <div class="flex flex-row justify-between">
-
-            <p class="mt-0 mb-0 text-primary  font-semibold text-sm">
-              {{guestDetails?.FirstName }} {{guestDetails?.LastName}}
-            </p>
-            <div class="social-icon d-flex  justify-content-end ps-2">
-              @if(guestDetails?.Invoice?.[0]?.Status!=="Pending"){
-              <p class="text-sm text-red-500 pe-2"><i pTooltip="{{guestDetails?.Invoice?.[0]?.Status}}"
-                  [tooltipPosition]="'top'" variant="" [tooltipStyleClass]="'text-xs text-danger'"
-                  class="pi pi-exclamation-circle" style="color: red"></i></p>
-              }
-              @else {
-              <p class="text-sm text-blue-400">{{guestDetails?.Invoice?.[0]?.Status}}</p>
-              }
-              <a class="d-inline hover:text-orange-400" href="javascript:void(0);"
-                [routerLink]="['edit',guestDetails?.Id]" pTooltip="Edit guest" tooltipPosition="top"
-                [tooltipStyleClass]="'text-xs'">
-                <!-- <ion-icon name="create-sharp" class="text-sky-700"></ion-icon> -->
-                <i class="pi pi-pencil " style="color: var(--primary-color)"></i>
-              </a>
-
-              @if( guestDetails?.GuestsStayDetail?.[0]?.InvoiceNo!=""){
-              <a href="javascript:void(0);"
-                styleClass="size-2  text-xs font-medium hover:bg-secondary/90 text-secondary-foreground cursor-pointer"
-                [pTooltip]="'Print invoice'" [tooltipPosition]="'top'" variant="transparent"
-                [tooltipStyleClass]="'text-xs'"
-                (click)="printInvoice(guestDetails?.Id,guestDetails?.GuestsStayDetail?.[0]?.InvoiceNo!)">
-                <i class="pi pi-print" style="color: var(--primary-color)"></i>
-              </a>
-              }
-              <a class="d-inline" href="javascript:void(0);" pTooltip="Delete guest" [fitContent]="true"
-                tooltipPosition="top" [tooltipStyleClass]="'text-xs'">
-                <i class="pi pi-trash" style="color: red"></i>
-              </a>
-            </div>
+    </ng-template>
+    <ng-template pTemplate="body">
+      <div class="grid gap-2 px-0 py-1">
+        <div class="md:block sm:hidden xs:hidden lg:block xl:block">
+          <div class="profile-image float-md-right py-1 md:block sm:hidden xs:hidden lg:block xl:block">
+            <img src="image/avatar7.png" alt="">
           </div>
-          <div class="flex">
-            <div class="flex flex-col col-md-7">
-              <p class="text-muted text-sm">{{guestDetails?.Address}}</p>
-              <p class="text-muted pb-1  text-xs">{{guestDetails?.City?.Name | uppercase}}, {{guestDetails?.State?.Name
-                | uppercase}},
-                {{guestDetails?.Country?.Name | uppercase}}
-              </p>
-              <div class="d-flex justify-normal gap-1">
-                <div class="d-inline pe-2">
-                  <p class="text-muted text-xs">
-                    <!-- <ion-icon name="call"></ion-icon> -->
-                    <i class="pi pi-phone" style="color: var(--primary-color)"></i>
-                    {{guestDetails?.MobileNo}}
-                  </p>
-                </div>
-                @if(guestDetails?.EmailId!=null || guestDetails?.EmailId!=""){
-                <div class="d-inline" *ngIf="guestDetails?.EmailId">
-                  <p class="job_post text-muted text-sm">
-                    <i class="pi pi-inbox" style="color: var(--primary-color)"></i> {{guestDetails?.EmailId}}
-                  </p>
-                </div>
-                }
-              </div>
-            </div>
-            <div class="row shadow-3xl pe-2">
-              <div
-                class="flex flex-row justify-between  border-1 border-bottom border-top-0 border-end-0 border-start-0 border-info py-1">
-                <p class="text-sm font-semibold text-muted "> Invoice No</p>
-                <p class="font-bold text-sm">
-                  @if(guestDetails?.GuestsStayDetail?.[0]?.InvoiceNo==""){
-                  Not Generated
-                  }
-                  @else{
-                  <a href="javascript:void(0)" class="hover:text-blue-400" [pTooltip]="'View invoice'"
-                    [tooltipPosition]="'top'" variant="transparent" [tooltipStyleClass]="'text-xs'">
-                    {{guestDetails?.GuestsStayDetail?.[0]?.InvoiceNo}}
+        </div>
+        <div class="md:col-12 sm:col-12 xl:col-6 xl:col-6">
+          <p-card>
+            <ng-template pTemplate="header">
+              <div class="custom-card-header">
+                Contact Details
+                <div class="ml-auto flex flex-row items-center gap-3">
+                  <a href="#" pTooltip="Edit Address">
+                    <i class="pi pi-file-edit" style="color: var(--primary-color);font-size: 0.8rem"></i>
                   </a>
-                  }
-                </p>
+                </div>
               </div>
-              <div
-                class="flex flex-row justify-between border-1 border-bottom border-top-0 border-end-0 border-start-0 border-info py-1">
-                <p class="text-sm font-semibold text-muted "> Check-In</p>
-                <p class="text-muted text-sm">
-                  @if(guestDetails?.GuestsStayDetail==null){
-                  NA
-                  }
-                  @else{
-                  {{ firstCheckInDate }}
-                  }
-                </p>
+
+            </ng-template>
+            <ng-template pTemplate="body">
+              <div class="grid">
+                <div class="col-12 py-1">
+                  <p class="text-muted text-sm">{{guestDetails?.Address}}</p>
+                </div>
+                <div class="col-12 py-1">
+                  <p class="text-muted pb-1  text-xs">{{guestDetails?.City?.Name | uppercase}},
+                    {{guestDetails?.State?.Name
+                    | uppercase}},
+                    {{guestDetails?.Country?.Name | uppercase}}
+                  </p>
+                </div>
+                <div class="col-12 py-1">
+                  <div class="grid">
+                    <div class="col-6 items-start py-1 sm:col-12 xs:col-12 md:col-6 lg:col-6  xl:col-6">
+                      <p class="text-muted text-xs">
+                        <!-- <ion-icon name="call"></ion-icon> -->
+                        <i class="pi pi-phone" style="color: var(--primary-color)"></i>
+                        {{guestDetails?.MobileNo}}
+                      </p>
+                    </div>
+                    <div class="col-6 items-start py-1 sm:col-12 xs:col-12 md:col-6 lg:col-6  xl:col-6">
+                      @if(guestDetails?.EmailId!=null || guestDetails?.EmailId!=""){
+                      <div class="d-inline" *ngIf="guestDetails?.EmailId">
+                        <p class="job_post text-muted text-sm">
+                          <i class="pi pi-inbox" style="color: var(--primary-color)"></i> {{guestDetails?.EmailId}}
+                        </p>
+                      </div>
+                      }
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div
-                class="flex flex-row justify-between border-1 border-bottom border-top-0 border-end-0 border-start-0 border-info py-1">
-                <p class="text-sm font-semibold  text-muted "> Check-Out </p>
-                <p class="text-muted text-sm">
-                  @if(guestDetails?.GuestsStayDetail==null){
-                  NA
-                  }
-                  @else{
-                  {{firstCheckOutDate}}
-                  }
-                </p>
+            </ng-template>
+          </p-card>
+        </div>
+        <div class="col">
+          <p-card>
+            <ng-template pTemplate="header">
+              <div class="custom-card-header">Invoice</div>
+            </ng-template>
+            <ng-template pTemplate="body">
+              <div class="grid">
+                <!-- Invoice No Section -->
+                <div class="col-12 border-bottom-1 border-secondary py-1">
+                  <div class="grid items-center">
+                    <div class="col-6 py-0">
+                      <p class="text-sm text-muted">Invoice No</p>
+                    </div>
+                    <div class="col-6 py-0 flex justify-end items-center">
+                      <p class="font-bold text-xs">
+                        @if(guestDetails?.GuestsStayDetail?.[0]?.InvoiceNo=="") {
+                        Not Generated
+                        }
+                        @else {
+                        <a href="javascript:void(0)" class="hover:text-primary-400" [pTooltip]="'View invoice'"
+                          [tooltipPosition]="'top'" [tooltipStyleClass]="'text-xs'">
+                          {{guestDetails?.GuestsStayDetail?.[0]?.InvoiceNo}}
+                        </a>
+                        }
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Check-In Section -->
+                <div class="col-12 border-bottom-1 border-secondary pt-1 pb-1">
+                  <div class="grid items-center p-0">
+                    <div class="col-6 flex justify-end items-center pb-0">
+                      <p class="text-sm text-muted">Check-In</p>
+                    </div>
+                    <div class="col-6 flex justify-end items-center pb-0">
+                      <p class="text-xs text-muted">
+                        @if(guestDetails?.GuestsStayDetail==null) {
+                        NA
+                        }
+                        @else {
+                        {{ firstCheckInDate }}
+                        }
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Check-Out Section -->
+                <div class="col-12 border-bottom-1 border-secondary pt-1 pb-1">
+                  <div class="grid items-center p-0">
+                    <div class="col-6 flex justify-end items-center pb-0">
+                      <p class="text-sm text-muted">Check-Out</p>
+                    </div>
+                    <div class="col-6 flex justify-end items-center pb-0">
+                      <p class="text-xs text-muted">
+                        @if(guestDetails?.GuestsStayDetail==null) {
+                        NA
+                        }
+                        @else {
+                        {{ firstCheckOutDate }}
+                        }
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </ng-container>
+            </ng-template>
+          </p-card>
+        </div>
       </div>
-      <span class="flex flex-row  font-italic font-normal font-italic text-gray-500 opacity-8 py-1">
-        <p class="pe-1 fst-italic text-xs align-content-center">Date:</p>
-        <p class="fst-italic text-xs pe-2 align-content-center">{{guestDetails?.FormatCreatedDate}}</p>
-        <p class="pe-1 fst-italic text-xs align-content-center">By:</p>
-        <p class="fst-italic text-xs align-content-center">{{guestDetails?.CreatedBy}}</p>
-        <p class="align-content-end ps-2">
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <span class="font-normal font-italic	 text-secondary  flex flex-row justify-between align-items-center gap-2">
+        <p class="pe-1 font-italic	 text-xs content-center">Date:</p>
+        <p class="font-italic	text-xs pe-2 content-center">{{guestDetails?.FormatCreatedDate}}</p>
+        <p class="pe-1 fst-italic text-xs content-center">By:</p>
+        <p class="fst-italic text-xs content-center">{{guestDetails?.CreatedBy}}</p>
+        <p class="content-start ps-2">
           <p-image src="{{guestDetails?.QRString}}" alt="Image" width="24" [preview]="true" />
         </p>
+        <div class="ml-auto flex flex-row items-center gap-3">
+          <p-button icon="pi pi-file-edit" pTooltip="Change room" tooltipPosition="top" [tooltipStyleClass]="'text-xs'"
+            [rounded]="true" [text]="true" [disabled]="!guestDetails?.GuestsStayDetail?.[0]?.InvoiceNo"></p-button>
+          <!-- <p-button icon="pi pi-times" pTooltip="Cancel room" tooltipPosition="top" [tooltipStyleClass]="'text-xs'"
+            [rounded]="true" [text]="true"></p-button> -->
+        </div>
       </span>
-    </div>
-  </div>
+    </ng-template>
+  </p-card>
 </div>

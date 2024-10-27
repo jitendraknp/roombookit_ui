@@ -110,3 +110,23 @@ export interface SelectedRoomsDetail {
   TotalAmount?: number;
   Rent?: number;
 }
+
+export interface AdvanceBooking {
+  Id?: string,
+  GuestsId?: string,
+  FirstName?: string,
+  LastName?: string,
+  PhoneNo?: string,
+  Email?: string,
+  Address?: string,
+  CheckInDate?: string,
+  CheckOutDate?: string,
+  BookingDate?: string,
+  NoOfGuests?: number,
+  RoomCategoryId?: RoomCategory[];
+}
+export interface RoomCategory {
+  Id?: number;
+  NoOfRooms?: number,
+  Status?: string;
+}

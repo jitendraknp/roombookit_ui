@@ -16,7 +16,7 @@ import { GuestSiblingDetails } from '../../../models/sibling-details';
 import { GuestBaseEntity } from '../../../models/guest-base';
 import { PaymentDetailsComponent } from '../../../shared/payment-details/payment-details.component';
 import { MoreGuestComponent } from "../../../shared/more-guest/more-guest.component";
-import { CommonModule, DatePipe, NgFor, SlicePipe } from '@angular/common';
+import { CommonModule, DatePipe, formatDate, NgFor, SlicePipe } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CustomMessageService } from '../../../_services/custom-message.service';
 import { IdProofComponent } from "../../../shared/id-proof/id-proof.component";
@@ -30,6 +30,9 @@ import { UtilsService } from '../../../_helpers/utils.service';
 import { BookingService } from '../../../_services/booking.service';
 import { InvoiceService } from '../../../_services/invoice.service';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
 
 @Component( {
   selector: 'app-add-guest',
@@ -50,7 +53,10 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
     RippleModule,
     NgFor,
     TooltipModule,
+    CardModule,
+    InputTextModule,
     InputTextareaModule,
+    SelectModule,
     CheckboxModule,
     NgxMaskDirective,
     IdProofComponent],
@@ -65,6 +71,12 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     console.log( $event );
   }
   loading: boolean = false;
+  gender = [
+    { name: 'MALE', code: 'MALE' },
+    { name: 'FEMALE', code: 'FEMALE' },
+    { name: 'TRANSGENDER', code: 'TRANSGENDER' }
+
+  ];
   isBookigDataSaved: boolean = false;
   hotelId: string = '5c953e70-73fe-46cf-0267-08dcb3aa275e';
   moreGuestForm: FormGroup;
@@ -421,8 +433,8 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     }
     const bookingDetails: BookingDetails = {
       GuestId: this.newGuestForm.controls.GuestId.value!,
-      CheckInDate: this.datePipe.transform( this.newGuestForm.controls.CheckInDate.value!, 'yyyy-MM-dd hh:mm:ss a' )!.toString(),
-      CheckOutDate: this.datePipe.transform( this.newGuestForm.controls.CheckOutDate.value!, 'yyyy-MM-dd hh:mm:ss a' )!.toString(),
+      CheckInDate: this.newGuestForm.controls.CheckInDate.value!,
+      CheckOutDate: this.newGuestForm.controls.CheckOutDate.value!,
       Rooms: this.newGuestForm.controls.RoomId.value!,
       RatePerNight: this.newGuestForm.controls.RatePerNight.value!,
       TotalAmount: this.newGuestForm.controls.TotalAmount.value!,
@@ -443,7 +455,7 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
       InvoiceNo: this.newGuestForm.controls.InvoiceNo.value!,
       TotalDays: this.newGuestForm.controls.NoOfDays.value!,
     };
-
+    console.log( bookingDetails );
     this.bookingService.saveBookingDetails( bookingDetails ).subscribe( {
       next: ( response ) => {
         if ( response.StatusCode == 200 ) {

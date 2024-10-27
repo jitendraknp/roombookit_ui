@@ -1,45 +1,52 @@
 <form (ngSubmit)="onSubmit()" [formGroup]="stateForm">
   <p-toast position="top-center" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'"
     [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'" />
-  <div class="card border-0 shadow-lg m-0">
-    <div class="card-header  d-flex justify-content-between align-items-center bg-primary bg-gradient text-white">
-      <p class="uppercase text-sm">Add State</p>
-      <a (click)="onClose()" href="javascript:void(0);">
-        <i class="pi pi-times" style="color: white"></i>
-      </a>
-    </div>
-    <div class="card-body">
-      <div class="flex  gap-2 justify-content-around">
-        <div class="flex flex-1">
-          <div class="flex flex-col text-sm flex-1">
-            <label class="form-label" for="stateName">State Name</label>
-            <input class="form-control form-control-sm" formControlName="Name" id="stateName" pInputText
-              placeholder="State Name" type="text" />
-          </div>
+  <p-card>
+    <ng-template pTemplate="header">
+      <div class="flex flex-row justify-between p-2">
+        <p>Add State</p>
+        <a (click)="onClose()" href="javascript:void(0);" class="text-sm ml-auto">
+          <i class="pi pi-times text-primary"></i>
+        </a>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="body">
+      <div class="grid">
+        <div class="col-12 lg:col-3 md:col-6 lg:col-3 sm:col-12">
+          <label class="form-label" for="stateName">State Name</label>
+          <input pInputText formControlName="Name" id="stateName" pInputText placeholder="State Name" type="text"
+            size="small" class="w-full" />
         </div>
-        <div class="flex flex-1">
-          <div class="flex flex-col text-sm">
-            <label class="form-label" for="stateCode">State Code</label>
-            <input class="form-control form-control-sm" formControlName="Code" id="stateCode" placeholder="State Code"
-              type="text" />
-          </div>
+        <div class="col-12 lg:col-3 md:col-6 lg:col-3 sm:col-12">
+          <label class="form-label" for="stateCode">State Code</label>
+          <input pInputText formControlName="Code" id="stateCode" placeholder="State Code" size="small" type="text"
+            class="w-full" />
         </div>
-        <div class="flex flex-1">
-          <div class="flex flex-col text-sm flex-1">
-            <label class="form-label" for="countryId">Country</label>
-            <ng-select appearance="outline" class="custom" formControlName="CountryId" id="countryId"
-              notFoundText="No items found" placeholder="Select Country">
-              @for (country of countries; track country.Id) {
-              <ng-option [value]="country.Id">{{ country.Name }} ({{ country.Code }})</ng-option>
-              }
-            </ng-select>
+        <div class="col-12 lg:col-3 md:col-6 lg:col-3 sm:col-12">
+          <label class="form-label" for="countryId">Country</label>
+          <ng-select appearance="outline" class="custom" formControlName="CountryId" id="countryId"
+            notFoundText="No items found" placeholder="Select Country">
+            @for (country of countries; track country.Id) {
+            <ng-option [value]="country.Id">{{ country.Name }} ({{ country.Code }})</ng-option>
+            }
+          </ng-select>
+        </div>
+        <div class="col-12 lg:col-3 md:col-6 lg:col-3 sm:col-12">
+          <div class="input-group input-group">
+            <div class="input-group-text">
+              <input class="form-check-input mt-0" type="checkbox">
+            </div>
+            <input [value]="activeValue" class="form-control" disabled type="text">
           </div>
         </div>
       </div>
-
-    </div>
-    <div class="card-footer text-end">
-      <button [disabled]="!stateForm.valid" class="btn btn-primary btn-sm" pButton type="submit">Save</button>
-    </div>
-  </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <div class="flex   flex-row">
+        <div class=" ml-auto">
+          <p-button [disabled]="!stateForm.valid" type="submit" label="Save" size="small" severity="primary"></p-button>
+        </div>
+      </div>
+    </ng-template>
+  </p-card>
 </form>

@@ -1,0 +1,37 @@
+<p-toast />
+<p-confirmpopup />
+<div class="grid">
+    <div class="col-12  h-full">
+        <p-table [value]="rooms" [scrollable]="false" class="h-ful" [paginator]="true" [rows]="10" stripedRows
+            scrollHeight="flex" [styleClass]="'text-xs'">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Room No</th>
+                    <th>Room Type</th>
+                    <th>Floor No</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-room>
+                <tr>
+                    <td>{{ room.RoomNo}}</td>
+                    <td>{{ room.Type }}</td>
+                    <td>{{ room.FloorNo }}</td>
+                    <td>
+                        <p-tag [value]="room.AvailablityStatus?.IsAvailable ? 'Available' : 'Unavailable' "
+                            [severity]="getSeverity(room.AvailablityStatus?.IsAvailable)"
+                            [styleClass]="'font-normal text-xs'" />
+                    </td>
+                    <td>
+                        <p-button
+                            label="{{ room.AvailablityStatus?.IsAvailable ? 'Mark Unavailable' : 'Mark Available' }}"
+                            (onClick)="confirm($event,room.Id)" icon="pi pi-pencil" [size]="'small'"
+                            [severity]="'success'" [styleClass]="'text-xs'">
+                        </p-button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

@@ -1,21 +1,12 @@
 import { ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
-import { SignupComponent } from './pages/signup/signup.component';
-import { AdminComponent } from './pages/admin/admin.component';
 import { AuthGuardService } from './authentication/services/auth-guard.service';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { inject } from '@angular/core';
 import { HotelSetupComponent } from './pages/hotel-setup/hotel-setup.component';
-import { AdminSetupComponent } from './pages/admin-setup/admin-setup.component';
-import { AddCountryComponent } from './pages/masters/country/add-country/add-country.component';
-import { EditCountryComponent } from './pages/masters/country/edit-country/edit-country.component';
 import { editUserResolver, userListResolver } from './pages/users/edit-user/edit-user-resolver';
-import { guestDataResolver } from './pages/guest/guest-data.resolver';
 import { JoinRoomComponent } from './pages/join-room/join-room.component';
 import { ChatComponent } from './pages/chat/chat.component';
-import { LogutComponent } from './pages/logut/logut.component';
-import { CountryComponent } from "./pages/masters/country/country.component";
-import { CountryListComponent } from "./pages/masters/country/country-list/country-list.component";
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 
 export const routes: Routes = [
@@ -183,7 +174,72 @@ export const routes: Routes = [
             pathMatch: 'full'
           }
         ]
-      }
+      },
+      {
+        path: 'restaurant',
+        loadComponent: () => import( './pages/restaurant/restaurant.component' ).then( m => m.RestaurantComponent ),
+        children: [
+          {
+            path: 'category',
+            loadComponent: () => import( './pages/restaurant/category/category.component' ).then( m => m.CategoryComponent ),
+            children: [
+              {
+                path: '',
+                loadComponent: () => import( './pages/restaurant/category/category-list/category-list.component' ).then( m => m.CategoryListComponent ),
+              },
+              {
+                path: 'add',
+                loadComponent: () => import( './pages/restaurant/category/add-category/add-category.component' ).then( m => m.AddCategoryComponent ),
+              },
+              {
+                path: 'edit/:id',
+                loadComponent: () => import( './pages/restaurant/category/edit-category/edit-category.component' ).then( m => m.EditCategoryComponent )
+              },
+            ]
+          },
+          {
+            path: 'menu',
+            loadComponent: () => import( './pages/restaurant/menu-items/menu-items.component' ).then( m => m.MenuItemsComponent ),
+            children: [
+              {
+                path: '',
+                loadComponent: () => import( './pages/restaurant/menu-items/menu-item-list/menu-item-list.component' ).then( m => m.MenuItemListComponent ),
+              },
+              {
+                path: 'add',
+                loadComponent: () => import( './pages/restaurant/menu-items/add-menu-item/add-menu-item.component' ).then( m => m.AddMenuItemComponent ),
+              },
+              {
+                path: 'edit/:item-id',
+                loadComponent: () => import( './pages/restaurant/menu-items/edit-menu-item/edit-menu-item.component' ).then( m => m.EditMenuItemComponent )
+              },
+            ]
+          },
+          {
+            path: 'table',
+            loadComponent: () => import( './pages/restaurant/rtables/rtables.component' ).then( m => m.RTablesComponent ),
+            children: [
+              {
+                path: '',
+                loadComponent: () => import( './pages/restaurant/rtables/rtables-list/rtables-list.component' ).then( m => m.RTablesListComponent ),
+              },
+              {
+                path: 'add',
+                loadComponent: () => import( './pages/restaurant/rtables/add-rtables/add-rtables.component' ).then( m => m.AddRTablesComponent ),
+              },
+              {
+                path: 'edit/:table-id',
+                loadComponent: () => import( './pages/restaurant/rtables/edit-rtables/edit-rtables.component' ).then( m => m.EditRTablesComponent )
+              },
+            ]
+          },
+          {
+            path: 'dashboard',
+            loadComponent: () => import( './pages/restaurant/rdashboard/rdashboard.component' ).then( m => m.RDashboardComponent ),
+          }
+        ],
+
+      },
 
     ]
   },

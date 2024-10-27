@@ -27,13 +27,12 @@ import { AuthService } from './authentication/services/auth.service';
 import { StorageService } from './_services/storage.service';
 import { ServerErrorsInterceptor } from './_helpers/server_error/server-errors.interceptor';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAnimations(),
+    provideAnimationsAsync(),
     AuthGuardService,
     AuthService,
     provideToastr( {

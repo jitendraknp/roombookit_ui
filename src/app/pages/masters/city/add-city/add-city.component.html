@@ -1,41 +1,42 @@
-<div class="h-max">
-  <form (ngSubmit)="onSubmit()" [formGroup]="cityForm">
-    <p-toast position="top-center" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'"
-      [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'" />
-    <div class="card border-0 shadow-lg m-0  h-max  ps-2 pe-2">
-      <div class="card-header  d-flex justify-content-between align-items-center bg-primary bg-gradient text-white">
-        <p class="uppercase text-sm">Add City</p>
-        <a (click)="onClose()" href="javascript:void(0);">
-          <i class="pi pi-times" style="color: white"></i>
+<form (ngSubmit)="onSubmit()" [formGroup]="cityForm">
+  <p-toast position="top-center" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'"
+    [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'" />
+  <p-card>
+    <ng-template pTemplate="header">
+      <div class="flex flex-row justify-between p-2">
+        <p>Add City</p>
+        <a (click)="onClose()" href="javascript:void(0);" class="text-sm ml-auto">
+          <i class="pi pi-times text-primary"></i>
         </a>
       </div>
-
-      <div class="card-body">
-        <div class="row text-sm">
-          <div class="col-md-4">
-            <label class="form-label" for="cityName">City Name</label>
-            <input class="form-control form-control-sm" formControlName="Name" id="cityName" placeholder="City Name"
-              size="small" type="text" />
-          </div>
-          <div class="col-md-4">
-            <label class="form-label" for="cityCode">City Code</label>
-            <input class="form-control form-control-sm" formControlName="Code" id="cityCode" placeholder="City Code"
-              type="text" />
-          </div>
-          <div class="col-md-4 pb-2">
-            <label class="form-label" for="state">State</label>
-            <ng-select (change)="onCityChange($event)" appearance="outline" class="custom" formControlName="StateId"
-              id="state" notFoundText="No items found" placeholder="Select State">
-              @for (state of states; track state.Id) {
-              <ng-option [value]="state.Id">{{ state.Name }} ({{ state.Code }})</ng-option>
-              }
-            </ng-select>
-          </div>
+    </ng-template>
+    <ng-template pTemplate="body">
+      <div class="grid">
+        <div class="col-12 lg:col-3 md:col-6 lg:col-3 sm:col-12">
+          <label class="form-label" for="cityName">City Name</label>
+          <input pInputText formControlName="Name" id="cityName" placeholder="City Name" size="small" type="text"
+            class="w-full" />
+        </div>
+        <div class="col-12 lg:col-3 md:col-6 lg:col-3 sm:col-12">
+          <label class="form-label" for="cityCode">City Code</label>
+          <input pInputText formControlName="Code" id="cityCode" placeholder="City Code" type="text" size="small"
+            class="w-full" />
+        </div>
+        <div class="col-12 lg:col-3 md:col-6 lg:col-3 sm:col-12">
+          <label class="form-label" for="state">State</label>
+          <ng-select (change)="onCityChange($event)" appearance="outline" class="w-full" formControlName="StateId"
+            id="state" notFoundText="No items found" placeholder="Select State">
+            @for (state of states; track state.Id) {
+            <ng-option [value]="state.Id">{{ state.Name }} ({{ state.Code }})</ng-option>
+            }
+          </ng-select>
         </div>
       </div>
-      <div class="card-footer text-end">
-        <button class="btn btn-primary shadow-lg btn-sm" type="submit">Save</button>
+      <div class="flex   flex-row">
+        <div class=" ml-auto">
+          <p-button label="Save" severity="primary" size="small"></p-button>
+        </div>
       </div>
-    </div>
-  </form>
-</div>
+    </ng-template>
+  </p-card>
+</form>

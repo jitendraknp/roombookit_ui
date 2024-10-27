@@ -1,33 +1,37 @@
 <form (ngSubmit)="onSubmit()" [formGroup]="countryForm">
   <p-toast position="top-center" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'"
     [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'" />
-  <div class="card border-0 shadow-lg m-0">
-    <div class="card-header  d-flex justify-content-between align-items-center bg-primary bg-gradient text-white">
-      <p class="uppercase text-sm">Add Country</p>
-      <a (click)="onClose()" href="javascript:void(0);">
-        <i class="pi pi-times" style="color: white"></i>
-      </a>
-    </div>
-    <div class="card-body">
-      <div class="flex  gap-2 justify-content-around">
-        <div class="flex flex-grow-1">
-          <div class="flex flex-col text-sm flex-1">
-            <label class="form-label" for="countryName">Country Name</label>
-            <input class="form-control form-control-sm" formControlName="Name" id="countryName" pInputText
-              type="text" />
-          </div>
+
+  <p-card class="py-2">
+    <ng-template pTemplate="header">
+      <div class="flex flex-row justify-between p-2">
+        <p>Add Country</p>
+        <a (click)="onClose()" href="javascript:void(0);" class="text-sm ml-auto">
+          <i class="pi pi-times text-primary"></i>
+        </a>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="body">
+      <div class="grid">
+        <div class="col-12 lg:col-6 md:col-6 sm:col-12">
+          <label class="form-label" for="countryName">Country Name</label>
+          <input class="form-control form-control-sm" formControlName="Name" id="countryName" pInputText type="text"
+            size="small" class="w-full" />
         </div>
-        <div class="flex  flex-grow-1">
-          <div class="flex flex-col text-sm">
-            <label class="form-label" for="countryCode">Code</label>
-            <input class="form-control form-control-sm" formControlName="Code" id="countryCode" type="text" />
-          </div>
-        </div>
-        <div class="flex align-items-end justify-items-end content-baseline py-2">
-          <button class="btn btn-primary btn-sm" type="submit">Save</button>
+        <div class="col-12 lg:col-6 md:col-6   sm:col-12">
+          <label class="form-label" for="countryCode">Code</label>
+          <input class="form-control form-control-sm" formControlName="Code" id="countryCode" pInputText type="text"
+            size="small" class="w-full" />
         </div>
       </div>
-    </div>
-
-  </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <div class="flex   flex-row">
+        <div class=" ml-auto">
+          <p-button [disabled]="!countryForm.valid" type="submit" label="Save" size="small"
+            severity="primary"></p-button>
+        </div>
+      </div>
+    </ng-template>
+  </p-card>
 </form>

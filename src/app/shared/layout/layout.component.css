@@ -1,9 +1,13 @@
-aside {
+
+.p-toolbar_custom{
+  height: 0px !important;
+  width: 0px !important;
+}
+
+  aside {
   transition: width 0.3s ease-in-out; /* Ensure smooth transition on width change */
-}
-a {
-  color: black !important;
-}
+}  
+ 
 .compressed-sidebar {
   width: 2.5rem; /* Equivalent to w-8 */
 }
@@ -11,9 +15,7 @@ a {
 .expanded-sidebar {
   width: 16rem; /* Equivalent to w-64 */
 }
-.nav {
-  display: flow !important;
-}
+ 
 
 @media (min-width: 992px) {
   .navbar-expand-lg .navbar-collapse {
@@ -21,72 +23,11 @@ a {
   }
 }
 
-#sidebar::ng-deep ul li a {
-  text-decoration: none !important;
-  /* padding-left: 8px !important; */
-}
-
-.lst-style-none {
-  list-style: none !important;
-}
-
-.active-link {
-  color: #225074 !important;
-  background-color: #E1F5FE;
-  /* Customize the active link color */
-}
-
-.stay-open {
-  display: block !important;
-}
-.container{
-  width: 100% !important;
-}
+    
 main {
   max-height: calc(100vh - 84px); /* Assuming header/footer takes 64px height, adjust accordingly */
 }
-
-@keyframes swing {
-
-  0%,
-  30%,
-  50%,
-  70%,
-  100% {
-    transform: rotate(0deg);
-  }
-
-  10% {
-    transform: rotate(10deg);
-  }
-
-  40% {
-    transform: rotate(-10deg);
-  }
-
-  60% {
-    transform: rotate(5deg);
-  }
-
-  80% {
-    transform: rotate(-5deg);
-  }
-}
-
-.layout .sidebar .menu ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.layout .sidebar .menu .menu-header {
-  font-weight: 600;
-  padding: 10px 25px;
-  font-size: 0.8em;
-  letter-spacing: 2px;
-  transition: opacity 0.3s;
-  opacity: 0.5;
-}
+  
 
 
 /* .layout .sidebar .menu .menu-item a .menu-icon { */
@@ -105,13 +46,7 @@ transition: color 0.3s; */
 .layout .sidebar .menu .menu-item a .menu-icon i {
   display: inline-block;
 }
-  .p-panelmenu .p-panelmenu-header .p-panelmenu-header-content {
-        border: 1px solid #dee2e6;
-        color: #495057;
-        background: white !important;
-        border-radius: 3px;
-        transition: box-shadow .2s
-    }
+
 .layout .sidebar .menu .menu-item a .menu-title {
   font-size: 0.9em;
   overflow: hidden;
@@ -201,11 +136,7 @@ z-index: 999; */
   border-radius: 0;
 }
 
-.layout .sidebar:not(.collapsed) .menu > ul > .menu-item.sub-menu > .sub-menu-list {
-  /* visibility: visible !important;
-  position: static !important;
-  transform: translate(0, 0) !important; */
-}
+ 
 
 .layout .sidebar.collapsed .menu > ul > .menu-header {
   opacity: 0;
@@ -215,39 +146,11 @@ z-index: 999; */
 .layout .sidebar.collapsed .menu > ul > .menu-item > a .menu-suffix {
   opacity: 0;
 }
-
-.layout .sidebar.collapsed .menu > ul > .menu-item.sub-menu > a::after {
-  /* content: "";
-  width: 5px;
-  height: 5px;
-  background-color: currentcolor;
-  border-radius: 50%;
-  display: inline-block;
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  border: none;
-  transform: translateY(-50%); */
-}
-
+ 
 .layout .sidebar.collapsed .menu > ul > .menu-item.sub-menu > a:hover::after {
   background-color: #dee2ec;
 }
-
-.layout .sidebar.collapsed .menu > ul > .menu-item.sub-menu > .sub-menu-list {
-  /* transition: none !important;
-  width: 200px;
-  margin-left: 3px !important;
-  border-radius: 4px;
-  display: block !important; */
-}
-
-
-.layout.rtl .sidebar .menu .menu-item a .menu-icon {
-  /* margin-left: 10px;
-  margin-right: 0; */
-}
-
+ 
 .layout.rtl .sidebar .menu .menu-item.sub-menu > a::after {
   transform: rotate(135deg);
 }
@@ -306,15 +209,7 @@ a {
   /* right: 10px;
     top: 23px; */
 }
-
-
-.custom-toolbar {
-  /*height: 56px !important ;!* Set your desired height *!*/
-  /*line-height: 2px !important; !* Center content vertically *!*/
-  padding: 4px !important; /* Use !important to override default styles */
-  margin: 0;
-}
-
+ 
 .custom-rounded-button {
   border-radius: 50px !important; /* Set the border radius for rounding */
   padding: 0.5rem 1rem !important; /* Optional: Adjust padding */
@@ -325,4 +220,22 @@ a {
   /*  height: 50px; !* Smaller height for smaller screens *!*/
   /*  line-height: 50px;*/
   /*}*/
+} 
+.custom-panel-menu {
+  background-color: #f9f9f9;
+  /* border: 1px solid #ccc; */
+}
+
+.custom-panel-menu .p-panel-header {
+  color: #333;
+}
+
+.custom-panel-menu .p-panel-content {
+  padding: 10px;
+  color: var(--primary-color);
+}
+.active-link {
+    font-weight: bold; /* Make the active link bold */
+    color: #007bff; /* Change the color of the active link */
+    background-color: #e9ecef; /* Optional: change the background */
 }

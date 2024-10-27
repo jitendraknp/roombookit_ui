@@ -1,135 +1,240 @@
-<div class="p-2 gap-2">
-  <div class="card">
-    <p-panel [toggleable]="true" header="Overview">
-      <div class="grid gap-4 grid-cols-4 grid-rows-1 pt-2">
-        <div class="rounded   shadow-lg px-2 py-2 shadow-blue-500/50">
-          <p class="text-[#858D9D] leading-7 font-bold text-sm">Today's</p>
-          <div class="d-flex justify-between">
-            <p class="text-[#5D6679]  text-sm font-bold">Check-In</p>
-            <span class="text-[#1366D9] font-semibold text-2xl">{{ todaysCheckIn }}</span>
-          </div>
-        </div>
-        <div class="rounded   shadow-lg px-2 py-2 shadow-blue-500/50">
-          <p class="text-[#858D9D] leading-7 font-bold text-sm">Today's</p>
-          <div class="d-flex justify-between">
-            <p class="text-[#5D6679]  text-sm font-bold">Check-Out</p>
-            <span class="text-[#1366D9] font-semibold text-2xl">{{ todaysCheckOut }}</span>
-          </div>
-        </div>
-        <div class="rounded   shadow-lg px-2 py-2 shadow-blue-500/50">
-          <p class="text-[#858D9D] leading-7 font-bold text-sm">Total</p>
-          <div class="d-flex justify-between">
-            <p class="text-[#5D6679]  text-sm font-bold">Available room</p>
-            <span class="text-[#1366D9] font-semibold text-2xl">{{ availableRooms }}</span>
-          </div>
-        </div>
-        <div class="rounded   shadow-lg px-2 py-2 shadow-blue-500/50">
-          <p class="text-[#858D9D]  leading-7 font-bold text-sm">Total</p>
-          <div class="d-flex justify-between">
-            <p class="text-[#5D6679]  text-sm font-bold">Occupied room</p>
-            <span class="text-[#1366D9] font-semibold text-2xl">{{ occupiedRooms }}</span>
-          </div>
-        </div>
-      </div>
-    </p-panel>
-    <div class="flex flex-row pb-2 pt-0 justify-end pe-2">
-      <!-- <app-info-display title="Info Title 1" content="This is the first piece of information."></app-info-display> -->
-      <span class="flex flex-row  font-italic font-normal font-italic text-gray-500 opacity-8 py-1">
-        <p class="pe-1 fst-italic text-xs align-content-center">
-          Total Bookings:
-          <span class="text-[#1366D9]">({{ totalBookings }})</span>
-        </p>
-      </span>
-      <span class="flex flex-row  font-italic font-normal font-italic text-gray-500 opacity-8 py-1">
-        <p class="pe-1 fst-italic text-xs align-content-center">
-          weekly :
-          <span class="text-[#1366D9]">({{ weeklyBookings }})</span>
-        </p>
-      </span>
-      <span class="flex flex-row  font-italic font-normal font-italic text-gray-500 opacity-8 py-1">
-        <p class="pe-1 fst-italic text-xs align-content-center">Monthly : <span class="text-[#1366D9]">({{
-            monthlyBookings
-            }})</span></p>
-      </span>
-    </div>
+<!-- <div class="flex flex-row content-center md:flex-column sm:flex-column">
+  <div class="flex flex-1 grow flex-column">
+    <h1 class="text-3xl">Dashboard Overview</h1>
+    <p class="text-sm  text-gray-600">Welcome to RD Residency Hotel</p>
   </div>
-  <div class="flex flex-row pt-2">
-    <div class="flex flex-grow-1">
-      <div class="card shadow-lg flex flex-grow-1">
-        <div class="card-header card-header-text bg-bluegray-100 flex flex-row justify-between">
-          <h5 class="card-title text-bold text-sm">Booking Details</h5>
-          <p class="text-xs font-italiccpt-1">Guest(s) on {{ currentDate | date:'fullDate' }}</p>
-        </div>
-        <div class="card-body table-responsive p-1">
-
-          <p-table [value]="guestDetails" [paginator]="true" [rows]="5" [autoLayout]="true"
-            [alwaysShowPaginator]="false">
-            <ng-template pTemplate="header">
-              <tr>
-                <th class="font-semibold text-sm">#</th>
-                <th class="font-semibold text-sm">Name</th>
-                <th class="font-semibold text-sm">Check-In</th>
-                <th class="font-semibold text-sm">Check-Out</th>
-                <th class="font-semibold text-sm">Email</th>
-                <th class="font-semibold text-sm">Status</th>
-                <th class="font-semibold text-sm" style="text-align: center;">Action</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="emptymessage">
-              <tr>
-                <td colspan="7" class="text-center text-red-600 font-semibold">{{noRecordsMessage}}</td>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
-              <tr *ngIf="guestDetails.length > 0" class="text-xs">
-                <td class="text-xs">{{ rowIndex + 1}}</td>
-                <td class="text-xs">{{ rowData.FullName }}</td>
-                <td class="text-xs">
-                  <p class="text-xs">
-                    {{ rowData.CheckInDate }}
-                  </p>
-                  <p class="text-xs font-italic">
-                    {{ rowData.CheckInTime }}
-                  </p>
-                </td>
-                <td class="text-xs">
-                  <span class="flex flex-column">
-                    <p class="text-xs">{{ rowData.CheckOutDate }}</p>
-                    <p class="text-xs font-italic">{{ rowData.CheckOutTime }}</p>
-                  </span>
-                </td>
-                <td class="text-xs">{{ rowData.Email }}</td>
-                <td></td>
-                <td class="text-xs">
-                  <!-- [routerLink]="['/admin/guest/edit',rowData?.Id]" [outlined]="true" />-->
-                  <button pButton type="button" icon="pi pi-eye" [pTooltip]="'View'" tooltipPosition="top"
-                    class="small-button"></button>
-                  <button pButton type="button" icon="pi pi-pencil" [pTooltip]="'Delete'" tooltipPosition="top"
-                    class="small-button"></button>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
-          <!-- <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-end text-sm">
-                      <pagination-controls (pageChange)="handlePageChange($event)" [responsive]="true">
-                      </pagination-controls>
-                    </ul>
-                  </nav> -->
-        </div>
-
-      </div>
-    </div>
-    <div class="flex flex-column text-sm gap-2 ps-1">
-      <!-- <p-card [ngClass]="'text-sm text-zinc-900 white-card'" class="white-card">
-        <h2 class=" text-zinc-900 px-1">Room Type Occupancy</h2>
-        <p-chart type="bar" [data]="availableRoomsChartData" style="max-width: 200px;"></p-chart>
-      </p-card> -->
-      <p-card>
-        <h1 class=" text-zinc-900 px-1 text-lg font-semibold">Room Type Occupancy</h1>
-        <p-chart type="doughnut" [data]="roomOccupancyData" [options]="options1" [width]="'180px'"
-          style="max-width: 80px;"></p-chart>
-      </p-card>
-    </div>
+  <div class="flex flex-grow-1 flex-row gap-2 justify-content-end align-items-baseline py-1">
+    <ng-select [items]="dateFilterOptions" class="text-sm" name="filterby" [clearable]="false" [bindLabel]="'label'"
+      [(ngModel)]="selectedFilter" notFoundText="No items found" placeholder="Filter by">
+    </ng-select>
+    <p-button icon="pi pi-calendar-plus" label="Advance Booking" size="small" [raised]="true" severity="secondary"
+      (onClick)="onAdvanceBookingClicked()"></p-button>
+  </div>
+</div> -->
+<div class="flex flex-column md:flex-row md:items-center md:justify-between p-2">
+  <div class="flex flex-column mb-4 md:mb-0">
+    <h1 class="text-3xl font-bold">Dashboard Overview</h1>
+    <p class="text-sm text-gray-600">Welcome to RD Residency Hotel</p>
+  </div>
+  <!-- flex-column -->
+  <div
+    class="flex  sm:flex-row md:flex-row md:gap-2  gap-4 md:items-center justify-content-end  flex-grow-1 align-items-baseline">
+    <ng-select [items]="dateFilterOptions" class="text-sm mb-2 md:mb-0" name="filterby" [clearable]="false"
+      [bindLabel]="'label'" [(ngModel)]="selectedFilter" notFoundText="No items found" placeholder="Filter by">
+    </ng-select>
+    <p-button icon="pi pi-calendar-plus" label="Advance Booking" size="small" [raised]="true" severity="secondary"
+      (onClick)="onAdvanceBookingClicked()"></p-button>
   </div>
 </div>
+<div class="grid py-2">
+  <div class="col">
+    <p-card header="Total Booking">
+      <div class="p-card-subheader text-lg">{{ totalBookings }}</div>
+      <div class="p-card-content flex flex-row justify-between text-sm">
+        <div class="invest-data">
+          <div class="invest-data-amount g-2">
+            <div class="invest-data-history">
+              <div class="title">This Month</div>
+              <div class="amount">{{ monthlyBookings }}</div>
+            </div>
+            <div class="invest-data-history">
+              <div class="title">This Week</div>
+              <div class="amount">{{ weeklyBookings }}</div>
+            </div>
+          </div>
+          <div class="invest-data-ck"> </div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+  <div class="col">
+    <p-card header="Rooms Available">
+      <div class="p-card-subheader text-lg">{{availableRooms}}</div>
+      <div class="p-card-content flex flex-row justify-between text-sm">
+        <div class="invest-data">
+          <div class="invest-data-amount g-2">
+            <div class="invest-data-history">
+              <div class="title">Booked (M)</div>
+              <div class="amount">{{occupiedRooms}}</div>
+            </div>
+            <div class="invest-data-history">
+              <div class="title">Booked (W)</div>
+              <div class="amount">{{occupiedRooms}}</div>
+            </div>
+          </div>
+          <div class="invest-data-ck"> </div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+  <div class="col">
+    <p-card header="Revenue">
+      <div class="p-card-subheader text-lg">11,230</div>
+      <div class="p-card-content flex flex-row justify-between text-sm">
+        <div class="invest-data">
+          <div class="invest-data-amount g-2">
+            <div class="invest-data-history">
+              <div class="title">This Month</div>
+              <div class="amount">1913</div>
+            </div>
+            <div class="invest-data-history">
+              <div class="title">This Week</div>
+              <div class="amount">1125</div>
+            </div>
+          </div>
+          <div class="invest-data-ck"> </div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+</div>
+
+<div class="grid  py-2">
+  <div class="col-12 md:col-6 lg:col-6 sm:col-12 xl:col-6">
+    <!-- <p-card>
+      <ng-template pTemplate="header">
+        <div class="flex flex-row justify-between p-2">
+          <p>Reservations</p>
+          <ng-select [items]="dateFilterOptions" class="text-sm ml-auto" name="filterby" [clearable]="false"
+            [bindLabel]="'label'" [(ngModel)]="selectedFilter" notFoundText="No items found" placeholder="Filter by">
+          </ng-select>
+        </div>
+      </ng-template>
+      <p-table [value]="guestTodayDetails" [paginator]="true" [rows]="5" [autoLayout]="true" [responsive]="true"
+        [showLoader]="true" [alwaysShowPaginator]="false">
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="font-semibold text-sm">#</th>
+            <th class="font-semibold text-sm">Name</th>
+            <th class="font-semibold text-sm">Check-In</th>
+            <th class="font-semibold text-sm">Email</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="4" class="text-center text-red-600 font-semibold">{{noRecordsMessage}}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+          <tr *ngIf="guestDetails.length > 0" class="text-xs">
+            <td class="text-xs">{{ rowIndex + 1}}</td>
+            <td class="text-xs">{{ rowData.FullName }}</td>
+            <td class="text-xs">
+              <p class="text-xs">
+                {{ rowData.CheckInDate }}
+              </p>
+              <p class="text-xs italic">
+                {{ rowData.CheckInTime }}
+              </p>
+            </td>
+            <td class="text-xs">{{ rowData.Email }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card> -->
+    <p-card>
+      <ng-template pTemplate="title">
+        <p>Advance Bookings</p>
+      </ng-template>
+      <ng-template pTemplate="content">
+        <p-table [value]="advanceBookings" [paginator]="true" [rows]="5" [autoLayout]="true" [responsive]="true"
+          [scrollable]="true" scrollHeight="400px" [showLoader]="true" [rowHover]="true" [showLoader]="true"
+          [alwaysShowPaginator]="false">
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="text-sm">#</th>
+              <th class="text-sm">Name</th>
+              <th class="text-sm">Check In Date</th>
+              <th class="text-sm">Booking Date</th>
+              <th class="text-sm">Status</th>
+              <th class="font-semibold text-sm">Action</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="6" class="text-center text-red-600 font-semibold">{{noRecordsMessage}}</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+            <tr *ngIf="advanceBookings.length > 0" class="text-xs">
+              <td class="text-xs">{{ rowIndex + 1}}</td>
+              <td class="text-xs">{{ rowData.FullName }}</td>
+              <td class="text-xs">
+                <p class="text-xs"> {{ rowData.CheckInDate}} </p>
+              </td>
+              <td>{{ rowData.BookingDate }}</td>
+              <td>
+                <p-tag [value]="rowData.Status" severity="info" *ngIf="rowData.Status =='Booked'"></p-tag>
+              </td>
+              <td>
+                <p-menu #actionMenu [model]="actionItems" [popup]="true" appendTo="body"
+                  [styleClass]="'text-sm'"></p-menu>
+                <p-button (click)="actionMenu.toggle($event)" icon="pi pi-ellipsis-v" size="small"
+                  severity="secondary" />
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </p-card>
+  </div>
+  <div class="col-12 md:col-6 lg:col-6 sm:col-12 xl:col-6">
+    <p-card>
+      <ng-template pTemplate="title">
+        <p>Booking List</p>
+      </ng-template>
+      <ng-template pTemplate="subtitle">
+        <p class="text-xs">Guest(s) on {{ currentDate | date:'fullDate' }}</p>
+      </ng-template>
+      <ng-template pTemplate="content">
+        <p-table [value]="guestDetails" [paginator]="true" [rows]="5" [autoLayout]="true" [alwaysShowPaginator]="false"
+          [responsive]="true">
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="font-semibold text-sm">#</th>
+              <th class="font-semibold text-sm">Name</th>
+              <th class="font-semibold text-sm">Check-In</th>
+              <th class="font-semibold text-sm">Check-Out</th>
+              <th class="font-semibold text-sm">Action</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="5" class="text-center text-red-600 font-semibold">{{noRecordsMessage}}</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+            <tr *ngIf="guestDetails.length > 0" class="text-xs">
+              <td class="text-xs">{{ rowIndex + 1}}</td>
+              <td class="text-xs">{{ rowData.FullName }}</td>
+              <td class="text-xs">
+                <p class="text-xs mb-1"> {{ rowData.CheckInDate }} </p>
+                <p class="text-xs italic mb-1"> {{ rowData.CheckInTime }} </p>
+              </td>
+              <td class="text-xs">
+                <span class="flex flex-column">
+                  <p class="text-xs mb-1">{{ rowData.CheckOutDate }}</p>
+                  <p class="text-xs italic mb-1">{{ rowData.CheckOutTime }}</p>
+                </span>
+              </td>
+              <td class="text-xs flex-auto justify-end">
+                <p-menu #blActionMenu [model]="bookingListActionItems" [popup]="true" appendTo="body"
+                  [styleClass]="'text-sm'"></p-menu>
+                <p-button (click)="blActionMenu.toggle($event)" icon="pi pi-ellipsis-v" size="small"
+                  severity="secondary" />
+                <!-- <p-button icon="pi pi-eye" [pTooltip]="'View'" tooltipPosition="top" [rounded]="true"
+                [text]="true"></p-button>
+              <p-button icon="pi pi-pencil" [pTooltip]="'Edit'" tooltipPosition="top" [rounded]="true"
+                [text]="true"></p-button> -->
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </p-card>
+  </div>
+</div>
+<p-dialog [(visible)]="display" [closable]="true" [modal]="true" [style]="{width: '90vw',padding:'4px',height: '72vh'}"
+  header="Advance Booking">
+  <app-advance-booking (advanceBookings)="receiveData($event)"> </app-advance-booking>
+</p-dialog>

@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, Output } from '@angular/core';
 import { BadgeModule } from "primeng/badge";
-import { Button } from "primeng/button";
+import { ButtonModule } from "primeng/button";
 import { CommonService } from "../../../../_services/common.service";
 import { Country } from "../../../../models/countries";
 import { NgxPaginationModule } from "ngx-pagination";
@@ -9,6 +9,9 @@ import { CardListComponent } from "../../../../shared/card-list/card-list.compon
 import { TooltipModule } from "primeng/tooltip";
 import { Router } from "@angular/router";
 import { CommonModule } from '@angular/common';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { CardModule } from 'primeng/card';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component( {
   selector: 'app-country-list',
@@ -16,11 +19,14 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     BadgeModule,
-    Button,
+    ButtonModule,
     NgxPaginationModule,
     NoRecordsFoundComponent,
     CardListComponent,
-    TooltipModule
+    TooltipModule,
+    AutoCompleteModule,
+    CardModule,
+    FloatLabelModule
   ],
   templateUrl: './country-list.component.html',
   styleUrl: './country-list.component.css'

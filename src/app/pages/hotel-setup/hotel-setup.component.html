@@ -2,223 +2,211 @@
   @defer(on immediate){
   <p-toast />
 
-  <div class="card">
-    <div class="card-header bg-[#60a5fa] bg-gradient text-white">
-      <p class="uppercase text-sm">Hotel Settings</p>
-    </div>
-    <div class="card-body">
+  <p-card>
+    <ng-template pTemplate="title">Settings</ng-template>
+    <ng-template pTemplate="content">
+      <div class="grid">
+        <div class="col-12 md:col-6 lg:col-4 sm:col-12 xl:col-4">
+          <p-card>
+            <ng-template pTemplate="title">Hotel Details</ng-template>
+            <ng-template pTemplate="content">
+              <div class="grid">
+                <div class="col-12">
+                  <label for="name" class="form-label">Hotel Name</label>
+                  <input type="text" pInputText size="small" fluid="true" formControlName="name" name="name"
+                    placeholder="Specify the name of your hotel.">
+                  <small class="text-danger"
+                    *ngIf="hotelSetupForm.get('name')?.hasError('required') && hotelSetupForm.get('name')?.touched">
+                    This field is required.
+                  </small>
+                  <small class="text-danger" *ngIf="hotelSetupForm.get('name')?.hasError('minlength')">
+                    Name must be at least 10 characters long.
+                  </small>
+                  <small class="text-danger" *ngIf="hotelSetupForm.get('name')?.hasError('maxlength')">
+                    Name must not be greater than 50 characters long.
+                  </small>
+                </div>
+                <div class="col-12">
+                  <label for="exampleFormControlInput1" class="form-label">Hotel Code</label>
+                  <input type="text" pInputText size="small" fluid="true" formControlName="code"
+                    placeholder="Specify the code of your hotel.">
+                  <small class="text-danger"
+                    *ngIf="hotelSetupForm.get('code')?.hasError('required') && hotelSetupForm.get('code')?.touched">
+                    This field is required.
+                  </small>
+                </div>
+                <div class="col-12">
+                  <label for="exampleFormControlInput1" class="form-label">Email</label>
+                  <input type="text" pInputText size="small" fluid="true" formControlName="emailId"
+                    placeholder="Specify the email of your hotel.">
+                  <small class="text-danger"
+                    *ngIf="hotelSetupForm.get('emailId')?.hasError('required') && hotelSetupForm.get('emailId')?.touched">
+                    This field is required.
+                  </small>
+                </div>
+                <div class="col-12">
+                  <label for="websiteA" class="form-label">Website</label>
+                  <input type="text" pInputText size="small" fluid="true" formControlName="website" name="websiteA"
+                    placeholder="Website of your hotel">
+                </div>
+                <div class="col-12">
+                  <label for="phoneNo" class="form-label">Phone No</label>
+                  <input type="text" pInputText size="small" fluid="true" formControlName="phoneNo" name="phoneNo"
+                    placeholder="Phone No of your hotel.">
+                  <small class="text-danger"
+                    *ngIf="hotelSetupForm.get('mobileNo')?.hasError('required') && hotelSetupForm.get('mobileNo')?.touched">
+                    This field is required.
+                  </small>
+                </div>
+                <div class="col-12"></div>
+                <div class="col-12"></div>
+              </div>
+            </ng-template>
+          </p-card>
+        </div>
+        <div class="col-12 md:col-6 lg:col-4 sm:col-12 xl:col-4">
+          <p-card>
+            <ng-template pTemplate="title">Address Details</ng-template>
+            <ng-template pTemplate="content">
+              <div class="grid">
+                <div class="col-12">
+                  <label for="address1" class="form-label">Address 1</label>
+                  <input type="text" pInputText size="small" fluid="true" formControlName="address" name="address1"
+                    placeholder="Specify the name of your hotel  address." />
+                  <small class="text-danger"
+                    *ngIf="hotelSetupForm.get('address')?.hasError('required') && hotelSetupForm.get('address')?.touched">
+                    This field is required.
+                  </small>
+                </div>
+                <div class="col-12">
+                  <label for="address2" class="form-label">Address 2</label>
+                  <input type="text" pInputText size="small" fluid="true" formControlName="address1" name="address2"
+                    placeholder="Specify the name of your hotel  address.">
+                  <small class="text-danger"
+                    *ngIf="hotelSetupForm.get('address1')?.hasError('required') && hotelSetupForm.get('address1')?.touched">
+                    This field is required.
+                  </small>
+                </div>
+                <div class="col-12">
+                  <label for="exampleFormControlInput1" class="form-label">Country</label>
+                  <ng-select appearance="outline" [searchable]="false" [placeholder]="'Select Country'" class="custom"
+                    formControlName="countryId" notFoundText="No items found" (change)="onCountryChange($event)">
+                    @for (country of countries; track country.Id) {
+                    <ng-option [value]="country.Id">{{country.Name}} ({{country.Code}})</ng-option>
+                    }
+                  </ng-select>
+                  <small class="text-danger"
+                    *ngIf="hotelSetupForm.get('country')?.hasError('required') && hotelSetupForm.get('country')?.touched">
+                    This field is required.
+                  </small>
+                </div>
+                <div class="col-12">
+                  <label for="exampleFormControlInput1" class="form-label">State</label>
+                  <ng-select appearance="outline" [searchable]="false" placeholder="Select State" class="custom"
+                    formControlName="stateId" notFoundText="No items found" (change)="onStateChange($event)">
+                    @for (state of states; track state.Id) {
+                    <ng-option [value]="state.Id">{{state.Name}} ({{state.Code}})</ng-option>
+                    }
+                  </ng-select>
+                  <small class="text-danger"
+                    *ngIf="hotelSetupForm.get('State')?.hasError('required') && hotelSetupForm.get('State')?.touched">
+                    This field is required.
+                  </small>
+                </div>
+                <div class="col-12">
+                  <label for="exampleFormControlInput1" class="form-label">City</label>
+                  <ng-select appearance="outline" [searchable]="false" placeholder="Select City" class="custom"
+                    formControlName="cityId" notFoundText="No items found">
+                    @for (city of cities; track city.Id) {
+                    <ng-option [value]="city.Id">{{city.Name}} ({{city.Code}})</ng-option>
+                    }
+                  </ng-select>
+                  <small class="text-danger"
+                    *ngIf="hotelSetupForm.get('city')?.hasError('required') && hotelSetupForm.get('city')?.touched">
+                    This field is required.
+                  </small>
+                </div>
+                <div class="col-12">
+                  <label for="exampleFormControlInput1" class="form-label">Pincode</label>
+                  <input type="text" pInputText size="small" fluid="true" formControlName="pincode"
+                    placeholder="Mobile No of your hotel.">
+                  <small class="text-danger"
+                    *ngIf="hotelSetupForm.get('pincode')?.hasError('required') && hotelSetupForm.get('pincode')?.touched">
+                    This field is required.
+                  </small>
+                </div>
+              </div>
 
-      <div class="row g-3 align-center">
-        <div class="form-group mt-1">
-          <label for="name" class="form-label">Hotel Name</label>
-          <input type="text" class="form-control form-control-sm" formControlName="name" name="name"
-            placeholder="Specify the name of your hotel.">
-          <small class="text-danger"
-            *ngIf="hotelSetupForm.get('name')?.hasError('required') && hotelSetupForm.get('name')?.touched">
-            This field is required.
-          </small>
-          <small class="text-danger" *ngIf="hotelSetupForm.get('name')?.hasError('minlength')">
-            Name must be at least 10 characters long.
-          </small>
-          <small class="text-danger" *ngIf="hotelSetupForm.get('name')?.hasError('maxlength')">
-            Name must not be greater than 50 characters long.
-          </small>
+            </ng-template>
+          </p-card>
         </div>
-        <div class="form-group col-md-2 mt-2">
-          <label for="exampleFormControlInput1" class="form-label">Hotel Code</label>
-          <input type="text" class="form-control form-control-sm" formControlName="code"
-            placeholder="Specify the code of your hotel.">
-          <small class="text-danger"
-            *ngIf="hotelSetupForm.get('code')?.hasError('required') && hotelSetupForm.get('code')?.touched">
-            This field is required.
-          </small>
-        </div>
-        <div class="form-group col-md-4 mt-2">
-          <label for="exampleFormControlInput1" class="form-label">Email</label>
-          <input type="text" class="form-control form-control-sm" formControlName="emailId"
-            placeholder="Specify the email of your hotel.">
-          <small class="text-danger"
-            *ngIf="hotelSetupForm.get('emailId')?.hasError('required') && hotelSetupForm.get('emailId')?.touched">
-            This field is required.
-          </small>
-        </div>
-        <div class="form-group col-md-3 mt-2">
-          <label for="websiteA" class="form-label">Website</label>
-          <input type="text" class="form-control form-control-sm" formControlName="website" name="websiteA"
-            placeholder="Website of your hotel">
-        </div>
-        <div class="form-group col-md-3 mt-2">
-          <label for="phoneNo" class="form-label">Phone No</label>
-          <input type="text" class="form-control form-control-sm" formControlName="phoneNo" name="phoneNo"
-            placeholder="Phone No of your hotel.">
-          <small class="text-danger"
-            *ngIf="hotelSetupForm.get('mobileNo')?.hasError('required') && hotelSetupForm.get('mobileNo')?.touched">
-            This field is required.
-          </small>
+        <div class="col-12 md:col-6 lg:col-4 sm:col-12 xl:col-4 flex flex-column gap-2">
+          <p-card>
+            <ng-template pTemplate="title">Tax Setting</ng-template>
+            <ng-template pTemplate="content">
+              <div class="grid">
+                <div class="col-12">
+                  <label for="gSTIN" class="form-label">GSTIN</label>
+                  <input type="text" pInputText size="small" fluid="true" formControlName="GSTIN" name="gSTIN"
+                    placeholder="Specify the GSTIN." />
+                </div>
+                <div class="col-12">
+                  <label for="cIN" class="form-label">CIN</label>
+                  <input type="text" pInputText size="small" fluid="true" formControlName="CIN" name="cIN"
+                    placeholder="Specify the CIN." />
+                </div>
+                <div class="col-12">
+                  <label for="pAN" class="form-label">PAN</label>
+                  <input type="text" pInputText size="small" fluid="true" formControlName="PAN" name="pAN"
+                    placeholder="Specify the PAN." />
+                </div>
+              </div>
+            </ng-template>
+          </p-card>
+          <p-card>
+            <ng-template pTemplate="title">Invoice Setting</ng-template>
+            <ng-template pTemplate="content">
+              <div class="grid">
+                <div class="col-6">
+                  <label for="InvNoSuffix" class="form-label">Invoice Prefix</label>
+                  <input type="text" pInputText size="small" fluid="true" formControlName="InvNoSuffix"
+                    placeholder="Invoice Prefix">
+                </div>
+                <div class="col-6">
+                  <label for="InvNoSuffix" class="form-label">Last Invoice No</label>
+                  <input type="text" pInputText size="small" fluid="true" formControlName="LastInvNo"
+                    placeholder="Last Invoice No">
+                </div>
+              </div>
+            </ng-template>
+          </p-card>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-6 form-group mt-2">
-          <label for="address1" class="form-label">Address 1</label>
-          <input type="text" class="form-control form-control-sm" formControlName="address" name="address1"
-            placeholder="Specify the name of your hotel  address." />
-          <small class="text-danger"
-            *ngIf="hotelSetupForm.get('address')?.hasError('required') && hotelSetupForm.get('address')?.touched">
-            This field is required.
-          </small>
-        </div>
-        <div class="col-md-6 form-group mt-2">
-          <label for="address2" class="form-label">Address 2</label>
-          <input type="text" class="form-control form-control-sm" formControlName="address1" name="address2"
-            placeholder="Specify the name of your hotel  address.">
-          <small class="text-danger"
-            *ngIf="hotelSetupForm.get('address1')?.hasError('required') && hotelSetupForm.get('address1')?.touched">
-            This field is required.
-          </small>
-        </div>
-      </div>
-      <div class="row mt-0">
-        <div class="form-group col-md-3 mt-2">
-          <label for="exampleFormControlInput1" class="form-label">Country</label>
-          <ng-select appearance="outline" [searchable]="false" [placeholder]="'Select Country'" class="custom"
-            formControlName="countryId" notFoundText="No items found" (change)="onCountryChange($event)">
-            @for (country of countries; track country.Id) {
-            <ng-option [value]="country.Id">{{country.Name}} ({{country.Code}})</ng-option>
-            }
-          </ng-select>
-          <small class="text-danger"
-            *ngIf="hotelSetupForm.get('country')?.hasError('required') && hotelSetupForm.get('country')?.touched">
-            This field is required.
-          </small>
-        </div>
-        <div class="form-group col-md-3 mt-2">
-          <label for="exampleFormControlInput1" class="form-label">State</label>
-          <ng-select appearance="outline" [searchable]="false" placeholder="Select State" class="custom"
-            formControlName="stateId" notFoundText="No items found" (change)="onStateChange($event)">
-            @for (state of states; track state.Id) {
-            <ng-option [value]="state.Id">{{state.Name}} ({{state.Code}})</ng-option>
-            }
-          </ng-select>
-          <small class="text-danger"
-            *ngIf="hotelSetupForm.get('State')?.hasError('required') && hotelSetupForm.get('State')?.touched">
-            This field is required.
-          </small>
-        </div>
-
-        <div class="form-group col-md-3 mt-2">
-          <label for="exampleFormControlInput1" class="form-label">City</label>
-          <ng-select appearance="outline" [searchable]="false" placeholder="Select City" class="custom"
-            formControlName="cityId" notFoundText="No items found">
-            @for (city of cities; track city.Id) {
-            <ng-option [value]="city.Id">{{city.Name}} ({{city.Code}})</ng-option>
-            }
-          </ng-select>
-          <small class="text-danger"
-            *ngIf="hotelSetupForm.get('city')?.hasError('required') && hotelSetupForm.get('city')?.touched">
-            This field is required.
-          </small>
-        </div>
-        <div class="form-group col-md-3 mt-2">
-          <label for="exampleFormControlInput1" class="form-label">Pincode</label>
-          <input type="text" class="form-control form-control-sm" formControlName="pincode"
-            placeholder="Mobile No of your hotel.">
-          <small class="text-danger"
-            *ngIf="hotelSetupForm.get('pincode')?.hasError('required') && hotelSetupForm.get('pincode')?.touched">
-            This field is required.
-          </small>
-        </div>
-      </div>
-
-    </div>
-    <div class="card border-0 flex-1 shadow-lg m-2">
-      <div class="card-header bg-[#60a5fa] bg-gradient text-white">
-        <p class="text-sm font-semibold">Taxation Details</p>
-      </div>
-      <div class="card-body">
-        <div class="flex flex-row gap-2">
-          <div class="flex-1 ">
-            <label for="gSTIN" class="form-label">GSTIN</label>
-            <input type="text" class="form-control form-control-sm" formControlName="GSTIN" name="gSTIN"
-              placeholder="Specify the GSTIN." />
-          </div>
-          <div class="flex-1">
-            <label for="cIN" class="form-label">CIN</label>
-            <input type="text" class="form-control form-control-sm" formControlName="CIN" name="cIN"
-              placeholder="Specify the CIN." />
-          </div>
-          <div class="flex-1">
-            <label for="pAN" class="form-label">PAN</label>
-            <input type="text" class="form-control form-control-sm" formControlName="PAN" name="pAN"
-              placeholder="Specify the PAN." />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card border-0 flex-1 shadow-lg m-2">
-      <div class="card-header bg-[#60a5fa] bg-gradient text-white">
-        <p class="text-sm font-semibold">Taxation Details</p>
-      </div>
-      <div class="card-body">
-        <div class="flex flex-row gap-2">
-          <div class="flex-1 ">
-            <label for="gSTIN" class="form-label">GSTIN</label>
-            <input type="text" class="form-control form-control-sm" formControlName="GSTIN" name="gSTIN"
-              placeholder="Specify the GSTIN." />
-          </div>
-          <div class="flex-1">
-            <label for="cIN" class="form-label">CIN</label>
-            <input type="text" class="form-control form-control-sm" formControlName="CIN" name="cIN"
-              placeholder="Specify the CIN." />
-          </div>
-          <div class="flex-1">
-            <label for="pAN" class="form-label">PAN</label>
-            <input type="text" class="form-control form-control-sm" formControlName="PAN" name="pAN"
-              placeholder="Specify the PAN." />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card border-0 flex-1 shadow-lg m-2">
-      <div class="card-header bg-[#60a5fa] bg-gradient text-white">
-        <p class="text-sm font-semibold">Invoice Setting(s)</p>
-      </div>
-      <div class="card-body">
-        <div class="flex flex-row gap-2">
-          <div class="flex-1">
-            <label for="InvNoSuffix" class="form-label">Invoice Prefix</label>
-            <input type="text" class="form-control form-control-sm" formControlName="InvNoSuffix"
-              placeholder="Invoice Prefix">
-          </div>
-          <div class="flex-1">
-            <label for="InvNoSuffix" class="form-label">Last Invoice No</label>
-            <input type="text" class="form-control form-control-sm" formControlName="LastInvNo"
-              placeholder="Last Invoice No">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="flex flex-row flex-grow-1 justify-end px-3 py-2 gap-4">
-      <p>
-        <button type="submit" class="btn btn-sm btn-primary"><i class="pi pi-save"></i> Save </button>
-      </p>
-      <p>
-        <button type="button" class="btn btn-sm btn-danger" (click)="onCancel()"><i class="pi pi-trash"></i>
-          Cancel</button>
-      </p>
-    </div>
+    </ng-template>
+  </p-card>
+  <div class="gap-2 flex justify-content-end pb-2 py-2">
+    <p>
+      <p-button type="submit" class="w-8rem" styleClass="w-8rem" [size]="'small'" [raised]="true"><i
+          class="pi pi-save"></i> Save </p-button>
+    </p>
+    <p>
+      <p-button type="button" severity="secondary" class="w-8rem" styleClass="w-8rem" [size]="'small'" [raised]="true"
+        (click)="onCancel()"><i class="pi pi-trash"></i>
+        Cancel</p-button>
+    </p>
   </div>
   }
 
   @placeholder () {
-  <div class="d-flex justify-content-center">
+  <div class="d-flex justify-center">
     <div class="spinner-border  text-warning " role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
   </div>
   }
   @loading ( ) {
-  <div class="d-flex justify-content-center">
-    <div class="spinner-border  text-info d-flex justify-content-center" role="status">
+  <div class="d-flex justify-center">
+    <div class="spinner-border  text-info d-flex justify-center" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
   </div>

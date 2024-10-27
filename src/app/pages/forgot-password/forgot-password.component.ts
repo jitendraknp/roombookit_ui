@@ -1,11 +1,11 @@
 import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Message } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { MessagesModule } from 'primeng/messages';
-import { MessageModule } from 'primeng/message';
+import { Message, MessageModule } from 'primeng/message';
 import { Router } from '@angular/router';
 @Component( {
   selector: 'app-forgot-password',
@@ -53,13 +53,13 @@ export class ForgotPasswordComponent implements OnInit {
 
       // Reset form and show success message
       this.messages = [
-        { severity: 'success', summary: 'Success', detail: 'Password reset link sent to your email.' },
+        // { severity: 'success',    text: 'Password reset link sent to your email.' },
       ];
       this.forgotPasswordForm.reset();
     } else {
       // Show error message if form is invalid
       this.messages = [
-        { severity: 'error', summary: 'Error', detail: 'Please enter a valid email address.' },
+        // { severity: 'error', summary: 'Error', detail: 'Please enter a valid email address.' },
       ];
     }
   }

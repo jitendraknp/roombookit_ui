@@ -1,20 +1,17 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { Guest } from '../../../models/guest';
 import { RouterModule } from '@angular/router';
-// import { IonicModule } from '@ionic/angular';
-import { CustomMessageService } from '../../../_services/custom-message.service';
-import { Subscription } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
-import { GuestService } from '../../../_services/guest.service';
-import { Toast, ToastrService } from 'ngx-toastr';
 import saveAs from 'file-saver';
-import { PrimeIcons, MenuItem, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { ImageModule } from 'primeng/image';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, NgIf } from '@angular/common';
 import { InvoiceService } from '../../../_services/invoice.service';
 import { ToastModule } from 'primeng/toast';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
 @Component( {
   selector: 'app-guest-list',
   standalone: true,
@@ -27,11 +24,13 @@ import { ToastModule } from 'primeng/toast';
     TooltipModule,
     ImageModule,
     ToastModule,
-
+    CardModule,
+    InputTextModule
   ],
   templateUrl: './guest-list.component.html',
   styleUrl: './guest-list.component.css',
-  providers: [MessageService]
+  providers: [MessageService],
+  encapsulation: ViewEncapsulation.None
 } )
 export class GuestListComponent {
   @Input() guestDetails: Guest | undefined;

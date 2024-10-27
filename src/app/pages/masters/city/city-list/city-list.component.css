@@ -17,7 +17,7 @@
   min-height: 40px;
   width: 100%
 }
-
+  
 .profile-page .profile-sub-header ul.box-list {
   display: inline-table;
   table-layout: fixed;
@@ -40,11 +40,16 @@
   padding: 15px 0;
   color: #424242
 }
+.p-autocomplete{display:flex;}
 
-.profile-page .profile-header .profile-image img {
+ .profile-image img {
   border-radius: 50%;
-  height: 64px;
-  width: 64px !important;
+  height: 54px;
+  width: 54px !important;
   border: 3px solid #fff;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+.small-button {
+    padding: 0.25rem 0.5rem; /* Adjust padding for smaller size */
+    font-size: 0.75rem; /* Adjust font size */
 }

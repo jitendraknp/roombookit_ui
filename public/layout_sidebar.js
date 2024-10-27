@@ -118,7 +118,7 @@
                   if ((0, _utils_getBasePlacement_js__WEBPACK_IMPORTED_MODULE_6__["default"])(state.options.placement) === _enums_js__WEBPACK_IMPORTED_MODULE_7__.auto) {
                     var flipModifier = state.orderedModifiers.find(function (_ref2) {
                       var name = _ref2.name;
-                      return name === 'flip';
+                      return name === 'animate-flip';
                     });
 
                     if (!flipModifier) {
@@ -172,7 +172,7 @@
                   reference: (0, _dom_utils_getCompositeRect_js__WEBPACK_IMPORTED_MODULE_9__["default"])(reference, (0, _dom_utils_getOffsetParent_js__WEBPACK_IMPORTED_MODULE_10__["default"])(popper), state.options.strategy === 'fixed'),
                   popper: (0, _dom_utils_getLayoutRect_js__WEBPACK_IMPORTED_MODULE_11__["default"])(popper)
                 }; // Modifiers have the ability to reset the current update cycle. The
-                // most common use case for this is the `flip` modifier changing the
+                // most common use case for this is the `animate-flip` modifier changing the
                 // placement, which then needs to re-run all the modifiers, because the
                 // logic was previously ran for the previous placement and is therefore
                 // stale/incorrect
@@ -1854,7 +1854,7 @@
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-          name: 'flip',
+          name: 'animate-flip',
           enabled: true,
           phase: 'main',
           fn: flip,
@@ -3165,7 +3165,7 @@
                     adaptive: false
                   }
                 }, {
-                  name: 'flip',
+                  name: 'animate-flip',
                   options: {
                     fallbackPlacements: ['left', 'right']
                   }

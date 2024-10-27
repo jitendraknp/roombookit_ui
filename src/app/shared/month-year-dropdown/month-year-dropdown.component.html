@@ -1,5 +1,5 @@
 <div pFocusTrap class="flex flex-row gap-2">
-  <div class="flex  flex-col text-sm w-10rem">
+  <div class="flex  flex-column text-sm w-10rem">
     <label class="form-label">Select Month</label>
     <ng-select id="month" appearance="outline" [items]="months" [(ngModel)]="selectedMonth" (change)="onMonthSelect()"
       [clearable]="false" placeholder="Select a month" bindLabel="label" bindValue="value"
@@ -7,7 +7,7 @@
       <ng-option value="1">Non AC (Single)</ng-option>
     </ng-select>
   </div>
-  <div class="flex flex-col text-sm w-10rem">
+  <div class="flex flex-column text-sm w-10rem">
     <label class="form-label">Select Year</label>
     <ng-select id="year" [items]="years" [(ngModel)]="selectedYear" (change)="onYearSelect()" [clearable]="false"
       bindLabel="label" bindValue="value" appearance="outline" placeholder="Select a year" class="custom"
@@ -15,7 +15,7 @@
       <ng-option value="1">Non AC (Single)</ng-option>
     </ng-select>
   </div>
-  <div class="text-sm w-20rem py-4">
+  <div class="text-sm align-items-center align-content-center flex py-3">
     <p-button pRipple size="small" label="Generate GST Report" [ngClass]="'btn btn-sm btn-primary'"
       (onClick)="generateGstReport()">
     </p-button>

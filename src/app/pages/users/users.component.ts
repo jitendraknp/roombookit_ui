@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NoRecordsFoundComponent } from '../no-records-found/no-records-found.component';
@@ -8,15 +8,24 @@ import { Observable } from 'rxjs';
 
 import { ApiResponse } from '../../models/response';
 import { User } from '../../models/user';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { BadgeModule } from 'primeng/badge';
 
 @Component( {
   selector: 'app-users',
   standalone: true,
   imports: [
     FormsModule,
+    ReactiveFormsModule,
     RouterModule,
     NgxPaginationModule,
     NoRecordsFoundComponent,
+    NgSelectModule,
+    FloatLabelModule,
+    AutoCompleteModule,
+    BadgeModule,
     ListUserComponent],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',

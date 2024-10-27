@@ -26,6 +26,9 @@ export class GuestService {
   getGuestByIdWithPaging ( id: string, guestPageNumber: number, guestPageSize: number ): Observable<PagedResponse> {
     return this.httpClient.get<PagedResponse>( `${ URL }all/${ id }/${ guestPageNumber }/${ guestPageSize }`, this.httpOptions );
   }
+  getGuestByNameWithPaging ( name: string, guestPageNumber: number, guestPageSize: number ): Observable<PagedResponse> {
+    return this.httpClient.get<PagedResponse>( `${ URL }all-byname/${ name }/${ guestPageNumber }/${ guestPageSize }`, this.httpOptions );
+  }
   getAllGuest (): Observable<ApiResponse> {
     return this.httpClient.get<ApiResponse>( `${ URL }all`, this.httpOptions );
   }

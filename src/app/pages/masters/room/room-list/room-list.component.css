@@ -40,8 +40,7 @@
   padding: 15px 0;
   color: #424242
 }
-
-.profile-page .profile-header .profile-image img {
+.profile-image img {
   border-radius: 50%;
   height: 64px;
   width: 64px !important;

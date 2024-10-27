@@ -2,13 +2,13 @@
   position: relative
 }
 
-.profile-page .profile-header .profile-image img {
+ .profile-image img {
   border-radius: 50%;
-  /* width: 140px; */
+  height: 54px;
+  width: 54px !important;
   border: 3px solid #fff;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
-
 .profile-page .profile-header .social-icon a {
   margin: 0 5px
 }

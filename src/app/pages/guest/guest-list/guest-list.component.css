@@ -1,41 +1,39 @@
- .card .body {
-   padding: 0.625rem;
+ 
 
+ .p-card-body{
+  padding-left: 0.85rem !important;
+  padding-right: 0.85rem !important;
+    padding-top: 0.10 !important;
+  padding-bottom: 0 !important;
  }
-
- .card-body {
-   height: 12.5rem !important;
-   /* overflow-y: scroll !important; */
- }
-
- .profile-page .profile-header {
+ .profile-header {
    position: relative
  }
 
- .profile-page .profile-header .profile-image img {
+ .profile-image img {
    border-radius: 50%;
-   /* width: 140px; */
+   width: 96px;
    border: 3px solid #fff;
    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
  }
 
- .profile-page .profile-header .social-icon a {
+.profile-header .social-icon a {
    margin: 0 5px
  }
 
- .profile-page .profile-sub-header {
+.profile-sub-header {
    min-height: 60px;
    width: 100%
  }
 
- .profile-page .profile-sub-header ul.box-list {
+.profile-sub-header ul.box-list {
    display: inline-table;
    table-layout: fixed;
    width: 100%;
    background: #eee
  }
 
- .profile-page .profile-sub-header ul.box-list li {
+.profile-sub-header ul.box-list li {
    border-right: 1px solid #e0e0e0;
    display: table-cell;
    list-style: none

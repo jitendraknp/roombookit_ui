@@ -1,8 +1,5 @@
 import { CommonModule } from '@angular/common';
 import {
-  AfterContentInit,
-  AfterViewInit,
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   OnInit,
@@ -16,12 +13,23 @@ import { switchMap } from 'rxjs';
 import { CountryService } from '../../../../_services/country.service';
 import { CamelCaseToSpacePipe } from '../../../../_helpers/camelcasetospace';
 import { MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
-import { trimValidator } from '../../../../_helpers/trimValidator';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
 @Component( {
   selector: 'app-edit-country',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, NgSelectModule, ToastModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgSelectModule,
+    ToastModule,
+    ButtonModule,
+    InputTextModule,
+    CardModule
+  ],
   templateUrl: './edit-country.component.html',
   styleUrl: './edit-country.component.css',
   providers: [MessageService]

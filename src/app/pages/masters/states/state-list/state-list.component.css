@@ -1,7 +1,7 @@
 .profile-page .profile-header {
   position: relative
 }
-
+.p-autocomplete{display:flex;}
 .profile-page .profile-header .profile-image img {
   border-radius: 50%;
   /* width: 140px; */
@@ -41,7 +41,7 @@
   color: #424242
 }
 
-.profile-page .profile-header .profile-image img {
+  .profile-image img {
   border-radius: 50%;
   height: 64px;
   width: 64px !important;

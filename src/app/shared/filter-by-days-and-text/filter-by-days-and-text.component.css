@@ -1,0 +1,103 @@
+.filter-section {
+  margin-bottom: 2px;
+}
+
+.custom-date-range {
+  /* display: flex;
+  gap: 10px; */
+}
+.small-dropdown{
+      line-height: 10px !important;
+}
+ .p-inputtext:focus {
+ border-width: 1px !important;
+    outline: none; /* Remove default outline */
+}
+
+ /* Custom styles for p-calendar component */
+.p-calendar {
+    width: 100%; /* Set width as needed */
+}
+
+/* Change the input field style */
+.p-inputtext.p-calendar {
+    border: 1px solid #007bff; /* Change border color */
+    border-radius: 4px; /* Adjust border radius */
+    padding: 10px; /* Adjust padding */
+}
+
+/* Change the background color on focus */
+.p-inputtext.p-calendar:focus {
+    border-color: #0056b3; /* Change border color on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Optional: Add shadow on focus */
+}
+
+/* Change the calendar header styles */
+.p-datepicker .p-datepicker-header {
+    background-color: #007bff; /* Header background color */
+    color: white; /* Header text color */
+}
+
+/* Change the calendar day styles */
+.p-datepicker .p-datepicker-calendar .p-datepicker-day {
+    color: #495057; /* Change day text color */
+}
+
+/* Change hovered day styles */
+.p-datepicker .p-datepicker-calendar .p-datepicker-day:hover {
+    background-color: #e7f0ff; /* Change background on hover */
+}
+
+/* Change selected day styles */
+.p-datepicker .p-datepicker-calendar .p-datepicker-day.p-highlight {
+    background-color: #007bff; /* Change background color for selected day */
+    color: white; /* Change text color for selected day */
+}
+
+/* Change the month and year dropdown styles */
+.p-datepicker .p-dropdown {
+    border: 1px solid #ced4da; /* Change border color */
+    border-radius: 4px; /* Adjust border radius */
+}
+
+/* Change the button styles */
+.p-datepicker .p-datepicker-prev,
+.p-datepicker .p-datepicker-next {
+    color: #007bff; /* Change arrow button color */
+}
+/* Style the input text field of p-calendar */
+.p-calendar .p-inputtext {
+    border: 1px solid #ced4da; /* Change border color */
+    border-radius: 4px; /* Adjust border radius */
+    padding: 6px; 
+    color: #333; /* Change text color */
+    background-color: #fff; /* Set background color */
+    /* font-size: 14px; Change font size */
+}
+
+/* Change the input text field style on focus */
+.p-calendar .p-inputtext:focus {
+    border-color: #0056b3; /* Change border color on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Optional: Add shadow on focus */
+}
+
+/* Change the placeholder color */
+.p-calendar .p-inputtext::placeholder {
+    color: #999; /* Change placeholder text color */
+}
+
+/* Change the input text field disabled state */
+.p-calendar .p-inputtext:disabled {
+    background-color: #f8f9fa; /* Change background color when disabled */
+    color: #6c757d; /* Change text color when disabled */
+}
+
+/* Adjust the height of the input field */
+.p-calendar .p-inputtext {
+    /* height: 38px; Set height as needed */
+}
+
+/* Change the input text field style when invalid */
+.p-calendar .p-inputtext.ng-invalid {
+    border-color: #dc3545; /* Change border color for invalid state */
+}

@@ -12,7 +12,7 @@ import { ReactiveFormsModule, FormsModule, FormGroup, Validators, FormBuilder, F
 import { NgSelectModule } from '@ng-select/ng-select';
 import { RoomService } from '../../_services/room.service';
 import { AvailableRoom, Room } from '../../models/room';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DATE_PIPE_DEFAULT_OPTIONS, DatePipe, formatDate } from '@angular/common';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../../models/response';
@@ -30,6 +30,11 @@ import { UtilsService } from '../../_helpers/utils.service';
 import { CommonService } from '../../_services/common.service';
 import { City } from '../../models/cities';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { ActivatedRoute } from '@angular/router';
+import { FluidModule } from 'primeng/fluid';
+import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
+import { InputNumberModule } from 'primeng/inputnumber';
 const ONE_DAY = 24 * 60 * 60 * 1000;
 
 @Component( {
@@ -46,13 +51,17 @@ const ONE_DAY = 24 * 60 * 60 * 1000;
     ToastModule,
     TableModule,
     CalendarModule,
-    NgxMaskDirective
+    NgxMaskDirective,
+    FluidModule,
+    InputTextModule,
+    InputNumberModule,
+    CardModule
   ],
   templateUrl: './stay-guest.component.html',
   styleUrls: ['./stay-guest.component.css'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DatePipe, MessageService, provideNgxMask()]
+  providers: [DatePipe, MessageService, provideNgxMask(), { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { dateFormat: 'shortDate' } }]
 } )
 export class StayGuestComponent implements OnInit {
   @Input() guestList: GuestBaseEntity[] = [];
@@ -86,31 +95,14 @@ export class StayGuestComponent implements OnInit {
   rooms: AvailableRoom[] = [];
   @Input() isEditForm: boolean = false;
   constructor(
+    private route: ActivatedRoute,
     protected cdr: ChangeDetectorRef,
     private messageService: MessageService,
     private guestService: GuestService,
     private datePipe: DatePipe,
     private utilsService: UtilsService,
     private commonService: CommonService ) {
-    // this.form = new FormGroup( {
-    //   CheckInDate: new FormControl<string>( '', [Validators.required] ),
-    //   CheckOutDate: new FormControl<string>( '', [Validators.required] ),
-    //   RoomId: new FormControl( [], [Validators.required] ),
-    //   RoomNoId: new FormControl( [], [Validators.required] ),
-    //   NoOfChildren: new FormControl<number>( 0, [Validators.required] ),
-    //   NoOfAdults: new FormControl<number>( 0, [Validators.required] ),
-    //   GuestId: new FormControl( null ),
-    //   NoOfGuests: new FormControl<number>( 0 ),
-    //   RatePerNight: new FormControl<number>( 0 ),
-    //   Discount: new FormControl<number>( 0 ),
-    //   TotalAmount: new FormControl<number>( 0 ),
-    //   BalanceAmount: new FormControl<number>( 0 ),
-    //   AmountPaid: new FormControl<number>( 0 ),
-    //   NoOfDays: new FormControl<number>( 0 )
-    // },
-    //   { validators: ( formGroup: AbstractControl ) => this.dateRangeValidator( formGroup ) }
-    // );
-    // this.form.setValidators( this.dateRangeValidator );
+
   }
 
   isGuidEmpty ( guid: string ): boolean {
@@ -118,8 +110,15 @@ export class StayGuestComponent implements OnInit {
     return guid === emptyGuid;
   }
   dateRangeValidator ( formGroup: AbstractControl ): ValidationErrors | null {
-    const checkInDate = new Date( formGroup.get( 'CheckInDate' )?.value );
-    const checkOutDate = new Date( formGroup.get( 'CheckOutDate' )?.value );
+    var checkinRaw = formGroup.get( 'CheckInDate' )?.value.replace( '/', '-' ).replace( '/', '-' );
+    let checkin_date = checkinRaw.replace( /(\d{2})-(\d{2})-(\d{4})/, "$2-$1-$3" );
+
+    const checkInDate = new Date( checkin_date! );
+
+    var checkoutRaw = formGroup.get( 'CheckOutDate' )?.value.replace( '/', '-' ).replace( '/', '-' );
+    let checkout_date = checkoutRaw.replace( /(\d{2})-(\d{2})-(\d{4})/, "$2-$1-$3" );
+
+    const checkOutDate = new Date( checkout_date );
 
     if ( checkOutDate && checkInDate && checkOutDate < checkInDate ) {
       return { invalidDateRange: true };
@@ -254,12 +253,15 @@ export class StayGuestComponent implements OnInit {
       console.log( 'Input value changed:', value );
     } );
   }
-
+  guestId: string = '';
   ngOnInit (): void {
     console.log( this.isEditForm );
     if ( this.isEditForm ) {
       console.log( 'edit' );
-      this.commonService.getAllRooms().subscribe( {
+      this.route.params.subscribe( param => {
+        this.guestId = param["guest-id"];
+      } );
+      this.commonService.getAllRoomsByGuestId( this.guestId ).subscribe( {
         next: ( response ) => {
           console.log( response.Data );
           const allRooms = response.Data as AvailableRoom[];
@@ -353,8 +355,8 @@ export class StayGuestComponent implements OnInit {
 
   submitGuestStay () {
     let guestStayDetail: GuestStayDetail = {
-      CheckInDate: this.datePipe.transform( this.stayGuestForm.controls.CheckInDate.value!, 'yyyy-MM-dd hh:mm:ss a' )!.toString(),
-      CheckOutDate: this.datePipe.transform( this.stayGuestForm.controls.CheckOutDate.value!, 'yyyy-MM-dd hh:mm:ss a' )!.toString(),
+      CheckInDate: this.datePipe.transform( this.stayGuestForm.controls.CheckInDate.value!, 'yyyy-MM-dd hh:mm a' )!.toString(),
+      CheckOutDate: this.datePipe.transform( this.stayGuestForm.controls.CheckOutDate.value!, 'yyyy-MM-dd hh:mm a' )!.toString(),
       // RoomTypeId: Number( this.rooms.find( x => x.Id == this.stayGuestForm.controls.RoomNoId.value )?.Type ),
       RoomNoId: this.stayGuestForm.controls.RoomNoId.value!,
       NoOfGuests: this.stayGuestForm.controls.NoOfGuests.value ?? 0,

@@ -1,70 +1,76 @@
-<div class="container-fluid profile-page pe-0 ps-0 pb-1 h-max flex-auto">
-  <div class="flex">
-    <input type="text" placeholder="Search room" class="form-control">
+<div class="flex flex-column  pb-1 h-max">
+  <!-- <p-card> -->
+  <div class="flex p-field w-full pt-4">
+    <p-floatLabel class="flex-grow-1 w-full">
+      <p-autoComplete formControlName="selectedCity" [inputStyleClass]="'w-full'" [showClear]="true"
+        placeholder=" "></p-autoComplete>
+      <label for="city">Search room</label>
+    </p-floatLabel>
   </div>
-  <div class="flex flex-row py-2 px-1 gap-8">
-    <p class=" text-sm font-semibold align-content-center">
-      All Rooms : <span class="text-blue-600/100 text-xs py-0.5 px-1"><p-badge
-          [value]="rooms==null ?'0':rooms!.length" /></span>
+  <!-- </p-card> -->
+  <div class="flex flex-row py-2 px-1">
+    <p class="flex text-sm content-center">
+      Total Rooms : <span class="text-xs py-0.5 px-2"><p-badge [value]="rooms==null?'0':rooms!.length" /></span>
     </p>
-    <p class=" text-sm font-semibold  align-content-center">
-      Booked : <span class="text-blue-600/100 text-xs py-0.5 px-1"> <p-badge [value]="bookedRooms" /></span>
+    <p class=" text-sm  content-center px-4">
+      Booked : <span class="text-xs py-0.5 px-2"> <p-badge [value]="bookedRooms" /></span>
     </p>
-    <p class="text-sm font-semibold  align-content-center">
-      Available : <span class="text-blue-600/100 text-xs py-0.5 px-1"><p-badge [value]="availableRooms" /> </span>
+    <p class="flex-1 text-sm content-center px-4">
+      Available : <span class="text-xs py-0.5 px-2"><p-badge [value]="availableRooms" /> </span>
     </p>
-    <p class="justify-content-end flex flex-1">
-      <p-button label="Add Room" size="small" (click)="addRoom()" [ngClass]="'btn btn-sm btn-primary'">
+    <div class="justify-end flex-grow mr-auto flex gap-2">
+      <p-button severity="secondary" (click)="changeRoomAvailability()" label="Change Availablity" size="small">
       </p-button>
-    </p>
+      <p-button (click)="addRoom()" label="Add Room" size="small"> </p-button>
+    </div>
   </div>
+
   <div *ngIf="rooms && rooms.length > 0">
     @for (r of rooms | paginate: { itemsPerPage: 5,
     currentPage: p ,totalItems: rooms.length}; track $index) {
-    <div class="profile-page">
-      <div class="card profile-header bg-gradient-light my-2 flex">
-        <div class="flex flex-shrink-0 w-100">
-          <div class="flex-1 flex px-2">
-            <div class="profile-image float-md-right py-1">
-              <img src="image/room.jpg" alt="">
-            </div>
+    <p-card class="p-card  my-2 flex">
+      <div class="flex  w-full">
+        <div class="md:block sm:hidden xl:block lg:block pr-4">
+          <div class="profile-image float-md-right py-1 md:block sm:hidden xs:hidden">
+            <img src="image/room.jpg" alt="">
           </div>
-          <div class="flex-1 flex px-5  py-2">
-            <div class="flex-col">
-              <p class="text-blue-500 text-sm">Room No</p>
-              <p class="text-xs text-center font-semibold pt-1.5">{{r?.RoomNo}}</p>
-            </div>
+        </div>
+        <div class="flex-1 flex py-2">
+          <div class="flex-column w-full text-center">
+            <p class="text-sm">Room No</p>
+            <p class="text-xs text-center   pt-1.5">{{r?.RoomNo}}</p>
           </div>
-          <div class="flex-1 flex px-5 py-2">
-            <div class="flex-col">
-              <p class="text-blue-500 text-sm">Room Type</p>
-              <p class=" text-xs font-semibold  pt-1.5">{{r?.Type}}</p>
-            </div>
+        </div>
+        <div class="flex-1 flex   py-2">
+          <div class="flex-column w-full text-center">
+            <p class="ftext-sm">Room Type</p>
+            <p class=" text-xs  pt-1.5">{{r?.Type}}</p>
           </div>
-          <div class="flex-1 flex px-5  py-2">
-            <div class="flex-col">
-              <p class="text-blue-500 text-sm">Floor No</p>
-              <p class=" text-xs text-center font-semibold pt-1.5">{{r?.FloorNo}}</p>
-            </div>
+        </div>
+        <div class="flex-1 flex  py-2">
+          <div class="flex-column w-full text-center">
+            <p class="text-sm">Floor No</p>
+            <p class=" text-xs text-center  pt-1.5">{{r?.FloorNo}}</p>
           </div>
-          <div class="flex-1 flex px-5 py-2">
-            <div class="flex-col">
-              <p class="text-blue-500 text-sm">Capacity</p>
-              <p class=" text-xs text-center font-semibold pt-1.5">{{r?.Capacity}}</p>
-            </div>
+        </div>
+        <div class="flex-1 flex  py-2">
+          <div class="flex-column  w-full text-center">
+            <p class="text-sm">Capacity</p>
+            <p class=" text-xs text-center   pt-1.5">{{r?.Capacity}}</p>
           </div>
-          <div class="flex-1 flex px-5 py-2">
-            <div class="flex-col">
-              <p class="text-blue-500 text-sm">Booking</p>
-              <p class="text-gray-500 text-xs text-center font-italic pt-1.5"
-                *ngIf="!r?.AvailablityStatus?.IsAvailable">
-                {{r?.AvailablityStatus?.FromDate}}</p>
-              <p class=" text-xs text-center font-italic pt-1" *ngIf="!r?.AvailablityStatus?.IsAvailable">
-                {{r?.AvailablityStatus?.ToDate}}</p>
-            </div>
+        </div>
+        <div class="flex-1 flex  py-2">
+          <div class="flex-column w-full">
+            <p class="font-semibold text-sm text-center">Booking</p>
+            <p class="text-gray-500 text-xs text-center italic pt-1.5" *ngIf="!r?.AvailablityStatus?.IsAvailable">
+              {{r?.AvailablityStatus?.FromDate}}</p>
+            <p class=" text-xs text-center italic pt-1" *ngIf="!r?.AvailablityStatus?.IsAvailable">
+              {{r?.AvailablityStatus?.ToDate}}</p>
           </div>
-          <div class="flex-1 flex gap-4  py-2">
-            <p class="text-blue-500 text-sm">
+        </div>
+        <div class="flex-1 flex py-2">
+          <div class="flex flex-row gap-4 ml-auto">
+            <p class="text-primary text-sm">
               <a class="d-inline hover:text-orange-400" href="javascript:void(0);">
                 @if(r?.AvailablityStatus?.IsAvailable){
                 <i class="pi pi-flag" style="font-size: 0.8rem;" pTooltip="Available" tooltipPosition="top"
@@ -76,13 +82,13 @@
                 }
               </a>
             </p>
-            <p class="text-blue-500 text-sm">
+            <p class="text-primary text-sm">
               <a class="d-inline hover:text-orange-400" href="javascript:void(0);" (click)="onRoomEdit(r?.Id!)">
                 <i class="pi pi-pencil" style="font-size: 0.8rem" pTooltip="Edit Room" tooltipPosition="top"
                   [tooltipStyleClass]="'text-xs'"></i>
               </a>
             </p>
-            <p class="text-blue-500 text-sm">
+            <p class="text-primary  text-sm">
               <a class="d-inline hover:text-slate-400" href="javascript:void(0);">
                 <i class="pi pi-trash" style="font-size: 0.8rem; color:red;" pTooltip="Delete Room"
                   tooltipPosition="top" [tooltipStyleClass]="'text-xs'"></i>
@@ -91,15 +97,34 @@
           </div>
         </div>
       </div>
-    </div>
+    </p-card>
     }
+
   </div>
   @if(rooms==null) {
   <app-no-records-found class="text-sm font-semibold"></app-no-records-found>
   }
-  <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-end text-sm">
-      <pagination-controls [autoHide]="true" (pageChange)="p = $event"></pagination-controls>
+  <nav class="flex flex-row">
+    <ul class="ml-auto text-xs">
+      <pagination-controls (pageChange)="p = $event" class="p-paginator"></pagination-controls>
     </ul>
   </nav>
+</div>
+<div class="card">
+  <p-dialog [(visible)]="display" appendTo="body" [closable]="true" [modal]="true"
+    [style]="{width: '60vw',height: '50vh'}" showHeader="true">
+    <ng-template pTemplate="header">
+      <div class="flex flex-column">
+        <h1 class="text-3xl">Room Availability Management</h1>
+        <p class="text-sm">Overview of room availability and management options</p>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="body">
+      <app-change-room-availability [rooms]="rooms"
+        (updatedRooms)="onAvailabilityUpdate($event)"></app-change-room-availability>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <p-button label="Close" [text]="true" severity="secondary" (click)="display = false" size="small"></p-button>
+    </ng-template>
+  </p-dialog>
 </div>

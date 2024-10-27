@@ -9,6 +9,9 @@ import { Router } from '@angular/router';
 import { CommonService } from '../../../../_services/common.service';
 import { CountryService } from '../../../../_services/country.service';
 import { UtilsService } from '../../../../_helpers/utils.service';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component( {
   selector: 'app-add-state',
@@ -16,7 +19,10 @@ import { UtilsService } from '../../../../_helpers/utils.service';
   imports: [
     ReactiveFormsModule,
     NgSelectModule,
-    ToastModule
+    ToastModule,
+    ButtonModule,
+    InputTextModule,
+    CardModule
   ],
   templateUrl: './add-state.component.html',
   styleUrl: './add-state.component.css',
@@ -24,6 +30,7 @@ import { UtilsService } from '../../../../_helpers/utils.service';
 } )
 export class AddStateComponent implements OnInit {
   countries: Country[] = [];
+  activeValue: string = 'Active';
   states: States[] = [];
   stateForm = new FormGroup( {
     Name: new FormControl( '', [Validators.required] ),

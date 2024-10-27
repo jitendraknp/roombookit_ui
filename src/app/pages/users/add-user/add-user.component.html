@@ -1,66 +1,66 @@
 <form (ngSubmit)="onSubmit()" [formGroup]="userForm">
-  <div class="card border-0 shadow-lg m-0">
-    <div class="card-header  d-flex justify-content-between align-items-center bg-primary bg-gradient text-white">
+  <div class="card border-surface-0 dark:border-surface-900 shadow-lg m-0">
+    <div class="card-header  d-flex justify-between items-center bg-primary bg-gradient text-white">
       <p class="uppercase text-sm">Add User</p>
       <!--      <ion-icon name="close" class="cursor-pointer" (click)="onClose()"></ion-icon>-->
     </div>
     <div class="card-body">
       <div class="row">
-        <div class="col-12">
+        <div class="col-span-12">
           <label class="form-label" for="firstName">First Name</label>
-          <input class="form-control form-control-sm" formControlName="FirstName" id="firstName" placeholder="First Name"
-                 type="text"/>
+          <input class="form-control form-control-sm" formControlName="FirstName" id="firstName"
+            placeholder="First Name" type="text" />
         </div>
-        <div class="col-12">
+        <div class="col-span-12">
           <label class="form-label" for="lastName">Last Name</label>
           <input class="form-control form-control-sm" formControlName="LastName" id="lastName" placeholder="Last Name"
-                 type="text"/>
+            type="text" />
         </div>
-        <div class="col-6 col-sm-12 col-xs-12">
+        <div class="col-span-6 col-sm-12 col-xs-12">
           <label class="form-label" for="mobileNo">Mobile No</label>
           <input class="form-control form-control-sm" formControlName="MobileNo" id="mobileNo" placeholder="Mobile No"
-                 type="text"/>
+            type="text" />
         </div>
-        <div class="col-6 col-sm-12 col-xs-12">
+        <div class="col-span-6 col-sm-12 col-xs-12">
           <label class="form-label" for="empCode">Emp Code</label>
           <input class="form-control form-control-sm" formControlName="EmpCode" id="empCode" placeholder="Emp Code"
-                 type="text"/>
+            type="text" />
         </div>
-        <div class="col-12">
+        <div class="col-span-12">
           <label class="form-label" for="email">Email</label>
           <input class="form-control form-control-sm" formControlName="Email" id="email" placeholder="Email"
-                 type="text"/>
+            type="text" />
         </div>
-        <div class="col-5 col-sm-12 col-xs-12">
+        <div class="col-span-5 col-sm-12 col-xs-12">
           <label class="form-label" for="gender">Gender</label>
-          <ng-select appearance="outline" class="custom" formControlName="Gender" id="gender" notFoundText="No items found"
-                     placeholder="Gender">
+          <ng-select appearance="outline" class="custom" formControlName="Gender" id="gender"
+            notFoundText="No items found" placeholder="Gender">
             <ng-option value="MALE">MALE</ng-option>
             <ng-option value="FEMALE">FEMALE</ng-option>
             <ng-option value="TRANSGENDER">TRANSGENDER</ng-option>
           </ng-select>
         </div>
-        <div class="col-7 col-sm-12 col-xs-12">
+        <div class="col-span-7 col-sm-12 col-xs-12">
           <label class="form-label" for="role">Role</label>
           <ng-select appearance="outline" class="custom" formControlName="RoleId" notFoundText="No items found"
-                     placeholder="Select Role">
+            placeholder="Select Role">
             <ng-option value="F6F7563A-D4F7-4BF4-8A00-75155A551346">ADMIN</ng-option>
             <ng-option value="1E1EADFE-3372-4A5B-BBC9-247858160BEF">MANAGER</ng-option>
             <ng-option value="ED8A05CF-28DE-46BF-B2F6-0199C7CE79AD">SUPERADMIN</ng-option>
           </ng-select>
         </div>
-        <div class="col-12">
+        <div class="col-span-12">
           <label class="form-label" for="userName">User Name</label>
           <input class="form-control form-control-sm" formControlName="UserName" id="userName" placeholder="User Name"
-                 type="text"/>
+            type="text" />
 
         </div>
-        <div class="col-12">
+        <div class="col-span-12">
           <label class="form-label" for="password">Password</label>
           <input class="form-control form-control-sm" formControlName="Password" id="password" placeholder="Password"
-                 type="text"/>
+            type="text" />
         </div>
-        <div class="col-12">
+        <div class="col-span-12">
           <app-address formGroupName="userForm"></app-address>
         </div>
       </div>

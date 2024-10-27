@@ -1,12 +1,12 @@
 @defer(on immediate){
-<li class="list-group-item d-flex justify-content-between align-items-start border-0 shadow-lg gap-3 mb-2 rounded">
+<li class="list-group-item d-flex justify-between items-start border-surface-0 dark:border-surface-900 shadow-lg gap-4 mb-2 rounded">
     <div>
-        <span class="d-flex justify-content-center text-info">Country Name {{isRecordUpdated}}</span>
-        <span class="d-flex  justify-content-center">{{cardDetails?.Name| uppercase}}</span>
+        <span class="d-flex justify-center text-info">Country Name {{isRecordUpdated}}</span>
+        <span class="d-flex  justify-center">{{cardDetails?.Name| uppercase}}</span>
     </div>
     <div>
-        <span class=" d-flex justify-content-center text-info">Country Code</span>
-        <span class="d-flex justify-content-center">{{cardDetails?.Code| uppercase}}</span>
+        <span class=" d-flex justify-center text-info">Country Code</span>
+        <span class="d-flex justify-center">{{cardDetails?.Code| uppercase}}</span>
     </div>
     <div class="d-flex col-md-3 text-end">
         <div class="col gy-3 col-md-4 text-end">
@@ -31,15 +31,15 @@
 </li>
 }
 @placeholder (minimum 500ms) {
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-center">
     <div class="spinner-border  text-warning " role="status">
         <span class="visually-hidden">Loading...</span>
     </div>
 </div>
 }
 @loading (after 10ms; minimum 1s) {
-<div class="d-flex justify-content-center">
-    <div class="spinner-border  text-info d-flex justify-content-center" role="status">
+<div class="d-flex justify-center">
+    <div class="spinner-border  text-info d-flex justify-center" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>
 </div>

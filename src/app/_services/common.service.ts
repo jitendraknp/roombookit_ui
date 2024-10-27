@@ -32,6 +32,9 @@ export class CommonService {
   getCityById ( Id: string ): Observable<ApiResponse> {
     return this.httpClient.get<ApiResponse>( `${ URL }City/${ Id }`, this.httpOptions );
   }
+  getAllCityById ( Id: string ): Observable<ApiResponse> {
+    return this.httpClient.get<ApiResponse>( `${ URL }City/${ Id }/all`, this.httpOptions );
+  }
   getAllCities (): Observable<ApiResponse> {
     return this.httpClient.get<ApiResponse>( `${ URL }City/all`, this.httpOptions );
   }
@@ -43,6 +46,9 @@ export class CommonService {
   }
   getAllRooms (): Observable<ApiResponse> {
     return this.httpClient.get<ApiResponse>( `${ URL }Room/all`, this.httpOptions );
+  }
+  getAllRoomsByGuestId ( id: string ): Observable<ApiResponse> {
+    return this.httpClient.get<ApiResponse>( `${ URL }Room/all-available/${ id }`, this.httpOptions );
   }
   getAllAvailableRooms (): Observable<ApiResponse> {
     return this.httpClient.get<ApiResponse>( `${ URL }Room/all-available`, this.httpOptions );

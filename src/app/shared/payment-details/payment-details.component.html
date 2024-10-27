@@ -1,8 +1,9 @@
-<form class="row" [formGroup]="form">
-  <div class="col-md-6  pb-2">
+<form class="grid" [formGroup]="form">
+  <div class="col-12 lg:col-4 xl:col-4">
     <label for="gstRate" class="form-label">GST Rate</label>
-    <ng-select appearance="outline" placeholder="Select GST Rate" id="gstRate" class="custom" [formControl]="gstControl"
-      (change)="onGstChange($event)" formControlName="GSTPercentage" notFoundText="No items found" [clearable]="false">
+    <ng-select appearance="outline" placeholder="Select GST Rate" id="gstRate" class="w-12rem"
+      [formControl]="gstControl" (change)="onGstChange($event)" formControlName="GSTPercentage"
+      notFoundText="No items found" [clearable]="false">
       <ng-option [value]="1">0%</ng-option>
       <ng-option [value]="5">5%</ng-option>
       <ng-option [value]="12" selected>12%</ng-option>
@@ -10,19 +11,19 @@
       <ng-option [value]="28">28%</ng-option>
     </ng-select>
   </div>
-  <div class="col-md-6  pb-2">
+  <div class="col-12 lg:col-4 xl:col-4">
     <label for="excGSTRate" class="form-label">After GST (&#8377;)</label>
-    <input type="number" class="form-control form-control-sm" id="excGSTRate" formControlName="ExcGST"
-      placeholder="Total Amount" />
+    <p-inputnumber inputId="integeronly" mode="currency" currency="INR" currencyDisplay="code" locale="en-IN" size="10"
+      fluid="true" id="excGSTRate" formControlName="ExcGST" placeholder="Total Amount" />
   </div>
-  <!-- <div class="col-md-6 col-6 pb-2">
+  <!-- <div class="col-md-6 col-span-6 pb-2">
     <label for="incGSTRate" class="form-label">Inc. of GST (&#8377;)</label>
     <input type="number" class="form-control form-control-sm" id="incGSTRate" formControlName="IncGST"
       placeholder="Total Amount" />
   </div> -->
-  <div class="col-md-6  pb-2">
+  <div class="col-12 lg:col-4 xl:col-4">
     <label for="advancePayment" class="form-label">Payment Mode</label>
-    <ng-select appearance="outline" placeholder="Payment Mode" id="paymentMode" class="custom"
+    <ng-select appearance="outline" placeholder="Payment Mode" id="paymentMode" class="w-12rem"
       formControlName="PaymentMode" notFoundText="No items found" [clearable]="false">
       <ng-option [value]="1">Cash</ng-option>
       <ng-option [value]="2">Credit Card</ng-option>
@@ -31,44 +32,45 @@
       <ng-option [value]="5">UPI</ng-option>
     </ng-select>
   </div>
-  <div class="col-md-6  pb-2">
-    <label for="transactionNo" class="form-label">Transaction No</label>
-    <input type="text" class="form-control form-control-sm" id="transactionNo" formControlName="TransactionNo"
-      placeholder="Transaction No" />
-  </div>
-  <div class="col-md-6  pb-2">
+
+  <div class="col-12 lg:col-4 xl:col-4">
     <label for="advancePayment" class="form-label">Amount Paid</label>
-    <input type="number" class="form-control form-control-sm" id="advancePayment" formControlName="AmountPaid"
-      placeholder="Amount Paid" />
+    <p-inputnumber inputId="integeronly" mode="currency" currency="INR" currencyDisplay="symbol" locale="en-IN"
+      size="small" fluid="true" id="advancePayment" formControlName="AmountPaid" placeholder="Amount Paid" />
   </div>
 
-  <div class="col-md-6 ">
+  <div class="col-12 lg:col-4 xl:col-4">
     <label for="balancePayment" class="form-label">Balance </label>
-    <input type="number" class="form-control form-control-sm" id="balancePayment" formControlName="BalanceAmount"
-      placeholder="Balance Payment" />
-    <p class="text-xs italic text-gray-400 font-semibold text-end">Total-(Advance+Discount)</p>
+    <p-inputnumber inputId="integeronly" mode="currency" currency="INR" currencyDisplay="symbol" locale="en-IN"
+      size="small" fluid="true" id="balancePayment" formControlName="BalanceAmount" placeholder="Balance Payment" />
+    <p class="text-xs font-italic text-gray-400 font-semibold text-end">Total-(Advance+Discount)</p>
   </div>
-  <div class="flex flex-row gap-2 ps-0">
-    <div class="flex-1 flex-grow-0"></div>
+  <div class="col-12 lg:col-4 xl:col-4">
+    <label for="transactionNo" class="form-label">Transaction No</label>
+    <input type="text" pInputText size="small" fluid="true" id="transactionNo" formControlName="TransactionNo"
+      placeholder="Transaction No" />
+  </div>
+  <div class="flex flex-row gap-2 px-2">
     <div class="flex-1">
       <label for="CGST" class="form-label">CGST (&#8377;)</label>
-      <input type="number" class="form-control form-control-sm" id="CGST" formControlName="CGST"
-        placeholder="Central Goods and Services Tax" />
+      <p-inputnumber inputId="integeronly" mode="currency" currency="INR" currencyDisplay="symbol" locale="en-IN"
+        size="small" fluid="true" id="CGST" formControlName="CGST" placeholder="Central Goods and Services Tax" />
     </div>
     <div class="flex-1">
       <label for="SGST" class="form-label">SGST (&#8377;)</label>
-      <input type="number" class="form-control form-control-sm" id="SGST" formControlName="SGST"
-        placeholder="State Goods and Services Tax" />
+      <p-inputnumber inputId="integeronly" mode="currency" currency="INR" currencyDisplay="symbol" locale="en-IN"
+        size="small" fluid="true" id="SGST" formControlName="SGST" placeholder="State Goods and Services Tax" />
     </div>
     <div class="flex-1">
       <label for="UTGST" class="form-label">UTGST (&#8377;)</label>
-      <input type="number" class="form-control form-control-sm" id="UTGST" formControlName="UTGST"
+      <p-inputnumber inputId="integeronly" mode="currency" currency="INR" currencyDisplay="symbol" locale="en-IN"
+        inputStyleClass="text-sm" size="10" fluid="true" id="UTGST" formControlName="UTGST"
         placeholder="Union Territory Goods and Services Tax " />
     </div>
     <div class="flex-1">
       <label for="IGST" class="form-label">IGST (&#8377;)</label>
-      <input type="number" class="form-control form-control-sm" id="IGST" formControlName="IGST"
-        placeholder="Integrated Goods and Services Tax " />
+      <p-inputnumber inputId="integeronly" mode="currency" currency="INR" currencyDisplay="symbol" locale="en-IN"
+        size="small" fluid="true" id="IGST" formControlName="IGST" placeholder="Integrated Goods and Services Tax " />
     </div>
   </div>
   <!-- <p class="text-xs text-gray-400 italic">For internal use: {{this.form.controls["PaymentDetailsId"].value}}</p> -->

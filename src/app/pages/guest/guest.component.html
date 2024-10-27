@@ -1,102 +1,70 @@
-<div class="container-fluid p-1  min-vh-100">
+<div class="flex flex-column pb-1 h-max">
+  <div class="flex  flex-1 flex-row gap-2 justify-content-start align-items-baseline pt-4">
+    <ng-select [formControl]="searchByControl" appearance="outline" class="text-sm w-1/2" name="filterby"
+      [bindLabel]="'text'" [bindValue]="'value'" (change)="onFilterChange($event)" [clearable]="false"
+      [items]="searchBy" notFoundText="No items found" placeholder="Filter by">
+    </ng-select>
+    <form [formGroup]="formGroup" class="w-full">
+      <p-floatLabel class="flex-grow-1 w-full">
+        <p-autoComplete (completeMethod)="filterGuest($event)" (onSelect)="onItemSelect($event)"
+          [inputStyleClass]="'text-sm'" (onClear)="onClear($event)" [showClear]="true" [lazy]="true" [size]="'small'"
+          [fluid]="true" [suggestions]="suggestions" fluid formControlName="searchText" optionLabel="SearchResult"
+          variant="filled"></p-autoComplete>
+        <label for="city">Search Guest</label>
+      </p-floatLabel>
+    </form>
 
-  <div class="col-md-12">
-    <div class="card p-0 shadow-lg">
-      <div class="card-body p-2">
-        <div class="flex flex-row gap-2">
-          <div class="flex-grow-1 w-2">
-            <label class="form-label text-sm font-semibold">Filter by</label>
-            <ng-select [formControl]="searchByControl" appearance="outline" class="text-sm" name="filterby"
-              notFoundText="No items found" placeholder="Filter by">
-              @for (f of filterBy; track f.id) {
-              <ng-option [value]="f.id">{{ f.text }}
-              </ng-option>
-              }
-            </ng-select>
-          </div>
-          <div class="flex-grow-1 w-6">
-            <label class="form-label text-sm font-semibold" for="search">Search</label>
-            <!--              <span class="p-input-icon-right flex w-100">-->
-            <!--            <i class="pi pi-search"></i>-->
-            <!--            <input-->
-            <!--              class="form-control form-control-sm text-sm font-semibold"-->
-            <!--              id="search"-->
-            <!--              placeholder="Filter Guest"-->
-            <!--              type="text"/>-->
-            <!--          </span>-->
-            <span class="p-input-icon-right flex w-100">
-              <form [formGroup]="formGroup" class="w-100">
-                <p-autoComplete (completeMethod)="filterGuest($event)" (onLazyLoad)="onLazyLoad($event)"
-                  (onSelect)="onItemSelect($event)" (onClear)="onClear($event)" [showClear]="true"
-                  [inputStyleClass]="'form-control form-control-sm text-sm font-semibold flex'" [lazy]="true"
-                  [styleClass]="'w-100'" [suggestions]="suggestions" class="w-100" formControlName="searchText"
-                  optionLabel="SearchResult" variant="filled" />
-
-              </form>
-
-            </span>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="selectedItem" class="card-footer p-2 text-start flex flex-column">
-        <div class="flex flex-grow-1 flex-row">
-          <p class="text-xs font-italic text-gray-600">Guest <span class="text-primary">{{
-              selectedItem?.value?.SearchResult }}</span> already
-            exists.You
-            can use existing details.
-            <a (click)="showViewDetailsDialog($event)" (onShow)="onViewBookingShow($event)"
-              class="text-xs font-semibold text-primary-600 px-2" href="#">View Booking History</a>
-            <a (click)="showDialog($event)" class="text-xs font-semibold text-primary-600"
-              (onShow)="onBookingShow($event)" href="#">Book Now</a>
-          </p>
-        </div>
-      </div>
-      <!--        <button (click)="showDialog()" icon="pi pi-external-link" label="Show Popup" pButton type="button"></button>-->
-      <p-dialog [(visible)]="display" [closable]="true" [modal]="false" (onShow)="onBookingShow($event)"
-        [style]="{width: '70vw',padding:'4px','z-index':100}" header="New Booking & Payment">
-        <app-new-details [selectedItem]="selectedItem" [guestDetail]="guestDetails!" [companyAddress]="companyAddress"
-          [allCity]="allCity" [rooms]="rooms" [options]="options">
-        </app-new-details>
-      </p-dialog>
-      <p-dialog [(visible)]="displayViewDetails" [closable]="true" [modal]="false" (onShow)="onViewBookingShow($event)"
-        [style]="{width: '70vw',padding:'4px','z-index':100}" header="Previous Bookings">
-        <app-view-details [selectedItem]="selectedItem" [guests]="guestBookings"
-          (printInvoice)="onPrintInvoiceClick($event)"></app-view-details>
-      </p-dialog>
+  </div>
+  <div *ngIf="selectedItem" class="card-footer p-2 text-start flex flex-column">
+    <div class="flex flex-grow-1 flex-row">
+      <p class="text-xs font-italic text-gray-600">Guest <span class="text-primary">{{
+          selectedItem?.value?.SearchResult }}</span> already
+        exists.You
+        can use existing details.
+        <a (click)="showViewDetailsDialog($event)" (onShow)="onViewBookingShow($event)"
+          class="text-xs font-semibold text-primary-600 px-2" href="#">View Booking History</a>
+        <a (click)="showDialog($event)" class="text-xs font-semibold text-primary-600" (onShow)="onBookingShow($event)"
+          href="#">Book Now</a>
+      </p>
     </div>
   </div>
-  <div class="row pt-2 pb-2">
-    <div class="col-md-8">
-      <h2 class="heading">All Guest(s)</h2>
-    </div>
-    <div *ngIf="showFullList" class="col-md-4 text-end pe-3">
-      <a (click)="onAdd()" [routerLink]="['add-guest']" class="btn btn-primary btn-sm border-0 hover:bg-[#60a5fa]">Add
-        Guest</a>
+  <p-dialog [(visible)]="display" [closable]="true" [modal]="true" (onShow)="onBookingShow($event)"
+    [style]="{width: '70vw',padding:'4px','z-index':100}" header="New Booking & Payment">
+    <app-new-details [selectedItem]="selectedItem" [guestDetail]="guestDetails!" [companyAddress]="companyAddress"
+      [allCity]="allCity" [rooms]="rooms" [options]="options">
+    </app-new-details>
+  </p-dialog>
+  <p-dialog [(visible)]="displayViewDetails" [closable]="true" [modal]="true" (onShow)="onViewBookingShow($event)"
+    [style]="{width: '70vw',padding:'4px','z-index':100}" header="Previous Bookings">
+    <app-view-details [selectedItem]="selectedItem" [guests]="guestBookings"
+      (printInvoice)="onPrintInvoiceClick($event)"></app-view-details>
+  </p-dialog>
+  <div class="flex flex-row py-2 px-1">
+    <p class="flex-1 text-sm content-center">
+      Total Guest : <span class="text-xs py-0.5 px-1">
+        <p-badge [value]="guests==null?'0':guests!.length" />
+      </span>
+    </p>
+    <div class="justify-end flex-grow mr-auto">
+      <p-button (click)="onAdd()" [routerLink]="['add-guest']" label="Add Guest" size="small" severity="primary">
+      </p-button>
     </div>
   </div>
-
-  <!-- style=" min-height: 65vh; height: 70vh;overflow-y: scroll;overflow-x:hidden;" -->
   <div *ngIf="guests">
-    <ul>
-      @for (guest of guests! | paginate: {
-      itemsPerPage: guestPageSize,
-      currentPage: guestPageNumber,
-      totalItems: guestTotalRecords
-      }; ; track $index) {
-      <app-guest-list [guestDetails]="guest" *ngIf="guest!=null"></app-guest-list>
-      }
-
-    </ul>
+    @for (guest of guests! | paginate: {
+    itemsPerPage: guestPageSize,
+    currentPage: guestPageNumber,
+    totalItems: guestTotalRecords
+    }; ; track $index) {
+    <app-guest-list [guestDetails]="guest" *ngIf="guest!=null"></app-guest-list>
+    }
     <app-no-records-found [message]="message" *ngIf="guests?.length==0" class="text-sm"></app-no-records-found>
-    <nav *ngIf="guests" aria-label="Page navigation example pt-2 text-sm">
-      <ul class="pagination justify-content-end text-sm">
+    <nav class="flex flex-row">
+      <ul class="ml-auto text-xs">
         <pagination-controls (pageChange)="handlePageChange($event)" [responsive]="true" [autoHide]="true"
           class="text-sm">
         </pagination-controls>
       </ul>
     </nav>
-  </div>
-  <div class="flex  flex-row w-40">
-    <router-outlet></router-outlet>
   </div>
 </div>

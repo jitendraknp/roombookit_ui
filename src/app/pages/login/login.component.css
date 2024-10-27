@@ -142,6 +142,7 @@ body {
 .login-form {
     position: relative;
     width: 100%;
+    top: 20%;
 }
 
 .login-form h2 {

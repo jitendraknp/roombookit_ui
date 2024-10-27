@@ -1,13 +1,16 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { States } from '../../../../models/states';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { BadgeModule } from "primeng/badge";
-import { Button } from "primeng/button";
+import { ButtonModule } from "primeng/button";
 import { NgxPaginationModule } from "ngx-pagination";
 import { NoRecordsFoundComponent } from "../../../no-records-found/no-records-found.component";
 import { TooltipModule } from "primeng/tooltip";
 import { CommonService } from "../../../../_services/common.service";
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { CardModule } from 'primeng/card';
 
 @Component( {
   selector: 'app-state-list',
@@ -16,13 +19,17 @@ import { CommonService } from "../../../../_services/common.service";
     CommonModule,
     RouterModule,
     BadgeModule,
-    Button,
+    ButtonModule,
     NgxPaginationModule,
     NoRecordsFoundComponent,
-    TooltipModule
+    TooltipModule,
+    FloatLabelModule,
+    AutoCompleteModule,
+    CardModule,
   ],
   templateUrl: './state-list.component.html',
-  styleUrl: './state-list.component.css'
+  styleUrl: './state-list.component.css',
+  encapsulation: ViewEncapsulation.None,
 } )
 export class StateListComponent implements OnInit {
   states: States[] = [];

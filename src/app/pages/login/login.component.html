@@ -1,65 +1,58 @@
 @defer () {
-<div class="wrapper">
-  <div class="container m-3 shadow-lg">
-    <div class="col-left shadow-lg">
-      <div class="login-text">
-        <h2>Welcome,</h2>
-        <h4 class="fs-4">RD Residency Hotel</h4>
-        <!-- <p>Setup your account.</p>
-        <a class="btn btn-primary" href="Javacript:void(0);" [routerLink]="['/hotel-setup']">Set Up</a> -->
-      </div>
-    </div>
-    <div class="col-right">
-      <div class="login-form flex flex-column">
-        <h2>Login</h2>
-        <form action="#" novalidate [formGroup]="loginForm" (ngSubmit)="login(loginForm)" autocomplete="off">
-          <div class="form-group flex flex-column pb-3">
-            <label class="form-label">Username / Email<span>*</span></label>
-            <input type="text" pInputText id="username" formControlName="username" autocomplete="disabled"
-              placeholder="Username or Email">
-
-            <div
-              *ngIf="loginForm.get('username')?.invalid &&
-                                                        loginForm.get('username')?.errors &&
-                                                        (loginForm.get('username')?.dirty || loginForm.get('username')?.touched)">
-              <small class="text-danger" *ngIf="username?.hasError('required')">
-                This field is required.
-              </small>
-              <small class="text-danger" *ngIf="username?.hasError('minlength')">
-                Name must be at least 4 characters long.
-              </small>
-              <small class="text-danger" *ngIf="username?.hasError('maxlength')">
-                Name must be max 50 characters long.
-              </small>
-            </div>
-          </div>
-          <div class="form-group flex flex-column  pb-3">
-            <label class="form-label">Password<span>*</span></label>
-            <input class="form-control" type="password" formControlName="password" placeholder="Password"
-              autocomplete="off">
-            <small class="text-danger"
-              *ngIf="loginForm.get('password')?.hasError('required') &&
-                                                        (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">
-              This field is required.
-            </small>
-          </div>
-          <div class="flex flex-row">
-            <div class="flex-grow-1 ">
-              <p-button label="Forget Password?" [link]="true" [routerLink]="['/forgot-password']" />
-            </div>
-            <div class="flex-grow-1 text-end">
-              <!-- <input type="submit" class="border-0 btn btn-primary btn-sm" value="Log In" /> -->
-              <p-button label="Log In" [size]="'small'" icon="pi pi-sign-in" [iconPos]="'right'"
-                [ngClass]="'btn btn-sm btn-primary'" [disabled]="!loginForm.valid" type="submit"></p-button>
-            </div>
-
-          </div>
-        </form>
-      </div>
+<div class="container mx-auto">
+  <div class="col-left shadow-lg">
+    <div class="login-text">
+      <h2 class="text-3xl">Welcome,</h2>
+      <h4 class="text-3xl">RD Residency Hotel</h4>
     </div>
   </div>
-  <!-- <div class="credit">
-  </div> -->
+  <div class="col-right">
+    <div class="login-form flex flex-column shadow-4 px-4 py-2">
+      <h2>Login</h2>
+      <form action="#" novalidate [formGroup]="loginForm" (ngSubmit)="login(loginForm)" autocomplete="off">
+        <div class="form-group flex flex-column pb-4 text-sm">
+          <label class="form-label">Username / Email<span>*</span></label>
+          <input type="text" pInputText id="username" formControlName="username" autocomplete="disabled"
+            placeholder="Username or Email">
+
+          <div
+            *ngIf="loginForm.get('username')?.invalid &&
+                                                        loginForm.get('username')?.errors &&
+                                                        (loginForm.get('username')?.dirty || loginForm.get('username')?.touched)">
+            <small class="text-danger" *ngIf="username?.hasError('required')">
+              This field is required.
+            </small>
+            <small class="text-danger" *ngIf="username?.hasError('minlength')">
+              Name must be at least 4 characters long.
+            </small>
+            <small class="text-danger" *ngIf="username?.hasError('maxlength')">
+              Name must be max 50 characters long.
+            </small>
+          </div>
+        </div>
+        <div class="form-group flex  flex-column pb-4 text-sm">
+          <label class="form-label">Password<span>*</span></label>
+          <input pInputText type="password" formControlName="password" placeholder="Password" autocomplete="off">
+          <small class="text-danger"
+            *ngIf="loginForm.get('password')?.hasError('required') &&
+                                                        (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">
+            This field is required.
+          </small>
+        </div>
+        <div class="flex flex-row  text-sm">
+          <div class="flex flex-1">
+            <p-button label="Forget Password?" [routerLink]="['/forgot-password']" [size]="'small'" class="text-xs"
+              [severity]="'secondary'" />
+          </div>
+          <div class="flex justify-end">
+            <p-button severity="info" label="Log In" [size]="'small'" icon="pi pi-sign-in" [iconPos]="'right'"
+              [disabled]="!loginForm.valid" type="submit"></p-button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 }
 @error {

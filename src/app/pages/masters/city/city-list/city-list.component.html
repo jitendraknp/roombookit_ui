@@ -1,81 +1,82 @@
 <div class="flex flex-column  pb-1 h-max">
-  <div class="flex">
-    <input class="form-control" placeholder="Search city" type="text">
+  <!-- <p-card> -->
+  <div class="flex p-field w-full pt-4">
+    <p-floatLabel class="flex-grow-1 w-full">
+      <p-autoComplete formControlName="selectedCity" [suggestions]="filteredCities"
+        (completeMethod)="filterCities($event)" [field]="'Name'" [inputStyleClass]="'w-full'" [showClear]="true"
+        (onClear)="onClearCity()" (onSelect)="onCitySelect($event)" placeholder=" "></p-autoComplete>
+      <label for="city">Search City</label>
+    </p-floatLabel>
   </div>
-
-  <div class="flex flex-row py-2 px-1 gap-8 ">
-    <p class="text-sm font-semibold align-content-center">
-      Total City : <span class="text-blue-600/100 text-xs py-0.5 px-1"><p-badge
-          [value]="cities==null?'0':cities!.length" /></span>
+  <!-- </p-card> -->
+  <div class="flex flex-row py-2 px-1">
+    <p class="flex-1 text-sm content-center">
+      Total City : <span class="text-xs py-0.5 px-1"><p-badge [value]="cities==null?'0':cities!.length" /></span>
     </p>
-    <p class="justify-content-end flex flex-1">
-      <p-button (click)="addCity()" label="Add City" size="small" [ngClass]="'btn btn-sm btn-primary'">
+    <div class="justify-end flex-grow mr-auto">
+      <p-button (click)="addCity()" label="Add City" size="small">
       </p-button>
-    </p>
+
+    </div>
   </div>
   @for (c of cities | paginate: {
   itemsPerPage: 5,
   currentPage: p,
   totalItems: cities.length
   }; track c.Name) {
-  <div class="profile-page">
-    <div class="card profile-header bg-gradient-light my-2 flex">
-      <div class="flex flex-shrink-0 w-100">
-        <div class="flex-1 flex px-2">
-          <div class="profile-image float-md-right py-1">
-            <img src="image/room.jpg" alt="">
-          </div>
-        </div>
-        <div class="flex-1 flex px-5  py-2">
-          <div class="flex-col">
-            <p class="text-blue-500 text-sm">City Name</p>
-            <p class="text-sm text-center font-semibold pt-1.5">{{ c?.Name }}</p>
-          </div>
-        </div>
-        <div class="flex-1 flex px-5 py-2">
-          <div class="flex-col">
-            <p class="text-blue-500 text-sm">City Code</p>
-            <p class="text-sm text-center font-semibold  pt-1.5">{{ c?.Code }}</p>
-          </div>
-        </div>
-        <div class="flex-1 flex gap-4  py-2 justify-content-end px-2.5">
-          <p class="text-blue-500 text-sm">
-            <a class="d-inline hover:text-orange-400" href="javascript:void(0);">
-              @if (c?.Is_Active) {
-              <i class="pi pi-flag" style="font-size: 0.8rem;" pTooltip="Active" tooltipPosition="top"
-                tooltipStyleClass="text-xs"></i>
-              } @else {
-              <i class="pi pi-flag-fill text-red-500" style="font-size: 0.8rem" pTooltip="In Active"
-                tooltipPosition="top" tooltipStyleClass="text-xs"></i>
-              }
-            </a>
-          </p>
-          <p class="text-blue-500 text-sm">
-            <a class="d-inline hover:text-orange-400" href="javascript:void(0);" (click)="onCityEdit(c?.Id!)">
-              <i class="pi pi-pencil" style="font-size: 0.8rem" pTooltip="Edit City" tooltipPosition="top"
-                [tooltipStyleClass]="'text-xs'"></i>
-            </a>
-          </p>
-          <p class="text-blue-500 text-sm">
-            <a class="d-inline hover:text-slate-400" href="javascript:void(0);">
-
-              <i class="pi pi-trash" style="font-size: 0.8rem; color:red;" pTooltip="Delete" tooltipPosition="top"
-                [tooltipStyleClass]="'text-xs'"></i>
-
-            </a>
-          </p>
+  <p-card class="p-card  my-2 flex">
+    <div class="flex  w-full">
+      <div class="md:block sm:hidden xl:block lg:block">
+        <div class="profile-image float-md-right py-1 md:block sm:hidden xs:hidden">
+          <img src="image/room.jpg" alt="">
         </div>
       </div>
-
+      <div class="flex-1 flex px-8  py-2">
+        <div class="flex-column">
+          <p class="text-primary text-sm">City Name</p>
+          <p class="text-sm text-center pt-1.5">{{ c?.Name }}</p>
+        </div>
+      </div>
+      <div class="flex-1 flex px-8 py-2">
+        <div class="flex-column">
+          <p class="text-primary text-sm">City Code</p>
+          <p class="text-sm text-center  pt-1.5">{{ c?.Code }}</p>
+        </div>
+      </div>
+      <div class="flex flex-row gap-4  py-2 justify-end px-4 mr-auto ">
+        <p class="text-primary text-sm">
+          <a class="d-inline hover:text-orange-400" href="javascript:void(0);">
+            @if (c?.Is_Active) {
+            <i class="pi pi-flag" style="font-size: 0.8rem;" pTooltip="Active" tooltipPosition="top"
+              tooltipStyleClass="text-xs"></i>
+            } @else {
+            <i class="pi pi-flag-fill text-red-500" style="font-size: 0.8rem" pTooltip="In Active" tooltipPosition="top"
+              tooltipStyleClass="text-xs"></i>
+            }
+          </a>
+        </p>
+        <p class="text-primary text-sm">
+          <a class="d-inline hover:text-orange-400" href="javascript:void(0);" (click)="onCityEdit(c?.Id!)">
+            <i class="pi pi-pencil" style="font-size: 0.8rem" pTooltip="Edit City" tooltipPosition="top"
+              [tooltipStyleClass]="'text-xs'"></i>
+          </a>
+        </p>
+        <p class="text-primary text-sm">
+          <a class="d-inline hover:text-slate-400" href="javascript:void(0);">
+            <i class="pi pi-trash" style="font-size: 0.8rem; color:red;" pTooltip="Delete" tooltipPosition="top"
+              [tooltipStyleClass]="'text-xs'"></i>
+          </a>
+        </p>
+      </div>
     </div>
-  </div>
+  </p-card>
   }
   @if (cities == null) {
   <app-no-records-found></app-no-records-found>
   }
-  <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-end text-sm">
-      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  <nav class="flex flex-row">
+    <ul class="ml-auto text-xs">
+      <pagination-controls (pageChange)="p = $event" class="p-paginator"></pagination-controls>
     </ul>
   </nav>
 </div>

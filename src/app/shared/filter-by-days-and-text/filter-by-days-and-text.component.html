@@ -1,0 +1,38 @@
+<form [formGroup]="filterForm" (ngSubmit)="onSubmit()" class="flex flex-row grow gap-2">
+    <!-- Text search field -->
+    <div class="filter-section flex flex-col grow content-center">
+        <label for="searchText">Search by Text:</label>
+        <input formControlName="searchText" type="text" placeholder="Enter search term"
+            class="form-control form-control-sm" />
+    </div>
+
+    <!-- Date Filter Dropdown -->
+    <div class="filter-section flex flex-col  content-center flex-1">
+        <label for="dateFilter">Filter by:</label>
+        <p-dropdown [options]="dateFilterOptions" formControlName="dateFilter" class="small-dropdown"
+            placeholder="Select an option"></p-dropdown>
+    </div>
+
+    <!-- Custom Date Range -->
+    <!-- <div *ngIf="filterForm.get('dateFilter')?.value === 'custom'" class="custom-date-range flex grow"> -->
+    <div *ngIf="filterForm.get('dateFilter')?.value === 'custom'"
+        class="custom-date-range flex flex-row grow gap-2">
+        <div class="flex flex-col  grow">
+            <label for="dateFilter">From Date</label>
+            <p-calendar formControlName="startDate" placeholder="From Date" class="p-calendar"
+                [showButtonBar]="true"></p-calendar>
+        </div>
+        <div class="flex flex-col  grow">
+            <label for="dateFilter">To Date</label>
+            <p-calendar formControlName="endDate" placeholder="To Date" [showButtonBar]="true"></p-calendar>
+        </div>
+    </div>
+    <div class="content-center">
+        <p-button type="submit" size="small" pButton label="Apply Filter" icon="pi pi-check"
+            class="small-button"></p-button>
+    </div>
+
+    <!-- <input class="form-control" placeholder="Search city" type="text"> -->
+    <!-- <app-filter-by-days-and-text (filterApplied)="applyFilter($event)" [searchFor]="'city'"
+          class="flex grow text-sm" [defaultFilter]="'last7days'"></app-filter-by-days-and-text> -->
+</form>

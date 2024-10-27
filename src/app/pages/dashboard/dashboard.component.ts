@@ -1,9 +1,8 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BookitCardsComponent } from '../../shared/bookit-cards/bookit-cards.component';
 import { RouterOutlet, RouterModule } from '@angular/router';
-import { MasterListComponent } from '../masters/master-list/master-list/master-list.component';
 import { FooterComponent } from "../../shared/footer/footer/footer.component";
 import { PanelModule } from 'primeng/panel';
 import { AvatarModule } from 'primeng/avatar';
@@ -15,8 +14,20 @@ import { DashboardGuestDetails } from '../../models/guest';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
+import { DropdownModule } from 'primeng/dropdown';
 import { ChartModule } from 'primeng/chart';
 import { NgxPaginationModule } from "ngx-pagination";
+import { NgSelectModule } from "@ng-select/ng-select";
+import { DialogModule } from 'primeng/dialog';
+import { AdvanceBookingComponent } from "../advance-booking/advance-booking.component";
+import { AdvanceBooking } from '../../models/new-guest-details';
+import { forkJoin } from 'rxjs';
+import { BookingService } from '../../_services/booking.service';
+import { BadgeModule } from 'primeng/badge';
+import { MenuItem } from 'primeng/api';
+import { MenuModule } from 'primeng/menu';
+import { TagModule } from 'primeng/tag';
+import { UtilsService } from '../../_helpers/utils.service';
 interface Room {
   id: number;
   type: string;
@@ -48,7 +59,6 @@ interface Booking {
     CommonModule,
     BookitCardsComponent,
     RouterOutlet,
-    MasterListComponent,
     RouterModule,
     FooterComponent,
     PanelModule,
@@ -60,11 +70,18 @@ interface Booking {
     ButtonModule,
     TooltipModule,
     NgxPaginationModule,
-    ChartModule
+    ChartModule,
+    DropdownModule,
+    NgSelectModule,
+    DialogModule,
+    AdvanceBookingComponent,
+    BadgeModule,
+    MenuModule,
+    TagModule
   ],
-  encapsulation: ViewEncapsulation.None,
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
+  encapsulation: ViewEncapsulation.None
 } )
 export class DashboardComponent implements OnInit {
   currentDate!: Date;
@@ -79,8 +96,13 @@ export class DashboardComponent implements OnInit {
   pageSize: number = 5;
   totalPages: number = 0;
   totalRecords: number = 0;
+  display: boolean = false;
   p: number = 1;
   guestDetails: DashboardGuestDetails[] = [];
+  guestTodayDetails: DashboardGuestDetails[] = [];
+  @Input() advanceBookings: AdvanceBooking[] = [];
+  actionItems: MenuItem[] = [];
+  bookingListActionItems: MenuItem[] = [];
   options = this._formBuilder.group( {
     bottom: 0,
     fixed: false,
@@ -106,7 +128,9 @@ export class DashboardComponent implements OnInit {
   };
   constructor(
     private _formBuilder: FormBuilder,
-    private dashboardService: DashboardService
+    private dashboardService: DashboardService,
+    private bookingService: BookingService,
+    private utilsService: UtilsService,
   ) {
     this.currentDate = new Date();
   }
@@ -131,56 +155,63 @@ export class DashboardComponent implements OnInit {
       }
     } );
   }
-
+  receiveData ( data: AdvanceBooking[] ) {
+    console.log( 'data' );
+    console.log( data );
+    this.advanceBookings = data;
+  }
   ngOnInit (): void {
-    this.dashboardService.getDashboardData().subscribe( {
-      next: ( data ) => {
-        //TotalBookings
-        this.totalBookings = data.Data?.TotalBookings?.Total;
-        this.weeklyBookings = data.Data?.TotalBookings?.Weekly == null ? 0 : data.Data?.TotalBookings?.Weekly;
-        this.monthlyBookings = data.Data?.TotalBookings?.Monthly == null ? 0 : data.Data?.TotalBookings?.Monthly;
-        this.todaysCheckIn = data.Data?.TotalBookings?.TodaysCheckIn;
-        this.todaysCheckOut = data.Data?.TotalBookings?.TodaysCheckOut;
-        this.availableRooms = data.Data?.TotalBookings?.AvailableRooms;
-        this.occupiedRooms = data.Data?.TotalBookings?.OccupiedRooms;
-        // this.guestDetails = data.Data.Guests as DashboardGuestDetails[];
-
+    this.actionItems = [
+      {
+        label: 'Cancel Booking',
+        icon: 'pi pi-times',
+        // command: () => this.cancelBooking()
       },
-      error: ( error ) => {
-        console.log( error );
+      {
+        label: 'View Details',
+        icon: 'pi pi-eye',
+        // command: () => this.viewDetails()
+      }
+    ];
+    this.bookingListActionItems = [
+      {
+        label: 'Edit Booking',
+        icon: 'pi pi-pencil',
+        // command: () => this.cancelBooking()
       },
-      complete: () => {
+      {
+        label: 'View Details',
+        icon: 'pi pi-eye',
+        // command: () => this.viewDetails()
+      }
+    ];
+    forkJoin( [
+      this.dashboardService.getDashboardData(),
+      this.dashboardService.getGuestsData( this.pageNumber, this.pageSize ),
+      this.bookingService.getAdvanceBooking()
 
+    ] ).subscribe( {
+      next: ( [dashboardData, guestsData, advanceBookingData] ) => {
+        this.totalBookings = dashboardData.Data?.TotalBookings?.Total;
+        this.weeklyBookings = dashboardData.Data?.TotalBookings?.Weekly == null ? 0 : dashboardData.Data?.TotalBookings?.Weekly;
+        this.monthlyBookings = dashboardData.Data?.TotalBookings?.Monthly == null ? 0 : dashboardData.Data?.TotalBookings?.Monthly;
+        this.todaysCheckIn = dashboardData.Data?.TotalBookings?.TodaysCheckIn;
+        this.todaysCheckOut = dashboardData.Data?.TotalBookings?.TodaysCheckOut;
+        this.availableRooms = dashboardData.Data?.TotalBookings?.AvailableRooms;
+        this.occupiedRooms = dashboardData.Data?.TotalBookings?.OccupiedRooms;
+        this.guestDetails = guestsData.Data as DashboardGuestDetails[];
+        this.pageNumber = guestsData.PageNumber;
+        this.pageSize = guestsData.PageSize;
+        this.totalPages = guestsData.TotalPages;
+        this.totalRecords = guestsData.TotalRecords;
+        this.guestTodayDetails = this.guestDetails.filter( x => x.IsTodayCheckIn );
+        this.advanceBookings = advanceBookingData.Data as AdvanceBooking[];
+      },
+      error: ( err ) => {
+        console.error( 'Error loading data:', err );
       }
     } );
-    this.dashboardService.getGuestsData( this.pageNumber, this.pageSize ).subscribe( {
-      next: ( response ) => {
-        this.guestDetails = response.Data as DashboardGuestDetails[];
-        this.pageNumber = response.PageNumber;
-        this.pageSize = response.PageSize;
-        this.totalPages = response.TotalPages;
-        this.totalRecords = response.TotalRecords;
-      },
-      error: ( error ) => {
-        console.log( error );
-      },
-      complete: () => {
 
-      }
-    } );
-    const documentStyle = getComputedStyle( document.documentElement );
-    const textColor = documentStyle.getPropertyValue( '--text-color' );
-    this.options1 = {
-      cutout: '60%',
-      plugins: {
-        legend: {
-          labels: {
-            display: false,
-            color: textColor
-          }
-        }
-      }
-    };
   }
   options1: any;
   roomsN: RoomN[] = [
@@ -244,5 +275,14 @@ export class DashboardComponent implements OnInit {
       ]
     };
   }
-
+  selectedFilter = { label: 'Today', value: 'today' };
+  dateFilterOptions: any[] = [
+    { label: 'Today', value: 'today' },
+    { label: 'Last 7 Days', value: 'last7days' },
+    { label: 'Last 30 Days', value: 'last30days' },
+    { label: 'Custom Date Range', value: 'custom' }
+  ];
+  onAdvanceBookingClicked () {
+    this.display = true;
+  }
 }

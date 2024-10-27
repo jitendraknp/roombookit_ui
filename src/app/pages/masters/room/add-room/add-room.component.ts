@@ -1,4 +1,4 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -8,16 +8,26 @@ import { RoomService } from '../../../../_services/room.service';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { Button } from "primeng/button";
+import { ButtonModule } from "primeng/button";
 import { BehaviorSubject } from "rxjs";
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component( {
   selector: 'app-add-room',
   standalone: true,
-  imports: [ReactiveFormsModule, NgClass, NgSelectModule, Button, ToastModule],
+  imports: [
+    ReactiveFormsModule,
+    NgClass,
+    NgSelectModule,
+    ButtonModule,
+    ToastModule,
+    InputTextModule,
+    CardModule],
   templateUrl: './add-room.component.html',
   styleUrl: './add-room.component.css',
-  providers: [MessageService]
+  providers: [MessageService],
+  encapsulation: ViewEncapsulation.None
 } )
 export class AddRoomComponent implements OnInit {
   roomForm = new FormGroup( {

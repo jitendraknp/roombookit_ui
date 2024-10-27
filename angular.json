@@ -26,12 +26,10 @@
               "src/fonts"
             ],
             "styles": [
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css",
               "src/navbar.scss"
             ],
-            "scripts": [
-            ],
+            "scripts": [],
             "server": "src/main.server.ts",
             "prerender": true,
             "ssr": {
@@ -64,7 +62,7 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": false
             }
           },
           "defaultConfiguration": "production"

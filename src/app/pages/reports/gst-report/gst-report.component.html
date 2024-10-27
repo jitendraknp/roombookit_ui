@@ -1,15 +1,17 @@
-<div class="card">
-    <div class="card-header  d-flex justify-content-between align-items-center bg-primary bg-gradient text-white">
-          GST Report
-    </div>
-    <div class="card-body">
-          <app-month-year-dropdown
-            [selectedMonth]="parentSelectedMonth"
-            [selectedYear] ="parentSelectedYear"
-            (monthChange)="monthChange($event)"
-            (yearChange)="onYearSelect($event)"
-            (buttonClicked)="handleButtonClick()">
-          </app-month-year-dropdown>
-    </div>
-      <div class="card-footer"></div>
+<div class="grid">
+      <div class="col-12">
+            <p-card>
+                  <ng-template pTemplate="title">GST Report</ng-template>
+                  <ng-template pTemplate="content">
+                        <div class="grid">
+                              <div class="col-12">
+                                    <app-month-year-dropdown [selectedMonth]="parentSelectedMonth"
+                                          [selectedYear]="parentSelectedYear" (monthChange)="monthChange($event)"
+                                          (yearChange)="onYearSelect($event)" (buttonClicked)="handleButtonClick()">
+                                    </app-month-year-dropdown>
+                              </div>
+                        </div>
+                  </ng-template>
+            </p-card>
+      </div>
 </div>

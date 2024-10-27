@@ -8,3 +8,8 @@ export interface City {
     States?: States;
     Is_Active: boolean;
 }
+export interface SearchCityResponse {
+    Id?: string;
+    Name?: string;
+    Code?: string;
+}

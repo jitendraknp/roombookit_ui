@@ -1,0 +1,132 @@
+<form [formGroup]="advanceBookingForm" (ngSubmit)="onSubmit()">
+    <div class="grid">
+        <div class="col-12 md:col-12 lg:col-6 sm:col-12 xl:col-6">
+            <p-card>
+                <div class="flex flex-1 flex-column">
+                    <div class="grid  text-sm">
+                        <div class="col-12 lg:col-3 xl:col-4 text-sm">
+                            <label for="first-name">First Name</label>
+                            <input pInputText id="first-name" size="small" type="text" formControlName="FirstName"
+                                class="w-full" />
+                        </div>
+                        <div class="col-12 lg:col-3 xl:col-4 text-sm">
+                            <label for="last-name">Last Name</label>
+                            <input pInputText id="last-name" size="small" formControlName="LastName" class="w-full" />
+                        </div>
+                        <div class="col-12 lg:col-3 xl:col-4 text-sm">
+                            <label for="phone-no">Phone</label>
+                            <input pInputText id="phone-no" size="small" formControlName="PhoneNo" class="w-full" />
+                        </div>
+
+                    </div>
+                    <div class="grid grid-cols-3">
+                        <div class="col-12 lg:col-6 xl:col-6 text-sm">
+                            <label for="address">Address</label>
+                            <input pInputText id="address" size="small" formControlName="Address" fluid="true" />
+                        </div>
+                        <div class="col-12 lg:col-6 xl:col-6 text-sm">
+                            <label for="email">Email</label>
+                            <input pInputText id="email" size="small" formControlName="Email" fluid="true" />
+                        </div>
+
+                    </div>
+                    <div class="grid">
+                        <div class="col-12 lg:col-4 xl:col-4 text-sm">
+                            <label for="gender">Gender</label>
+                            <p-select formControlName="Gender" [options]="gender" optionLabel="name" size="small"
+                                fluid="true" styleClass="small" variant="filled" placeholder="Select a gender" />
+                        </div>
+                        <div class="col-12 lg:col-4 xl:col-4 text-sm">
+                            <label for="phone-no1">Check In Date</label>
+                            <p-datepicker formControlName="CheckInDate" size="small" [showTime]="true"
+                                [dateFormat]="'dd/mm/yy'" [showOtherMonths]="true" [hourFormat]="'12'"
+                                [inputStyleClass]="'text-sm'" fluid="true" [inputStyle]="{'line-height':'12px'}"
+                                appendTo="body" [monthNavigator]="true" />
+                        </div>
+                        <div class="col-12 lg:col-4 xl:col-4 text-sm">
+                            <label for="email">Check Out Date</label>
+                            <p-datepicker formControlName="CheckOutDate" size="small" [showTime]="true" fluid="true"
+                                [dateFormat]="'dd/mm/yy'" [showOtherMonths]="true" [inputStyle]="{'line-height':'12px'}"
+                                [inputStyleClass]="'text-sm'" [hourFormat]="'12'" appendTo="body"
+                                [monthNavigator]="true" aria-describedby="checkoutdate-help" />
+                            <small id="checkoutdate-help">Check out date is optional.</small>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="col-12 lg:col-4 xl:col-4 text-sm">
+                            <label for="gender">Status</label>
+                            <p-select formControlName="Gender" [options]="bookingStatus" optionLabel="name" size="small"
+                                fluid="true" styleClass="small" variant="filled" placeholder="Booking Status" />
+                        </div>
+                        <div class="col-12 lg:col-4 xl:col-4 text-sm">
+                            <label for="email">Booking Date</label>
+                            <p-datepicker formControlName="BookingDate" size="small" [showTime]="true" fluid="true"
+                                [dateFormat]="'dd/mm/yy'" [showOtherMonths]="true" [inputStyle]="{'line-height':'12px'}"
+                                [inputStyleClass]="'text-sm'" [hourFormat]="'12'" appendTo="body"
+                                [monthNavigator]="true" aria-describedby="bookingdate-help" />
+                            <small id="bookingdate-help">Booking date is optional.</small>
+                        </div>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+        <div class="col-12 md:col-12 lg:col-6 sm:col-12 xl:col-6 text-sm">
+            <p-card>
+                <div class="flex flex-grow-1 w-full">
+                    <div class="w-full">
+                        <form formArrayName="tableRows">
+                            <p-table [value]="roomTypes" styleClass="p-datatable-striped p-datatable-sm text-sm"
+                                dataKey="id" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
+                                [(selection)]="selectedCategory">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
+                                        <th style="width: 8rem">Room Category</th>
+                                        <th style="width: 4rem">No Of Rooms</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-category let-row let-i="rowIndex">
+
+                                    <tr [formGroupName]="i">
+                                        <td>
+                                            <p-tableCheckbox [value]="row" binary="true" />
+                                        </td>
+                                        <td>
+                                            <!-- <input pInputText type="text" class="form-control form-control-sm font-semibold w-5/12"
+                                                formControlName="name" [value]="row.name" /> -->
+                                            {{row.name}}
+                                        </td>
+                                        <td>
+                                            <input pInputText type=" text" class="w-full" size="small" variant="filled"
+                                                formControlName="nos" />
+                                            <div *ngIf="!isRowValid(i)">
+                                                <small class="p-error">No of rooms are required.</small>
+                                            </div>
+                                        </td>
+                                        <!-- <td [pEditableColumn]="product.nos"  pEditableColumnField="nos">
+                                        <p-cellEditor>
+                                            <ng-template pTemplate="input">
+                                                <input pInputText type="text" [size]="'small'" />
+                                            </ng-template>
+                                            <ng-template pTemplate="output">
+                                                {{ product.nos}}
+                                            </ng-template>
+                                        </p-cellEditor>
+                                    </td> -->
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </form>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+    </div>
+    <div class="flex justify-content-end flex-wrap py-2">
+        <div class="flex align-items-center justify-content-center ">
+            <p-button icon="pi pi-calendar-plus" label="Add Booking" size="small" [raised]="true" type="submit"
+                severity="secondary">
+            </p-button>
+        </div>
+    </div>
+</form>

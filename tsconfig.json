@@ -24,7 +24,12 @@
       "dom"
     ]
   },
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts"
+  ],
   "angularCompilerOptions": {
+    "enableIvy": true,
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,

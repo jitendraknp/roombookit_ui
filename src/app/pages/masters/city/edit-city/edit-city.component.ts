@@ -7,12 +7,13 @@ import { ActivatedRoute, Params, Router, RouterOutlet } from '@angular/router';
 import { City } from '../../../../models/cities';
 import { switchMap } from 'rxjs';
 import { CityService } from '../../../../_services/city.service';
-import { SharedDataService } from '../../../../_services/shared-data.service';
-import { ToastrService } from 'ngx-toastr';
 import { ProgressBarModule } from "primeng/progressbar";
 import { MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { UtilsService } from '../../../../_helpers/utils.service';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
 @Component( {
   selector: 'app-edit-city',
   standalone: true,
@@ -22,7 +23,10 @@ import { UtilsService } from '../../../../_helpers/utils.service';
     ProgressBarModule,
     RouterOutlet,
     ProgressBarModule,
-    ToastModule
+    ToastModule,
+    ButtonModule,
+    CardModule,
+    InputTextModule
   ],
   templateUrl: './edit-city.component.html',
   styleUrl: './edit-city.component.css',
@@ -98,7 +102,7 @@ export class EditCityComponent implements OnInit {
         next: ( response ) => {
           this.cities = response.Data as City[];
           if ( response.StatusCode == 200 )
-            this.messageService.add( { severity: 'success', summary: 'Saved', detail: 'City details added successfully' } );
+            this.messageService.add( { severity: 'success', summary: 'Updated', detail: response.Message } );
           else if ( response.StatusCode == 40 )
             this.messageService.add( { severity: 'error', summary: 'Error - Duplicate record', detail: 'Failed to add city details.' } );
         },

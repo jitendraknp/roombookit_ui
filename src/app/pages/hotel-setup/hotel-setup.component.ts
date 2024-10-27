@@ -12,12 +12,27 @@ import { SetupHotelService } from '../../_services/setup-hotel.service';
 import { NgIf } from '@angular/common';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Hotel } from '../../models/hotel';
-import { Message } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
+import { Message } from 'primeng/message';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+import { FluidModule } from 'primeng/fluid';
+import { ButtonModule } from 'primeng/button';
 @Component( {
   selector: 'app-hotel-setup',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, NgSelectModule, NgIf, ToastModule, MessagesModule],
+  imports: [
+    ReactiveFormsModule,
+    RouterModule,
+    NgSelectModule,
+    NgIf,
+    ToastModule,
+    MessagesModule,
+    CardModule,
+    InputTextModule,
+    FluidModule,
+    ButtonModule
+  ],
   templateUrl: './hotel-setup.component.html',
   styleUrl: './hotel-setup.component.css',
   providers: [ConfirmationService, MessageService]
@@ -68,12 +83,12 @@ export class HotelSetupComponent implements OnInit, AfterViewInit, AfterRenderRe
 
   ngOnInit () {
     this.messages = [
-      { severity: 'info', detail: 'Info Message' },
-      { severity: 'success', detail: 'Success Message' },
-      { severity: 'warn', detail: 'Warning Message' },
-      { severity: 'error', detail: 'Error Message' },
-      { severity: 'secondary', detail: 'Secondary Message' },
-      { severity: 'contrast', detail: 'Contrast Message' }
+      // { severity: 'info', text: 'Info Message' },
+      // { severity: 'success', detail: 'Success Message' },
+      // { severity: 'warn', detail: 'Warning Message' },
+      // { severity: 'error', detail: 'Error Message' },
+      // { severity: 'secondary', detail: 'Secondary Message' },
+      // { severity: 'contrast', detail: 'Contrast Message' }
     ];
     this.hotelService.getHotels().subscribe( {
       next: ( data ) => {

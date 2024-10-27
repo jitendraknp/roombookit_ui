@@ -4,6 +4,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ButtonModule } from 'primeng/button';
 import { GuestService } from '../../_services/guest.service';
 import { PaymentDetail } from '../../models/payment-detail';
+import { FluidModule } from 'primeng/fluid';
+import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component( {
   selector: 'app-payment-details',
@@ -11,7 +15,11 @@ import { PaymentDetail } from '../../models/payment-detail';
   imports: [
     ReactiveFormsModule,
     NgSelectModule,
-    ButtonModule
+    ButtonModule,
+    FluidModule,
+    InputTextModule,
+    CardModule,
+    InputNumberModule,
   ],
   templateUrl: './payment-details.component.html',
   styleUrl: './payment-details.component.css'

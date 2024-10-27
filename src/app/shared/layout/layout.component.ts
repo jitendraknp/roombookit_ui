@@ -18,7 +18,14 @@ import { AvatarModule } from 'primeng/avatar';
 import { MenuModule } from 'primeng/menu';
 import { OverlayPanelModule } from "primeng/overlaypanel";
 import { AuthService } from '../../authentication/services/auth.service';
-
+// export interface MenuItem {
+//   id: string;
+//   name: string;
+//   iconName?: string;
+//   location?: string;
+//   sequence: number;
+//   children?: MenuItem[];
+// }
 @Component( {
   selector: 'app-layout',
   standalone: true,
@@ -40,7 +47,6 @@ import { AuthService } from '../../authentication/services/auth.service';
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
   providers: [ToastrService, CommonService],
-
 } )
 export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   username: string = 'John Doe'; // Replace with your username
@@ -50,7 +56,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     { label: 'Settings', icon: 'pi pi-cog', command: () => this.goToSettings() },
     { label: 'Logout', icon: 'pi pi-sign-out', command: () => this.logout() },
   ];
-  items!: MenuItem[];
+  items: MenuItem[] = [];
   menuDTO: Menu[] = [];
   toggleClass: string = "collapsed";
   token: string = "";
@@ -78,25 +84,33 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   ngAfterViewInit () {
 
-    const sidebarCollapse = this.elRef.nativeElement.querySelector( '#sidebarCollapse' );
-    const sidemenu = this.elRef.nativeElement.querySelector( '.sidemenu' );
-    if ( sidebarCollapse ) {
-      if ( sidemenu ) {
-        sidemenu.classList.addClass( 'collapsed' );
-        sidemenu.classList.removeClass( 'show' );
-      }
-      this.renderer.listen( sidebarCollapse, 'click', () => {
-        this.toggleSidebar();
-      } );
-    } else {
-      if ( sidemenu ) {
-        sidemenu.classList.addClass( 'show' );
-        sidemenu.classList.removeClass( 'collapsed' );
-      }
-    }
+    // const sidebarCollapse = this.elRef.nativeElement.querySelector( '#sidebarCollapse' );
+    // const sidemenu = this.elRef.nativeElement.querySelector( '.sidemenu' );
+    // if ( sidebarCollapse ) {
+    //   if ( sidemenu ) {
+    //     sidemenu.classList.addClass( 'collapsed' );
+    //     sidemenu.classList.removeClass( 'show' );
+    //   }
+    //   this.renderer.listen( sidebarCollapse, 'click', () => {
+    //     this.toggleSidebar();
+    //   } );
+    // } else {
+    //   if ( sidemenu ) {
+    //     sidemenu.classList.addClass( 'show' );
+    //     sidemenu.classList.removeClass( 'collapsed' );
+    //   }
+    // }
 
   }
-
+  transformToPrimeNgMenu ( menuItems: any[] ): any {
+    return menuItems.map( ( item ) => ( {
+      label: item.Name,
+      icon: item.IconName,
+      routerLink: item.Location,
+      expanded: this.getExpandedState( item.Name.toLowerCase() ),
+      items: item.Childs ? this.transformToPrimeNgMenu( item.Childs ) : null,
+    } ) );
+  }
   action () {
 
   }
@@ -124,11 +138,14 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit (): void {
     let storedMenuData = this.storageService.getData( "USER_MENU" );
     if ( storedMenuData != undefined || storedMenuData != null ) {
-      this.items = JSON.parse( storedMenuData ) as MenuItem[];
+      const data = JSON.parse( storedMenuData ) as MenuItem[];
+      this.items = data;
+
     } else {
       this.commonService.getMenus().subscribe( {
         next: ( menu ) => {
-          this.items = menu.Data as MenuItem[];
+          // this.items = menu.Data as MenuItem[];
+          this.items = this.transformToPrimeNgMenu( menu.Data as MenuItem[] );
           this.storageService.saveData( JSON.stringify( this.items ), "USER_MENU" );
         },
         error: ( error ) => {
@@ -143,16 +160,16 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   toggleCollapse () {
-    this.isMenuCollapsed = !this.isMenuCollapsed;
-    if ( !this.isMenuCollapsed ) {
-      this.toggleClass = 'collapse sidemenu';
-    } else {
-      this.toggleClass = 'show sidemenu';
-    }
-    const menu = this.elRef.nativeElement.querySelector( '.menu' );
-    if ( menu ) {
-      menu.classList.toggle( 'collapse' );
-    }
+    // this.isMenuCollapsed = !this.isMenuCollapsed;
+    // if ( !this.isMenuCollapsed ) {
+    //   this.toggleClass = 'collapse sidemenu';
+    // } else {
+    //   this.toggleClass = 'show sidemenu';
+    // }
+    // const menu = this.elRef.nativeElement.querySelector( '.menu' );
+    // if ( menu ) {
+    //   menu.classList.toggle( 'collapse' );
+    // }
   }
 
   goToProfile () {
@@ -171,5 +188,15 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     } );
 
+  }
+  expandedState: { [key: string]: boolean; } = {};
+  getExpandedState ( key: string ): boolean {
+    return this.expandedState[key] || false;
+  }
+
+  toggleExpandedState ( event: any ): void {
+    if ( event.label ) {
+      this.expandedState[event.label] = !this.expandedState[event.label];
+    }
   }
 }

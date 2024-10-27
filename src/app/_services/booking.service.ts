@@ -5,7 +5,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Booking, UpdatePhone } from '../models/booking';
 import { AnyAaaaRecord } from 'dns';
-import { BookingDetails } from '../models/new-guest-details';
+import { AdvanceBooking, BookingDetails } from '../models/new-guest-details';
+import { Room } from '../models/room';
 const URL = `${ environment.api.baseUrl }Booking/`;
 @Injectable( {
   providedIn: 'root'
@@ -21,7 +22,9 @@ export class BookingService {
   getBookingByGuestId ( id: string ): Observable<ApiResponse> {
     return this.httpClient.get<ApiResponse>( `${ URL }booking/${ id }`, this.httpOptions );
   }
-
+  getAdvanceBooking (): Observable<ApiResponse> {
+    return this.httpClient.get<ApiResponse>( `${ URL }advance-booking`, this.httpOptions );
+  }
   saveBooking ( data: Booking ): Observable<ApiResponse> {
     return this.httpClient.post<ApiResponse>( `${ URL }booking`, data, this.httpOptions );
   }
@@ -31,7 +34,14 @@ export class BookingService {
   updateAddress ( data: UpdatePhone ): Observable<ApiResponse> {
     return this.httpClient.post<ApiResponse>( `${ URL }update-address`, data, this.httpOptions );
   }
+  updateAvailability ( data: Room ): Observable<ApiResponse> {
+    return this.httpClient.patch<ApiResponse>( `${ URL }update-availability`, data, this.httpOptions );
+  }
   saveBookingDetails ( data: BookingDetails ): Observable<ApiResponse> {
     return this.httpClient.post<ApiResponse>( `${ URL }save/booking-details`, data, this.httpOptions );
+  }
+
+  saveAdvanceBookingDetails ( data: any ): Observable<ApiResponse> {
+    return this.httpClient.post<ApiResponse>( `${ URL }save/advance-booking`, data, this.httpOptions );
   }
 }

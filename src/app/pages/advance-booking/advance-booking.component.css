@@ -1,0 +1,16 @@
+.small-calendar {
+ 
+  height: 30px; /* Set the input height */
+  font-size: 10px; /* Adjust font size */
+  padding: 4px 4px; /* Adjust padding for a smaller look */
+  line-height: 1.2; /* Adjust line-height if necessary */
+}
+
+.p-cell-editing {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+/* .p-inputtext:enabled:focus {
+    box-shadow: 0 0 0 0.5px var(--primary-color);  
+    outline: none;  
+} */

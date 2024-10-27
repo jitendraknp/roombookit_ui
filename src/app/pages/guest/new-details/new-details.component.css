@@ -1,10 +1,5 @@
-/* Ensure the OwlDateTime popup appears above the dialog */
-.owl-dt-popup {
-  z-index: 2103 !important;
+.no-wrap-tooltip {
+  white-space: nowrap;
+  max-width: none; /* Ensure that the tooltip doesn't have a width limit */
+  word-wrap: normal; /* Avoid breaking words */
 }
-
-/* Optionally, adjust z-index for the PrimeNG dialog */
-::ng-deep .ui-dialog {
-  z-index: 1000 !important;
-}
-

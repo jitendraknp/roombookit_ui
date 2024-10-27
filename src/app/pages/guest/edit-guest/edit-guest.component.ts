@@ -1,4 +1,4 @@
-import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { StepperModule } from 'primeng/stepper';
@@ -16,17 +16,19 @@ import { IdProofComponent } from "../../../shared/id-proof/id-proof.component";
 import { GuestBaseEntity } from '../../../models/guest-base';
 import { GuestService } from '../../../_services/guest.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { map, switchMap } from 'rxjs';
+import { switchMap } from 'rxjs';
 import { GuestSiblingDetails } from '../../../models/sibling-details';
 import { TableModule } from 'primeng/table';
 import { BookingDetails, GuestDetails, NewGuestDetails } from '../../../models/new-guest-details';
-import { ToastrService } from 'ngx-toastr';
 import { StorageService } from '../../../_services/storage.service';
 import { ApiResponse } from '../../../models/response';
 import saveAs from 'file-saver';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CamelCaseToSpacePipe } from '../../../_helpers/camelcasetospace';
 import { UtilsService } from '../../../_helpers/utils.service';
+import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
+import { SelectModule } from 'primeng/select';
 
 @Component( {
   selector: 'app-edit-guest',
@@ -45,14 +47,25 @@ import { UtilsService } from '../../../_helpers/utils.service';
     AddressComponent,
     PaymentDetailsComponent,
     IdProofComponent,
-    CheckboxModule
+    CheckboxModule,
+    InputTextModule,
+    CardModule,
+    SelectModule,
   ],
   templateUrl: './edit-guest.component.html',
   styleUrl: './edit-guest.component.css',
+  encapsulation: ViewEncapsulation.None,
   providers: [DatePipe, ConfirmationService, MessageService]
 } )
 export class EditGuestComponent implements OnInit, AfterContentChecked {
   loading: unknown;
+  enableInvoiceBtn: boolean = false;
+  gender = [
+    { name: 'MALE', code: 'MALE' },
+    { name: 'FEMALE', code: 'FEMALE' },
+    { name: 'TRANSGENDER', code: 'TRANSGENDER' }
+
+  ];
   savedGuest!: GuestBaseEntity[];
   members!: GuestSiblingDetails[];
   hotelId: string = '5c953e70-73fe-46cf-0267-08dcb3aa275e';
@@ -75,8 +88,8 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
     CountryId: new FormControl( { value: "", disabled: true } ),
     PinCode: new FormControl( '' ),
     GuestId: new FormControl( null ),
-    CheckInDate: new FormControl<Date | null>( null, [Validators.required] ),
-    CheckOutDate: new FormControl<Date | null>( null, [Validators.required] ),
+    CheckInDate: new FormControl<string | null>( null, [Validators.required, Validators.pattern( /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4} ([01][0-9]|1[0-2]):([0-5][0-9]) (AM|PM)$/ )] ),
+    CheckOutDate: new FormControl<string | null>( null, [Validators.required, Validators.pattern( /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4} ([01][0-9]|1[0-2]):([0-5][0-9]) (AM|PM)$/ )] ),
     RoomNoId: new FormControl<string[]>( [], [Validators.required] ),
     RoomId: new FormControl( [], [Validators.required] ),
     NoOfGuests: new FormControl<number>( 0, [Validators.required] ),
@@ -154,7 +167,7 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
       switchMap( ( params: Params ) => this.guetsService.getDetailsByGuestId( params['guest-id'] ) )
     ).subscribe( {
       next: ( result ) => {
-        console.log( result.Data );
+
         this.editGuestForm.controls.PaymentDetailsId.setValue( result.Data.PaymentDetailsId );
         this.editGuestForm.controls.Company.setValue( result.Data.Company );
         this.editGuestForm.controls.CompanyAddress.setValue( result.Data.CompanyAddress );
@@ -173,8 +186,8 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
         this.editGuestForm.controls.CheckInDate.setValue( result.Data.CheckInDate );
         this.editGuestForm.controls.CheckOutDate.setValue( result.Data.CheckOutDate );
         // this.editGuestForm.controls.CheckOutDate = new FormControl( new Date( result.Data.CheckOutDate ) );
-        this.editGuestForm.controls.RoomNoId.setValue( this.isGuidEmpty( result.Data.RoomNoId ) ? null : result.Data.RoomNoId );
-
+        // this.editGuestForm.controls.RoomNoId.setValue( this.isGuidEmpty( result.Data.RoomNoId ) ? null : result.Data.RoomNoId );
+        console.log( result.Data.RoomId );
         this.editGuestForm.controls.RoomId.patchValue( result.Data.RoomId );
         this.editGuestForm.controls.TotalAmount.setValue( result.Data.AmountToPay );
         this.editGuestForm.controls.NoOfGuests.setValue( result.Data.NoOfGuests );
@@ -191,6 +204,12 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
         this.editGuestForm.controls.AmountPaid.setValue( result.Data.AmountPaid );
         this.editGuestForm.controls.BalanceAmount.setValue( result.Data.BalanceAmount );
         this.editGuestForm.controls.GuestStayDetailId.setValue( result.Data.GuestStayDetailId );
+        if ( result.Data.GuestStayDetailId != null ) {
+          this.enableInvoiceBtn = true;
+        }
+        else {
+          this.enableInvoiceBtn = false;
+        }
         this.editGuestForm.controls.InvoiceNo.setValue( result.Data.InvoiceNo );
         this.editGuestForm.controls.ManualInvoice.setValue( result.Data.ManualInvoice );
         this.members = result.Data.GuestSiblingDetail;
@@ -327,9 +346,6 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
     }
     return invalidControls;
   }
-  onSubmit () {
-    throw new Error( 'Method not implemented.' );
-  }
 
   updateGuest () {
 
@@ -368,30 +384,6 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
       PrintComment: this.editGuestForm.controls.Print_Comments.value!,
       // HotelId: this.hotelId,
       CityId: this.editGuestForm.controls.CityId.value!,
-      // StateId: this.editGuestForm.controls.StateId.value!,
-      // CountryId: this.editGuestForm.controls.CountryId.value!,
-      // AmountPaid: this.editGuestForm.controls.AmountPaid.value!,
-      // AmountToPay: this.editGuestForm.controls.ExcGST.value!,
-      // BalanceAmount: this.editGuestForm.controls.BalanceAmount.value!,
-      // CheckInDate: this.datePipe.transform( this.editGuestForm.controls.CheckInDate.value!, 'yyyy-MM-dd hh:mm:ss a' )!.toString(),
-      // CheckOutDate: this.datePipe.transform( this.editGuestForm.controls.CheckOutDate.value!, 'yyyy-MM-dd hh:mm:ss a' )!.toString(),
-      // Discount: this.editGuestForm.controls.Discount.value!,
-      // ExcGST: this.editGuestForm.controls.ExcGST.value!,
-      // GSTPercentage: this.editGuestForm.controls.GSTPercentage.value!,
-      // IncGST: this.editGuestForm.controls.IncGST.value!,
-      // NoOfAdults: this.editGuestForm.controls.NoOfAdults.value!,
-      // NoOfChildren: this.editGuestForm.controls.NoOfChildren.value!,
-      // NoOfDays: this.editGuestForm.controls.NoOfDays.value!,
-      // NoOfGuests: this.editGuestForm.controls.NoOfGuests.value!,
-      // PaymentMode: String( this.editGuestForm.controls.PaymentMode.value! ),
-      // RatePerNight: this.editGuestForm.controls.RatePerNight.value!,
-      // RatePerNight: this.editGuestForm.controls.RatePerNight.value!,
-      // RoomNoId: [],
-      // IdType: this.editGuestForm.controls.IdType.value!,
-      // IdNumber: this.editGuestForm.controls.IdNumber.value!,
-      // ImageUrl: this.editGuestForm.controls.ImageUrl.value!,
-      // IsFrontSide: true,
-      // TransactionNo: this.editGuestForm.controls.TransactionNo.value!,
       InvoiceNo: this.editGuestForm.controls.InvoiceNo.value!,
       IsManualInv: Boolean( this.editGuestForm.controls.InvoiceNo.value! ),
       // GuestId: this.guestId,
@@ -431,8 +423,8 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
       GuestStayDetailId: this.editGuestForm.controls.GuestStayDetailId.value!,
       PaymentDetailsId: this.editGuestForm.controls.PaymentDetailsId.value!,
       GuestId: this.guestId,
-      CheckInDate: this.datePipe.transform( this.editGuestForm.controls.CheckInDate.value!, 'yyyy-MM-dd hh:mm:ss a' )!.toString(),
-      CheckOutDate: this.datePipe.transform( this.editGuestForm.controls.CheckOutDate.value!, 'yyyy-MM-dd hh:mm:ss a' )!.toString(),
+      CheckInDate: this.editGuestForm.controls.CheckInDate.value!.toString(),
+      CheckOutDate: this.editGuestForm.controls.CheckOutDate.value!.toString(),
       Rooms: this.editGuestForm.controls.RoomId.value!,
       RatePerNight: this.editGuestForm.controls.RatePerNight.value!,
       NoOfDays: this.editGuestForm.controls.NoOfDays.value!,
@@ -470,5 +462,15 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
 
       }
     } );
+  }
+  convertTo12HourFormat ( date: Date ): string {
+    let hours = date.getHours();
+    const minutes = ( '0' + date.getMinutes() ).slice( -2 );  // Add leading zero for minutes
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+    hours = hours % 12;
+    hours = hours ? hours : 12;  // The hour '0' should be '12'
+
+    return `${ ( '0' + hours ).slice( -2 ) }:${ minutes } ${ ampm }`;
   }
 }

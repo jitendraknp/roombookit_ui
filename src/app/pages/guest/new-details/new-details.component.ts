@@ -22,6 +22,8 @@ import { BookingService } from '../../../_services/booking.service';
 import { City } from '../../../models/cities';
 import { CamelCaseToSpacePipe } from '../../../_helpers/camelcasetospace';
 import { CommonService } from '../../../_services/common.service';
+import { FluidModule } from 'primeng/fluid';
+import { DatePickerModule } from 'primeng/datepicker';
 @Component( {
   selector: 'app-new-details',
   standalone: true,
@@ -43,7 +45,9 @@ import { CommonService } from '../../../_services/common.service';
     TooltipModule,
     TableModule,
     FloatLabelModule,
-    ToastModule
+    ToastModule,
+    FluidModule,
+    DatePickerModule
   ],
   templateUrl: './new-details.component.html',
   styleUrl: './new-details.component.css',
@@ -134,7 +138,7 @@ export class NewDetailsComponent implements OnInit {
       CityId: new FormControl<object | null>( null ),
       State: [{ value: "", disabled: true }, Validators.required],
       Country: [{ value: "", disabled: true }, Validators.required],
-      CheckInDate: ['', Validators.required],
+      CheckInDate: new FormControl<Date | null>( null, [Validators.required] ),
       CheckOutDate: ['', [Validators.required]],
       RoomId: ['', [Validators.required, Validators.min( 1 )]],
       InvoiceNo: [{ value: '', disabled: true }],

@@ -1,20 +1,26 @@
 <!-- <div class="container-fluid pe-0"> -->
-<div class="container-fluid   p-2">
-  <div class="col-md-12">
-    <div class="row">
-      <input type="text" placeholder="Search user" class="form-control">
-    </div>
-    <div class="row pt-4 pb-2">
-      <div class="col-md-6">
-        <h2 class="heading">All Users</h2>
-      </div>
-      <div class="col-md-6 text-end">
-        <a class="btn btn-outline-primary btn-sm  btn-add-new-contact shadow-lg" [routerLink]="['add']">
-<!--          <ion-icon-->
-<!--            name="person-add-sharp"></ion-icon> -->
-          Add
-          New User</a>
-      </div>
+<div class="flex flex-column pb-1 h-max">
+  <div class="flex  flex-1 flex-row gap-2 justify-content-start align-items-baseline pt-4">
+    <ng-select appearance="outline" class="text-sm w-1/2" name="filterby" [bindLabel]="'text'" [bindValue]="'value'"
+      [clearable]="false" notFoundText="No items found" placeholder="Filter by">
+    </ng-select>
+    <form class="w-full">
+      <p-floatLabel class="flex-grow-1 w-full">
+        <p-autoComplete [inputStyleClass]="'text-sm'" [showClear]="true" [lazy]="true" [size]="'small'" [fluid]="true"
+          fluid formControlName="searchText" optionLabel="SearchResult" variant="filled"></p-autoComplete>
+        <label for="city">Search Users</label>
+      </p-floatLabel>
+    </form>
+  </div>
+  <div class="flex flex-row py-2 px-1">
+    <p class="flex-1 text-sm content-center">
+      Total Users : <span class="text-xs py-0.5 px-1">
+        <p-badge [value]="users==null?'0':users!.length" />
+      </span>
+    </p>
+    <div class="justify-end flex-grow mr-auto">
+      <p-button [routerLink]="['add-user']" label="Add Guest" size="small" severity="primary">
+      </p-button>
     </div>
   </div>
   <div class="row pe-0 ps-0" style="height: 98vh;">
@@ -27,15 +33,12 @@
           <app-list-user [users]="item"></app-list-user>
         </div>
         }
-        <nav aria-label="Page navigation example pt-2">
-          <ul class="pagination justify-content-end pt-2">
+        <nav class="flex flex-row">
+          <ul class="ml-auto text-xs">
             <pagination-controls (pageChange)="p = $event"></pagination-controls>
           </ul>
         </nav>
       </div>
-    </div>
-    <div class="col-md-4 pe-0 ps-1">
-      <router-outlet></router-outlet>
     </div>
   </div>
   <!-- </div> -->

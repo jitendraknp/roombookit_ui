@@ -3,6 +3,8 @@ import { FormGroup, FormGroupName, FormsModule, ReactiveFormsModule } from '@ang
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CommonService } from '../../_services/common.service';
 import { City } from '../../models/cities';
+import { InputTextModule } from 'primeng/inputtext';
+import { FluidModule } from 'primeng/fluid';
 
 @Component( {
   selector: 'app-address',
@@ -10,7 +12,9 @@ import { City } from '../../models/cities';
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    NgSelectModule
+    NgSelectModule,
+    InputTextModule,
+    FluidModule
   ],
   templateUrl: './address.component.html',
   styleUrl: './address.component.css',

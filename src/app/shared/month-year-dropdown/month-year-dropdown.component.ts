@@ -1,11 +1,11 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {DropdownModule} from "primeng/dropdown";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {CommonModule, NgClass} from "@angular/common";
-import {NgSelectModule} from "@ng-select/ng-select";
-import {Button} from "primeng/button";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { DropdownModule } from "primeng/dropdown";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { CommonModule, NgClass } from "@angular/common";
+import { NgSelectModule } from "@ng-select/ng-select";
+import { Button, ButtonModule } from "primeng/button";
 import { FocusTrapModule } from 'primeng/focustrap';
-@Component({
+@Component( {
   selector: 'app-month-year-dropdown',
   templateUrl: './month-year-dropdown.component.html',
   standalone: true,
@@ -17,10 +17,10 @@ import { FocusTrapModule } from 'primeng/focustrap';
     CommonModule,
     NgSelectModule,
     ReactiveFormsModule,
-    Button,
+    ButtonModule,
     FocusTrapModule
   ]
-})
+} )
 export class MonthYearDropdownComponent {
   @Input() selectedMonth: number | null = null;
   @Input() selectedYear: number | null = null;
@@ -43,7 +43,7 @@ export class MonthYearDropdownComponent {
       { label: 'April', value: 3 },
       { label: 'May', value: 4 },
       { label: 'June', value: 5 },
-      { label: 'July', value: 6},
+      { label: 'July', value: 6 },
       { label: 'August', value: 7 },
       { label: 'September', value: 8 },
       { label: 'October', value: 9 },
@@ -54,29 +54,29 @@ export class MonthYearDropdownComponent {
     // Generate a range of years dynamically
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
-    this.selectedMonth=currentMonth;
+    this.selectedMonth = currentMonth;
     this.years = [];
-    for (let i = currentYear; i >= currentYear - 100; i--) {
-      this.years.push({ label: i.toString(), value: i });
+    for ( let i = currentYear; i >= currentYear - 100; i-- ) {
+      this.years.push( { label: i.toString(), value: i } );
     }
   }
-  onMonthSelect() {
-    this.monthChange.emit(this.selectedMonth!);
+  onMonthSelect () {
+    this.monthChange.emit( this.selectedMonth! );
   }
 
-  onYearSelect() {
-    this.yearChange.emit(this.selectedYear!);
+  onYearSelect () {
+    this.yearChange.emit( this.selectedYear! );
   }
   // On form submit
-  onSubmit() {
+  onSubmit () {
     this.formSubmitted = true;
-    if (this.selectedMonth && this.selectedYear) {
-      alert(`Selected Month: ${this.selectedMonth}, Selected Year: ${this.selectedYear}`);
+    if ( this.selectedMonth && this.selectedYear ) {
+      alert( `Selected Month: ${ this.selectedMonth }, Selected Year: ${ this.selectedYear }` );
     } else {
-      console.log('Please select both month and year');
+      console.log( 'Please select both month and year' );
     }
   }
-  generateGstReport() {
+  generateGstReport () {
     this.buttonClicked.emit();
   }
 }

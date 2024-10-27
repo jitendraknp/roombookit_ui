@@ -1,0 +1,21 @@
+/* Customizing the header section of p-card for Aura theme */
+.custom-card-header {
+  background-color: var(--secondary-color); /* Using Aura theme primary color */
+  color: var(--text-color); /* Text color from the Aura theme */
+  padding: 12px; /* Padding for space */
+  display: flex; /* Flexbox layout */
+  justify-content: space-between; /* Align title and button */
+  align-items: center; /* Vertically center content */
+  border-radius: 8px 8px 0 0; /* Rounded corners at the top */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow */
+}
+
+.custom-card-header h3 {
+  margin: 0;
+}
+
+.custom-card-header .p-button {
+  background-color: var(--secondary-color); /* Custom button color */
+  border: none;
+  color: var(--button-text-color); /* Button text color */
+}

@@ -1,33 +1,32 @@
-<form class="row" [formGroup]="form">
+<form class="grid" [formGroup]="form">
   <p-toast position="top-center" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'"
     [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'" />
-  <div class="col-md-6 pb-2">
+  <div class="col-12 lg:col-6 xl:col-6">
     <!-- (dateTimeChange)="selectedChanged($event)"   [min]="min"-->
     <label for="checkInDate" class="form-label">Check In Date</label>
-    <input pInputText type="text" class="form-control form-control-sm text-sm" formControlName="CheckInDate"
-      ID="CheckInDate" mask="00/00/0000 00:00 AA" [dropSpecialCharacters]="false" placeholder="Check In Date" />
-    <!-- <p *ngIf="form.get('CheckInDate')?.invalid"
-      class="text-xs error-message text-end text-red-400  italic font-semibold text-opacity-50">dd/mm/yyyy
-      hh:mm am/pm</p> -->
+    <input pInputText size="small" fluid="true" type="text" formControlName="CheckInDate" ID="CheckInDate"
+      mask="00/00/0000 00:00 AA" [dropSpecialCharacters]="false" placeholder="Check In Date" />
+
     <p *ngIf="form.get('CheckInDate')?.invalid">
       <small class="text-red-400" *ngIf="form.get('CheckInDate')?.errors?.['pattern']">Use DD/MM/YY HH:MM AM/PM</small>
     </p>
   </div>
-  <div class="col-md-6  pb-2">
+  <div class="col-12 lg:col-6  xl:col-6">
     <label for="checkOutDate" class="form-label">Check Out Date</label>
-    <input pInputText type="text" class="form-control form-control-sm text-sm" formControlName="CheckOutDate"
-      mask="00/00/0000 00:00 AA" [dropSpecialCharacters]="false" placeholder="Check In Date" />
+    <input pInputText size="small" fluid="true" type="text" formControlName="CheckOutDate" mask="00/00/0000 00:00 AA"
+      [dropSpecialCharacters]="false" placeholder="Check In Date" />
     <p *ngIf="form.get('CheckOutDate')?.invalid">
       <small class="text-red-400" *ngIf="form.get('CheckOutDate')?.errors?.['pattern']">Use DD/MM/YY HH:MM AM/PM</small>
     </p>
   </div>
-  <div class="col-md-12  pb-2">
+  <div class="col-12">
     <label for="roomNoId" class="form-label">Room No / Floor / Type </label>
     <ng-select [multiple]="true" [searchable]="true" appearance="outline" placeholder="Select Room No" id="roomNoId"
       [items]="rooms" (remove)="onRoomRemove($event)" [clearable]="false" class="custom" formControlName="RoomId"
       bindLabel="RoomNo" bindValue="Id" (change)="onRoomChange($event)" notFoundText="No items found">
     </ng-select>
-    <p class="text-xs italic font-semibold text-blue-400 text-end">Only available room(s) will come.</p>
+
+    <p class="text-xs font-italic font-semibold justify-start">Only available room(s) will come.</p>
     <div class="pt-2">
       <p-table [value]="selectedRooms" *ngIf="selectedRooms.length>0">
         <ng-template pTemplate="header" class="text-xs">
@@ -51,41 +50,41 @@
       </p-table>
     </div>
   </div>
-  <div class="col-md-4  pb-2">
+  <div class="col-12 lg:col-4 xl:col-4">
     <label for="ratePerNight" class="form-label">Rate (&#8377;)</label>
-    <input type="number" class="form-control form-control-sm" id="ratePerNight" formControlName="RatePerNight"
-      placeholder="Rate Per Night" />
+    <p-inputnumber inputId="integeronly" mode="currency" currency="INR" currencyDisplay="symbol" locale="en-IN"
+      size="small" fluid="true" id="ratePerNight" formControlName="RatePerNight" placeholder="Rate Per Night" />
   </div>
-  <div class="col-md-4  pb-2">
+  <div class="col-12 lg:col-4 xl:col-4">
     <label for="totalAmount" class="form-label">Total (&#8377;)</label>
-    <input type="number" class="form-control form-control-sm" id="totalAmount" formControlName="TotalAmount"
-      placeholder="Total Amount" />
+    <p-inputnumber inputId="integeronly" mode="currency" currency="INR" currencyDisplay="symbol" locale="en-IN"
+      size="small" fluid="true" id="totalAmount" formControlName="TotalAmount" placeholder="Total Amount" />
   </div>
-  <div class="col-md-4  ">
+  <div class="col-12 lg:col-4 xl:col-4">
     <label for="noOfDays" class="form-label">Days</label>
-    <input type="number" class="form-control form-control-sm" id="noOfDays" formControlName="NoOfDays"
-      placeholder="No Of Days" />
+    <p-inputnumber mode="decimal" [useGrouping]="false" size="small" fluid="true" id="noOfDays"
+      formControlName="NoOfDays" placeholder="No Of Days" />
   </div>
-  <div class="col-md-3  pb-2">
+  <div class="col-12 lg:col-3 xl:col-3">
     <label for="discount" class="form-label">Discount (&#8377;)</label>
-    <input type="number" class="form-control form-control-sm" id="discount" formControlName="Discount"
-      placeholder="Discount" />
+    <p-inputnumber inputId="integeronly" mode="currency" currency="INR" currencyDisplay="symbol" locale="en-IN"
+      size="small" fluid="true" id="discount" formControlName="Discount" placeholder="Discount" />
   </div>
-  <div class="col-md-3 pb-2">
+  <div class="col-12 lg:col-3 xl:col-3">
     <label for="noOfAdults" class="form-label"># Adults</label>
-    <input type="number" class="form-control form-control-sm" id="noOfAdults" formControlName="NoOfAdults"
-      placeholder="No Of Adults" />
+    <p-inputnumber inputId="integeronly" [useGrouping]="false" size="small" fluid="true" id="noOfAdults"
+      formControlName="NoOfAdults" placeholder="No Of Adults" />
   </div>
-  <div class="col-md-3  pb-2">
+  <div class="col-12 lg:col-3 xl:col-3">
     <label for="noOfChildren" class="form-label"># Children</label>
-    <input type="number" class="form-control form-control-sm" id="noOfChildren" formControlName="NoOfChildren"
-      placeholder="No Of Children" />
+    <p-inputnumber inputId="integeronly" [useGrouping]="false" size="small" fluid="true" id="noOfChildren"
+      formControlName="NoOfChildren" placeholder="No Of Children" />
   </div>
 
-  <div class="col-md-3">
+  <div class="col-12 lg:col-3 xl:col-3">
     <label for="noOfGuests" class="form-label"># Guests</label>
-    <input type="number" class="form-control form-control-sm" id="noOfGuests" formControlName="NoOfGuests"
-      placeholder="Total No Of Guest" />
+    <p-inputnumber inputId="integeronly" [useGrouping]="false" size="small" fluid="true" id="noOfGuests"
+      formControlName="NoOfGuests" placeholder="Total No Of Guest" />
   </div>
   <!-- <p class="text-xs text-gray-400 italic">For internal use: {{this.form?.controls["GuestStayDetailId"]?.value}}</p> -->
 </form>

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { RouterOutlet, RouterModule, ActivatedRoute } from '@angular/router';
 import { NoRecordsFoundComponent } from '../no-records-found/no-records-found.component';
 import { ExistingGuestDetails, Guest, RoomDetails } from '../../models/guest';
@@ -11,6 +11,7 @@ import { CustomMessageService } from '../../_services/custom-message.service';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { PanelModule } from 'primeng/panel';
+import { DropdownModule } from 'primeng/dropdown';
 import { GuestService } from "../../_services/guest.service";
 import { GuestSearchService } from "../../_services/guest-search.service";
 import { AutoCompleteCompleteEvent, AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
@@ -24,6 +25,9 @@ import { CommonService } from '../../_services/common.service';
 import { BookingService } from '../../_services/booking.service';
 import { InvoiceService } from '../../_services/invoice.service';
 import saveAs from 'file-saver';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { BadgeModule } from 'primeng/badge';
+import { FluidModule } from 'primeng/fluid';
 
 @Component( {
   imports: [
@@ -42,12 +46,17 @@ import saveAs from 'file-saver';
     DialogModule,
     ButtonModule,
     NewDetailsComponent,
-    ViewDetailsComponent
+    ViewDetailsComponent,
+    DropdownModule,
+    FloatLabelModule,
+    BadgeModule,
+    FluidModule
   ],
   selector: 'app-guest',
   standalone: true,
   styleUrl: './guest.component.css',
-  templateUrl: './guest.component.html'
+  templateUrl: './guest.component.html',
+  encapsulation: ViewEncapsulation.None
 } )
 export class GuestComponent implements OnInit, OnDestroy, AfterViewInit {
   onPrintInvoiceClick ( invoiceNo: string ) {
@@ -64,8 +73,6 @@ export class GuestComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     } );
   }
-
-
   showFullList = true;
   p: number = 1;
   public filter: string = '';
@@ -83,31 +90,42 @@ export class GuestComponent implements OnInit, OnDestroy, AfterViewInit {
   subscription: Subscription;
   dv: any;
   suggestions: SearchResponse[] = [];
-  searchByControl = new FormControl( { value: 1, disabled: true } );
-  filterBy = [
+  searchByControl = new FormControl( { value: "Name", disabled: false } );
+  searchBy = [
     {
       id: 1,
       text: 'Name',
+      value: 'Name',
       selected: true
     },
     {
       id: 2,
-      text: 'Check In Date',
-      selected: false
+      text: 'Pending',
+      value: 'ps',
+      selected: true
     },
     {
       id: 3,
-      text: 'Check Out Date',
+      text: 'Today',
+      value: 'today',
       selected: false
     },
     {
       id: 4,
-      text: 'Phone',
+      text: 'Last 7 Days',
+      value: 'last7days',
       selected: false
     },
     {
       id: 5,
-      text: 'Address',
+      text: 'Last 30 Days',
+      value: 'last30days',
+      selected: false
+    },
+    {
+      id: 6,
+      text: 'Custom Date Range',
+      value: 'custom',
       selected: false
     }
   ];
@@ -171,16 +189,13 @@ export class GuestComponent implements OnInit, OnDestroy, AfterViewInit {
       if ( value == '' ) {
         this.selectedItem = null;
       }
-      // You can perform any actions here when the value changes
     } );
 
   }
 
   filterGuest ( event: AutoCompleteCompleteEvent ) {
     const searchTerm = event.query;
-    console.log( event );
-
-    // If the input is empty, reset suggestions
+    this.suggestions = [];
     if ( !searchTerm || searchTerm.trim() === '' ) {
       this.suggestions = [];
       this.selectedItem = null;
@@ -192,6 +207,7 @@ export class GuestComponent implements OnInit, OnDestroy, AfterViewInit {
       PageNumber: this.pageNo,
       PageSize: this.pageSize
     };
+
     this.searchService.searchByGuestName( search )
       .pipe(
         debounceTime( 300 ), // Wait for 300ms after the user stops typing
@@ -199,8 +215,10 @@ export class GuestComponent implements OnInit, OnDestroy, AfterViewInit {
       )
       .subscribe( {
         next: ( res: any ) => {
+          console.log( res );
           this.suggestions = res.Data as SearchResponse[];
           this.totalRecords = res.TotalRecords;
+
         },
         error: ( err ) => {
           console.log( err );
@@ -230,7 +248,7 @@ export class GuestComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onItemSelect ( event: any ) {
     this.selectedItem = event;
-    this.guestService.getGuestByIdWithPaging( this.selectedItem.value.Id, this.guestPageNumber, this.guestPageSize ).subscribe( {
+    this.guestService.getGuestByNameWithPaging( this.selectedItem.value.SearchResult, this.guestPageNumber, this.guestPageSize ).subscribe( {
       next: ( response ) => {
         this.guests = response.Data as Guest[];
         this.guestPageNumber = response.PageNumber;
@@ -343,19 +361,61 @@ export class GuestComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   guestBookings: Guest[] = [];
   onViewBookingShow ( $event: Event ) {
-    console.log( 'this.guestDetails' );
-    console.log( this.selectedItem );
     this.bookingService.getBookingByGuestId( this.selectedItem?.value.Id! ).subscribe( {
       next: ( response ) => {
-        console.log( response );
         this.guestBookings = response.Data as Guest[];
       },
       error: ( err ) => {
-
+        console.log( err );
       },
       complete: () => {
-
       }
     } );
+  }
+  onFilterChange ( $event: any ) {
+    const search: SearchByDTO = {
+      FieldId: 1,
+      TextToSearch: $event.value,
+      PageNumber: this.pageNo,
+      PageSize: this.pageSize
+    };
+    if ( $event.value == 'ps' ) {
+      this.searchService.searchPartiallySavedGuests( search ).subscribe( {
+        next: ( response ) => {
+          if ( response.StatusCode == 200 ) {
+            this.guests = response.Data as Guest[];
+            this.guestPageNumber = response.PageNumber;
+            this.guestPageSize = response.PageSize;
+            this.guestTotalPages = response.TotalPages;
+            this.guestTotalRecords = response.TotalRecords;
+          }
+          else {
+            this.guests = [];
+          }
+        },
+        error: ( err ) => {
+          console.log( err );
+        },
+        complete: () => {
+        }
+      } );
+    }
+    else {
+      this.guestService.getAllGuestWithPaging( this.guestPageNumber, this.guestPageSize ).subscribe( {
+        next: ( response ) => {
+          this.guests = response.Data as Guest[];
+          this.guestPageNumber = response.PageNumber;
+          this.guestPageSize = response.PageSize;
+          this.guestTotalPages = response.TotalPages;
+          this.guestTotalRecords = response.TotalRecords;
+        },
+        error: ( error ) => {
+          console.log( error );
+        },
+        complete: () => {
+
+        }
+      } );
+    }
   }
 }

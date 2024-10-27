@@ -1,29 +1,27 @@
-<form class="row" [formGroup]="form">
-  <div class="col-md-12   pb-2 pt-2">
+<form class="grid" [formGroup]="form">
+  <div class="col-12">
     <label for="address" class="form-label">Address</label>
-    <input type="text" class="form-control form-control-sm" id="address" formControlName="Address"
+    <input type="text" pInputText size="small" fluid="true" id="address" formControlName="Address"
       placeholder="Address" />
   </div>
-  <div class="col-md-6 col-sm-6 col-xs-12">
+  <div class="col-12">
     <label for="city" class="form-label">City</label>
     <ng-select appearance="outline" placeholder="Select City" class="text-sm" formControlName="CityId" [items]="cities"
       bindLabel="Name" bindValue="Id" (change)="onCityChange($event)" notFoundText="No items found" [clearable]="false">
 
     </ng-select>
   </div>
-  <div class="col-md-6 col-sm-6 col-xs-12">
-    <label class="form-label font-semibold" for="addguest_state">State</label>
-    <input class="form-control form-control-sm font-semibold" id="addguest_state" type="text"
-      formControlName="StateId" />
+  <div class="col-12">
+    <label class="form-label" for="addguest_state">State</label>
+    <input pInputText size="small" fluid="true" id="addguest_state" type="text" formControlName="StateId" />
   </div>
-  <div class="col-md-6 col-sm-6 col-xs-12">
-    <label class="form-label font-semibold" for="addguest_country">Country</label>
-    <input class="form-control form-control-sm font-semibold" id="addguest_country" type="text"
-      formControlName="CountryId" />
+  <div class="col-12">
+    <label class="form-label" for="addguest_country">Country</label>
+    <input pInputText size="small" fluid="true" id="addguest_country" type="text" formControlName="CountryId" />
   </div>
-  <div class="col-md-6   col-sm-6 col-xs-12">
+  <div class="col-12">
     <label for="pinCode" class="form-label">Pincode</label>
-    <input type="text" class="form-control form-control-sm" id="pinCode" formControlName="PinCode"
+    <input type="text" pInputText size="small" fluid="true" id="pinCode" formControlName="PinCode"
       placeholder="PinCode" />
   </div>
 </form>

@@ -1,20 +1,32 @@
 import { NgClass } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 // import { NgSelectModule } from '@ng-select/ng-select';
 import { CountryService } from '../../../../_services/country.service';
 import { Router } from '@angular/router';
 import { FloatLabelModule } from "primeng/floatlabel";
 import { CamelCaseToSpacePipe } from '../../../../_helpers/camelcasetospace';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
 @Component( {
   selector: 'app-add-country',
   standalone: true,
-  imports: [ReactiveFormsModule, NgClass, FloatLabelModule, ToastModule],
+  imports: [
+    ReactiveFormsModule,
+    NgClass,
+    FloatLabelModule,
+    ToastModule,
+    ButtonModule,
+    InputTextModule,
+    CardModule
+  ],
   templateUrl: './add-country.component.html',
   styleUrl: './add-country.component.css',
-  providers: [MessageService]
+  providers: [MessageService],
+  encapsulation: ViewEncapsulation.None
 } )
 export class AddCountryComponent {
   countryForm = new FormGroup( {

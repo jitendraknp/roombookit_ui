@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CommonService } from '../../../../_services/common.service';
@@ -11,6 +11,10 @@ import { ToastModule } from 'primeng/toast';
 import { ToggleService } from "../../../../_services/toggle.service";
 import { CamelCaseToSpacePipe } from '../../../../_helpers/camelcasetospace';
 import { UtilsService } from '../../../../_helpers/utils.service';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component( {
   selector: 'app-edit-state',
@@ -18,8 +22,15 @@ import { UtilsService } from '../../../../_helpers/utils.service';
   imports: [
     ReactiveFormsModule,
     NgSelectModule,
-    ToastModule
+    ToastModule,
+    ButtonModule,
+    CardModule,
+    InputTextModule,
+    CheckboxModule,
+    InputTextModule,
+    CardModule
   ],
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './edit-state.component.html',
   styleUrl: './edit-state.component.css'
 } )

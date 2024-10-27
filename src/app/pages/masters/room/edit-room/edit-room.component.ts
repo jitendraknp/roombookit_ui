@@ -1,21 +1,31 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BehaviorSubject, switchMap } from 'rxjs';
 import { Room } from '../../../../models/room';
 import { RoomService } from '../../../../_services/room.service';
-import { ToggleService } from "../../../../_services/toggle.service";
 import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
 @Component( {
   selector: 'app-edit-room',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, NgSelectModule, ToastModule],
+  imports: [
+    CommonModule, FormsModule, ReactiveFormsModule, NgSelectModule, ToastModule,
+    ButtonModule,
+    InputTextModule,
+    CheckboxModule,
+    CardModule
+  ],
   templateUrl: './edit-room.component.html',
   styleUrl: './edit-room.component.css',
-  providers: [MessageService]
+  providers: [MessageService],
+  encapsulation: ViewEncapsulation.None
 
 } )
 export class EditRoomComponent implements OnInit {

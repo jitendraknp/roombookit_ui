@@ -1,64 +1,88 @@
-<div class="container profile-page pe-0 ps-0">
-  <div class="card profile-header bg-gradient-light">
-    <div class="body row pb-1">
-      <div class="col-lg-3 col-md-3 col-xs-12 col-sm-4">
-        <div class="profile-image float-md-right"><img alt=""
-                                                       src="https://bootdey.com/img/Content/avatar/avatar7.png">
+<div class="flex flex-column  pb-1 h-max">
+  <p-toast position="top-center" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'"
+    [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'" />
+  <p-card class="w-full">
+    <ng-template pTemplate="header" class="custom-card-header">
+      <div class="flex flex-row justify-between align-items-center">
+        <p class="px-2 text-primary text-sm">
+          {{users.FirstName }} {{users.LastName}}
+        </p>
+
+        <div class="ml-auto flex flex-row items-center gap-3">
+          <!-- Edit button with pencil icon, ensure icon is vertically centered -->
+          <div class="flex justify-items-center">
+            <p-button icon="pi pi-pencil" [pTooltip]="'Edit guest'" tooltipPosition="top" [severity]="'primary'"
+              [size]="'small'" [routerLink]="['edit',users.Id]" [tooltipStyleClass]="'text-xs  flex items-center'"
+              [rounded]="true" [text]="true" class="p-button-icon-only p-0"></p-button>
+          </div>
+          <!-- Delete button -->
+          <p-button icon="pi pi-trash" [pTooltip]="'Delete guest'" tooltipPosition="top" [severity]="'primary'"
+            [size]="'small'" [tooltipStyleClass]="'text-xs  flex items-center'" [rounded]="true"
+            [text]="true"></p-button>
+          <!-- Collapse button -->
+          <p-button icon="pi pi-minus" [pTooltip]="'Collapse'" tooltipPosition="top" [severity]="'primary'"
+            [styleClass]=" 'flex items-center'" [size]="'small'" [tooltipStyleClass]="'text-xs'" [rounded]="true"
+            [text]="true"></p-button>
         </div>
       </div>
-      <div class="col-lg-9 col-md-9 col-xs-12 col-sm-8">
-        <div class="social-icon d-flex  justify-content-end ps-2">
-          <!-- <a class="d-inline" title="Twitter" [routerLink]="['edit',users.Id]"><ion-icon
-                  name="eye-sharp"></ion-icon></a> -->
-          <a [routerLink]="['edit',users.Id]" class="d-inline" href="javascript:void(0);"
-             title="Twitter">
-            <!--                      <ion-icon name="create-sharp"></ion-icon>-->
-          </a>
-          <a class="d-inline" href="javascript:void(0);" title="Twitter">
-            <!--                      <ion-icon name="trash-sharp"-->
-            <!--                            class="ion-icon-danger"></ion-icon>-->
-          </a>
-        </div>
-        <ng-container>
-          <h4 class="mt-0 mb-0 text-primary">{{ users.FirstName }} {{ users.LastName }} ({{ users.EmpCode }})</h4>
-          <p class="text-muted">{{ users.Address }}</p>
-          <p class="text-muted pb-2">{{ users.Cities?.Name }}, {{ users.States?.Name }}, {{ users.Countries?.Name }}
-            - {{ users.PinCode }}
-          </p>
-          <div class="d-flex">
-            <div class="d-inline pe-2">
-              <p class="text-muted">
-                <!--                              <ion-icon name="call"></ion-icon>-->
-                {{ users.MobileNo }}</p>
-            </div>
-            <div class="d-inline">
-              <p class="job_post text-muted">
-                <!--                              <ion-icon name="mail"></ion-icon> -->
-                {{ users.Email }}</p>
-            </div>
-          </div>
-        </ng-container>
-      </div>
-      <div class="col-md-12">
-        <div class="d-flex  justify-between">
-          <div class="d-inline">
-            <span class="d-inline italic">{{ users.Roles }}</span>
-          </div>
-          <div class="d-inline">
-            <p class="social-icon  mb-0 pt-2 ">
-              <a href="javascript:void(0);" title="Twitter">
-                <!--                                <ion-icon name="logo-twitter"></ion-icon>-->
-              </a>
-              <a href="javascript:void(0);" title="Facebook">
-                <!--                                <ion-icon name="logo-facebook"></ion-icon>-->
-              </a>
-              <a href="javascript:void(0);" title="Instagram">
-                <!--                                <ion-icon name="logo-instagram"></ion-icon>-->
-              </a>
-            </p>
+    </ng-template>
+    <ng-template pTemplate="body">
+      <div class="grid gap-2 px-0 py-1">
+        <div class="md:block sm:hidden xs:hidden lg:block xl:block">
+          <div class="profile-image float-md-right py-1 md:block sm:hidden xs:hidden lg:block xl:block">
+            <img src="image/avatar7.png" alt="">
           </div>
         </div>
+        <div class="md:col-12 sm:col-12 xl:col-6 xl:col-6">
+          <p-card>
+            <ng-template pTemplate="header">
+              <div class="custom-card-header">
+                Contact Details
+                <div class="ml-auto flex flex-row items-center gap-3">
+                  <a href="#" pTooltip="Edit Address">
+                    <i class="pi pi-file-edit" style="color: var(--primary-color);font-size: 0.8rem"></i>
+                  </a>
+                </div>
+              </div>
+
+            </ng-template>
+            <ng-template pTemplate="body">
+              <div class="grid">
+                <div class="col-12 py-1">
+                  <p class="text-muted text-sm">{{users.Address}}</p>
+                </div>
+                <div class="col-12 py-1">
+                  <p class="text-muted pb-1  text-xs">{{users.Cities?.Name| uppercase}},
+                    {{users.States?.Name
+                    | uppercase}},
+                    {{users.Countries?.Name | uppercase}}
+                  </p>
+                </div>
+                <div class="col-12 py-1">
+                  <div class="grid">
+                    <div class="col-6 items-start py-1 sm:col-12 xs:col-12 md:col-6 lg:col-6  xl:col-6">
+                      <p class="text-muted text-xs">
+                        <!-- <ion-icon name="call"></ion-icon> -->
+                        <i class="pi pi-phone" style="color: var(--primary-color)"></i>
+                        {{users.MobileNo}}
+                      </p>
+                    </div>
+                    <div class="col-6 items-start py-1 sm:col-12 xs:col-12 md:col-6 lg:col-6  xl:col-6">
+                      @if(users.Email!=null || users.Email!=""){
+                      <div class="d-inline" *ngIf="users.Email">
+                        <p class="job_post text-muted text-sm">
+                          <i class="pi pi-inbox" style="color: var(--primary-color)"></i> {{users.Email}}
+                        </p>
+                      </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </p-card>
+        </div>
       </div>
-    </div>
-  </div>
+    </ng-template>
+  </p-card>
 </div>

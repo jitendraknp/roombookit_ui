@@ -46,6 +46,7 @@ export interface DashboardGuestDetails {
   CheckInTime?: string;
   CheckOutDate?: string;
   CheckOutTime?: string;
+  IsTodayCheckIn?: boolean;
 }
 export interface ExistingGuestDetails {
   GuestId: string;

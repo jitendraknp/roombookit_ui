@@ -7,14 +7,19 @@ import { States } from '../../../../models/states';
 import { CommonService } from '../../../../_services/common.service';
 import { City } from '../../../../models/cities';
 import { MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { UtilsService } from '../../../../_helpers/utils.service';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
 @Component( {
   selector: 'app-add-city',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    NgSelectModule, ToastModule
+    NgSelectModule, ToastModule, ButtonModule,
+    InputTextModule,
+    CardModule
   ],
   templateUrl: './add-city.component.html',
   styleUrl: './add-city.component.css',
