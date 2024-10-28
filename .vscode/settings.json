@@ -1,4 +1,9 @@
 {
     "appService.defaultWebAppToDeploy": "/subscriptions/1bf99380-8cc4-4067-b08b-017cca9c5339/resourceGroups/book_room_resource/providers/Microsoft.Web/sites/bookroom",
-    "appService.deploySubpath": "dist\\test"
+    "appService.deploySubpath": "dist\\rd_residency",
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.connections": []
 }

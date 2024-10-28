@@ -1,13 +1,13 @@
 {
-  "name": "bookroom",
+  "name": "rd_residency",
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "serve:ssr:roombookit_ui": "node dist/roombookit_ui/server/server.mjs"
+    "build:ssr": "ng build --configuration=production && ng run rd_residency:server:production",
+    "serve:ssr": "node dist/rd_residency/server.js"
   },
   "private": true,
   "dependencies": {
@@ -26,6 +26,8 @@
     "@danielmoncada/angular-datetime-picker": "^18.1.0",
     "@microsoft/signalr": "^8.0.7",
     "@ng-select/ng-select": "^13.5.2",
+    "@nguniversal/builders": "^16.2.0",
+    "@nguniversal/common": "^16.2.0",
     "@nguniversal/express-engine": "^7.1.1",
     "@types/crypto-js": "^4.2.2",
     "@types/node-forge": "^1.3.11",

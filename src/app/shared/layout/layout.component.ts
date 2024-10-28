@@ -47,6 +47,7 @@ import { AuthService } from '../../authentication/services/auth.service';
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
   providers: [ToastrService, CommonService],
+  encapsulation: ViewEncapsulation.None
 } )
 export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   username: string = 'John Doe'; // Replace with your username
@@ -103,13 +104,26 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
   transformToPrimeNgMenu ( menuItems: any[] ): any {
-    return menuItems.map( ( item ) => ( {
-      label: item.Name,
-      icon: item.IconName,
-      routerLink: item.Location,
-      expanded: this.getExpandedState( item.Name.toLowerCase() ),
-      items: item.Childs ? this.transformToPrimeNgMenu( item.Childs ) : null,
-    } ) );
+    console.log( menuItems );
+    return menuItems.map( ( item ) => {
+      const transformedItem: any = {
+        label: item.Name,
+        icon: item.IconName,
+        // routerLink: item.Location,
+        expanded: this.getExpandedState( item.Name.toLowerCase() )
+      };
+
+      // Only add 'items' if there are child items
+      if ( item.Childs && item.Childs.length > 0 ) {
+        transformedItem.items = this.transformToPrimeNgMenu( item.Childs );
+      }
+      else {
+        transformedItem.command = () => {
+          this.router.navigate( ['/' + item.Location] );
+        };
+      }
+      return transformedItem;
+    } );
   }
   action () {
 
@@ -138,15 +152,14 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit (): void {
     let storedMenuData = this.storageService.getData( "USER_MENU" );
     if ( storedMenuData != undefined || storedMenuData != null ) {
-      const data = JSON.parse( storedMenuData ) as MenuItem[];
-      this.items = data;
-
+      const data = JSON.parse( storedMenuData );
+      this.items = this.transformToPrimeNgMenu( data );
     } else {
       this.commonService.getMenus().subscribe( {
         next: ( menu ) => {
           // this.items = menu.Data as MenuItem[];
           this.items = this.transformToPrimeNgMenu( menu.Data as MenuItem[] );
-          this.storageService.saveData( JSON.stringify( this.items ), "USER_MENU" );
+          this.storageService.saveData( JSON.stringify( menu.Data ), "USER_MENU" );
         },
         error: ( error ) => {
           this.toastrService.error( error.message ).onHidden.subscribe( () => {

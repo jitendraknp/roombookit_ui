@@ -1,4 +1,4 @@
-<div class="flex flex-column  pb-1 h-max">
+<div class="flex flex-column  pb-1">
   <!-- <p-card> -->
   <div class="flex p-field w-full pt-4">
     <p-floatLabel class="flex-grow-1 w-full">
@@ -19,7 +19,7 @@
 
     </div>
   </div>
-  @for (c of cities | paginate: {
+  <!-- @for (c of cities | paginate: {
   itemsPerPage: 5,
   currentPage: p,
   totalItems: cities.length
@@ -78,5 +78,67 @@
     <ul class="ml-auto text-xs">
       <pagination-controls (pageChange)="p = $event" class="p-paginator"></pagination-controls>
     </ul>
-  </nav>
+  </nav> -->
+  <div class="grid align-start justify-center shadow-2 py-2">
+    <div *ngFor="let city of pagedCities" class="col-12 md:col-4 lg:col-3">
+      <p-card header="{{ city.Name }}" subheader="{{ city.States?.Name }}">
+        <!-- <img [src]="'image/room.jpg'" alt="{{ city.Name }}" class="profile-image" /> -->
+        <ng-template pTemplate="footer">
+          <div class="grid justify-content-end gap-2">
+            <div class="col-auto">
+              <p-button icon="pi pi-file-edit" pTooltip="Edit City" tooltipPosition="top"
+                (onClick)="onCityEdit(city?.Id!)" [tooltipStyleClass]="'text-xs'" [rounded]=" true"
+                [text]="true"></p-button>
+            </div>
+            <div class="col-auto">
+              <ng-container *ngIf="city?.Is_Active; else inactive">
+                <p-button icon="pi pi-flag" pTooltip="Active City" tooltipPosition="top" [tooltipStyleClass]="'text-xs'"
+                  [rounded]="true" [text]="true"></p-button>
+              </ng-container>
+              <ng-template #inactive>
+                <p-button icon="pi pi-flag-fill" severity="warn" pTooltip="Active City" tooltipPosition="top"
+                  [tooltipStyleClass]="'text-xs'" [rounded]="true" [text]="true"></p-button>
+              </ng-template>
+            </div>
+            <div class="col-auto">
+              <p-button icon="pi pi-trash" severity="danger" pTooltip="Delete City" tooltipPosition="top"
+                [tooltipStyleClass]="'text-xs'" [rounded]="true" [text]="true"></p-button>
+            </div>
+
+          </div>
+          <!-- <button pButton type="button" label="Explore" icon="pi pi-search"></button> -->
+          <!-- <div class="flex flex-row gap-4  py-2 justify-end px-4 mr-auto ">
+            <p class="text-primary text-sm">
+              <a class="d-inline hover:text-orange-400" href="javascript:void(0);">
+                @if (city?.Is_Active) {
+                <i class="pi pi-flag" style="font-size: 0.8rem;" pTooltip="Active" tooltipPosition="top"
+                  tooltipStyleClass="text-xs"></i>
+                } @else {
+                <i class="pi pi-flag-fill text-red-500" style="font-size: 0.8rem" pTooltip="In Active"
+                  tooltipPosition="top" tooltipStyleClass="text-xs"></i>
+                }
+              </a>
+            </p>
+            <p class="text-primary text-sm">
+              <a class="d-inline hover:text-orange-400" href="javascript:void(0);" (click)="onCityEdit(city?.Id!)">
+                <i class="pi pi-pencil" style="font-size: 0.8rem" pTooltip="Edit City" tooltipPosition="top"
+                  [tooltipStyleClass]="'text-xs'"></i>
+              </a>
+            </p>
+            <p class="text-primary text-sm">
+              <a class="d-inline hover:text-slate-400" href="javascript:void(0);">
+                <i class="pi pi-trash" style="font-size: 0.8rem; color:red;" pTooltip="Delete" tooltipPosition="top"
+                  [tooltipStyleClass]="'text-xs'"></i>
+              </a>
+            </p>
+          </div> -->
+        </ng-template>
+
+      </p-card>
+
+    </div>
+  </div>
+  <p-paginator [rows]="rowsPerPage" [totalRecords]="cities.length" [pageLinkSize]="3" [styleClass]="'text-xs'"
+    (onPageChange)="onPageChange($event)">
+  </p-paginator>
 </div>

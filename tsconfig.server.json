@@ -1,0 +1,37 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./dist/out-tsc/server",
+        "module": "commonjs",
+        "target": "es2015",
+        "types": [
+            "node"
+        ],
+        "lib": [
+            "es2018",
+            "dom"
+        ],
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "src/*"
+            ]
+        }
+    },
+    "angularCompilerOptions": {
+        "enableIvy": true,
+        "skipTemplateCodegen": true
+    },
+    "files": [
+        "src/**/*.d.ts",
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "**/*.spec.ts",
+        "**/*.test.ts"
+    ],
+    "include": [
+        "**/*.d.ts",
+        "**/*.ts"
+    ]
+}

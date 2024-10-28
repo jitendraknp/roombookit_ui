@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { BadgeModule } from "primeng/badge";
 import { ButtonModule } from "primeng/button";
 import { CommonService } from "../../../../_services/common.service";
@@ -29,7 +29,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
     FloatLabelModule
   ],
   templateUrl: './country-list.component.html',
-  styleUrl: './country-list.component.css'
+  styleUrl: './country-list.component.css',
+  encapsulation: ViewEncapsulation.None
 } )
 export class CountryListComponent implements OnInit {
   countries: Country[] = [];

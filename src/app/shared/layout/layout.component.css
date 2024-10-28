@@ -239,3 +239,22 @@ a {
     color: #007bff; /* Change the color of the active link */
     background-color: #e9ecef; /* Optional: change the background */
 }
+  p-panelmenu{
+        overflow-y: auto !important;
+    height: 28rem !important;
+    display: block !important;
+  }
+ 
+  .p-panelmenu-submenu-icon{
+    color: var(--p-button-primary-background);
+  }
+    .p-panelmenu-submenu-icon:hover{
+    color: var(--p-button-primary-hover-background);
+  }
+ 
+.p-panelmenu-header-label:hover{
+    color: var(--p-button-primary-hover-background);
+}
+.p-panelmenu-item-link:hover{
+      color: var(--p-button-primary-hover-background);
+}

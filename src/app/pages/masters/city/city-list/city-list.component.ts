@@ -14,6 +14,7 @@ import { CityService } from "../../../../_services/city.service";
 import { FilterByDaysAndTextComponent } from '../../../../shared/filter-by-days-and-text/filter-by-days-and-text.component';
 import { SearchService } from '../../../../_services/search.service';
 import { CommonService } from '../../../../_services/common.service';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component( {
   selector: 'app-city-list',
@@ -29,7 +30,8 @@ import { CommonService } from '../../../../_services/common.service';
     FilterByDaysAndTextComponent,
     AutoCompleteModule,
     CardModule,
-    FloatLabelModule
+    FloatLabelModule,
+    PaginatorModule
   ],
   templateUrl: './city-list.component.html',
   styleUrl: './city-list.component.css',
@@ -129,5 +131,17 @@ export class CityListComponent implements OnInit {
         console.log( 'Error fetching cities' );
       }
     } );
+  }
+  rowsPerPage = 1;
+  currentPage = 0;
+
+  // Getter for paged cities
+  get pagedCities () {
+    const start = this.currentPage * this.rowsPerPage;
+    return this.cities.slice( start, start + this.rowsPerPage );
+  }
+
+  onPageChange ( event: any ) {
+    this.currentPage = event.page;
   }
 }

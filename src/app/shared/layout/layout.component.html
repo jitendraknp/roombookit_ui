@@ -5,7 +5,7 @@
         <div class="flex grow justify-between gap-4 items-center py-0">
           <button class="d-xl-block d-lg-block d-md-mone d-none" id="sidebarCollapse" (click)="toggleSidebar1()"
             type="button">
-            <svg class="bi bi-list" fill="bg-current" height="25" viewBox="0 0 16 16" width="25"
+            <svg class="bi bi-list" fill="var(--p-button-primary-background)" height="25" viewBox="0 0 16 16" width="25"
               xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
@@ -30,20 +30,25 @@
   <div class="flex flex-row overflow-hidden">
     <aside class="bg-secondary pl-1 h-auto overflow-y-auto"
       [ngClass]="isCompressed ? 'compressed-sidebar' : 'expanded-sidebar'">
-      <div class="sidebar-header px-2">
+      <!-- <div class="sidebar-header px-2">
         <h3 class="flex flex-row items-center">
           <img class="img-fluid" src="/image/bookkaro-logo.ico" />
           <span class="img-fluid text-sm text-center">Book Karlo</span>
         </h3>
-      </div>
+      </div> -->
+
       <div class="pt-2 w-40  h-auto">
         <p-panelMenu [model]="items" [multiple]="false" separator="true" (onNodeExpand)="toggleExpandedState($event)"
           (onNodeCollapse)="toggleExpandedState($event)" iconClass="text-primary" routerLinkActive="active-link"
-          [styleClass]="'w-full md:w-80 text-sm text-green-600 text-primary overflow-y-auto p-0'"></p-panelMenu>
+          iconClass="var(--p-button-primary-background) group-hover:var(--p-button-primary-hover-background)"
+          [styleClass]="'w-full md:w-80 text-sm overflow-y-auto p-0'"></p-panelMenu>
 
       </div>
+
     </aside>
-    <main class="w-full overflow-x-hidden overflow-y-auto px-2 shadow-1 ml-2 mb-4 my-1">
+    <main class="w-full overflow-x-hidden overflow-y-auto px-2 shadow-1 ml-2 mb-4 my-1" style="display: flex;
+    flex-direction: column;
+    min-height: 88vh;">
       <router-outlet></router-outlet>
     </main>
   </div>

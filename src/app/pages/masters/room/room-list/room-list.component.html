@@ -102,7 +102,7 @@
 
   </div>
   @if(rooms==null) {
-  <app-no-records-found class="text-sm font-semibold"></app-no-records-found>
+  <app-no-records-found class="text-sm"></app-no-records-found>
   }
   <nav class="flex flex-row">
     <ul class="ml-auto text-xs">
@@ -112,7 +112,7 @@
 </div>
 <div class="card">
   <p-dialog [(visible)]="display" appendTo="body" [closable]="true" [modal]="true"
-    [style]="{width: '60vw',height: '50vh'}" showHeader="true">
+    [style]="{width: '60vw',height: '70vh'}" showHeader="true">
     <ng-template pTemplate="header">
       <div class="flex flex-column">
         <h1 class="text-3xl">Room Availability Management</h1>

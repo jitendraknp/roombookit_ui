@@ -80,7 +80,7 @@ interface Booking {
     TagModule
   ],
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
+  styleUrl: './dashboard.component.css',
   encapsulation: ViewEncapsulation.None
 } )
 export class DashboardComponent implements OnInit {
