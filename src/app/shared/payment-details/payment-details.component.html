@@ -1,9 +1,8 @@
 <form class="grid" [formGroup]="form">
-  <div class="col-12 lg:col-4 xl:col-4">
+  <div class="col lg:col-6 xl:col-6 md:col-6">
     <label for="gstRate" class="form-label">GST Rate</label>
-    <ng-select appearance="outline" placeholder="Select GST Rate" id="gstRate" class="w-12rem"
-      [formControl]="gstControl" (change)="onGstChange($event)" formControlName="GSTPercentage"
-      notFoundText="No items found" [clearable]="false">
+    <ng-select appearance="outline" placeholder="Select GST Rate" id="gstRate" [formControl]="gstControl"
+      (change)="onGstChange($event)" formControlName="GSTPercentage" notFoundText="No items found" [clearable]="false">
       <ng-option [value]="1">0%</ng-option>
       <ng-option [value]="5">5%</ng-option>
       <ng-option [value]="12" selected>12%</ng-option>
@@ -11,7 +10,7 @@
       <ng-option [value]="28">28%</ng-option>
     </ng-select>
   </div>
-  <div class="col-12 lg:col-4 xl:col-4">
+  <div class="co-12 lg:col-6 xl:col-6 md:col-6">
     <label for="excGSTRate" class="form-label">After GST (&#8377;)</label>
     <p-inputnumber inputId="integeronly" mode="currency" currency="INR" currencyDisplay="code" locale="en-IN" size="10"
       fluid="true" id="excGSTRate" formControlName="ExcGST" placeholder="Total Amount" />
@@ -21,10 +20,10 @@
     <input type="number" class="form-control form-control-sm" id="incGSTRate" formControlName="IncGST"
       placeholder="Total Amount" />
   </div> -->
-  <div class="col-12 lg:col-4 xl:col-4">
+  <div class="col-12 lg:col-6 xl:col-6 md:col-6">
     <label for="advancePayment" class="form-label">Payment Mode</label>
-    <ng-select appearance="outline" placeholder="Payment Mode" id="paymentMode" class="w-12rem"
-      formControlName="PaymentMode" notFoundText="No items found" [clearable]="false">
+    <ng-select appearance="outline" placeholder="Payment Mode" id="paymentMode" formControlName="PaymentMode"
+      notFoundText="No items found" [clearable]="false">
       <ng-option [value]="1">Cash</ng-option>
       <ng-option [value]="2">Credit Card</ng-option>
       <ng-option [value]="3">Debit Card</ng-option>
@@ -33,19 +32,19 @@
     </ng-select>
   </div>
 
-  <div class="col-12 lg:col-4 xl:col-4">
+  <div class="col-12 lg:col-6 xl:col-6 md:col-6">
     <label for="advancePayment" class="form-label">Amount Paid</label>
     <p-inputnumber inputId="integeronly" mode="currency" currency="INR" currencyDisplay="symbol" locale="en-IN"
       size="small" fluid="true" id="advancePayment" formControlName="AmountPaid" placeholder="Amount Paid" />
   </div>
 
-  <div class="col-12 lg:col-4 xl:col-4">
+  <div class="col-12 lg:col-6 xl:col-6 md:col-6">
     <label for="balancePayment" class="form-label">Balance </label>
     <p-inputnumber inputId="integeronly" mode="currency" currency="INR" currencyDisplay="symbol" locale="en-IN"
       size="small" fluid="true" id="balancePayment" formControlName="BalanceAmount" placeholder="Balance Payment" />
     <p class="text-xs font-italic text-gray-400 font-semibold text-end">Total-(Advance+Discount)</p>
   </div>
-  <div class="col-12 lg:col-4 xl:col-4">
+  <div class="col-12 lg:col-6 xl:col-6 md:col-6">
     <label for="transactionNo" class="form-label">Transaction No</label>
     <input type="text" pInputText size="small" fluid="true" id="transactionNo" formControlName="TransactionNo"
       placeholder="Transaction No" />

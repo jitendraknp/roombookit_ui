@@ -106,38 +106,16 @@
             </div>
 
           </div>
-          <!-- <button pButton type="button" label="Explore" icon="pi pi-search"></button> -->
-          <!-- <div class="flex flex-row gap-4  py-2 justify-end px-4 mr-auto ">
-            <p class="text-primary text-sm">
-              <a class="d-inline hover:text-orange-400" href="javascript:void(0);">
-                @if (city?.Is_Active) {
-                <i class="pi pi-flag" style="font-size: 0.8rem;" pTooltip="Active" tooltipPosition="top"
-                  tooltipStyleClass="text-xs"></i>
-                } @else {
-                <i class="pi pi-flag-fill text-red-500" style="font-size: 0.8rem" pTooltip="In Active"
-                  tooltipPosition="top" tooltipStyleClass="text-xs"></i>
-                }
-              </a>
-            </p>
-            <p class="text-primary text-sm">
-              <a class="d-inline hover:text-orange-400" href="javascript:void(0);" (click)="onCityEdit(city?.Id!)">
-                <i class="pi pi-pencil" style="font-size: 0.8rem" pTooltip="Edit City" tooltipPosition="top"
-                  [tooltipStyleClass]="'text-xs'"></i>
-              </a>
-            </p>
-            <p class="text-primary text-sm">
-              <a class="d-inline hover:text-slate-400" href="javascript:void(0);">
-                <i class="pi pi-trash" style="font-size: 0.8rem; color:red;" pTooltip="Delete" tooltipPosition="top"
-                  [tooltipStyleClass]="'text-xs'"></i>
-              </a>
-            </p>
-          </div> -->
+
         </ng-template>
 
       </p-card>
 
     </div>
   </div>
+  @if (cities == null) {
+  <app-no-records-found></app-no-records-found>
+  }
   <p-paginator [rows]="rowsPerPage" [totalRecords]="cities.length" [pageLinkSize]="3" [styleClass]="'text-xs'"
     (onPageChange)="onPageChange($event)">
   </p-paginator>

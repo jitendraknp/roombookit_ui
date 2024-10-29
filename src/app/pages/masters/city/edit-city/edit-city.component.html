@@ -2,11 +2,23 @@
   <p-toast position="top-center" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'"
     [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'" />
   <p-card>
-    <ng-template pTemplate="header">
+    <!-- <ng-template pTemplate="header">
       <div class="flex flex-row justify-between p-2">
         <p>Edit City</p>
         <a (click)="onClose()" href="javascript:void(0);" class="text-sm ml-auto">
           <i class="pi pi-times text-primary"></i>
+        </a>
+      </div>
+    </ng-template> -->
+    <ng-template pTemplate="header">
+      <div
+        class="flex flex-row items-center justify-between p-2 border-b border-gray-200 bg-gray-50 rounded-t-lg shadow-sm">
+        <!-- Title -->
+        <p class="text-lg font-semibold text-gray-700">Edit City</p>
+        <!-- Close Button -->
+        <a (click)="onClose()" href="javascript:void(0);"
+          class="text-gray-500 hover:text-red-600 ml-auto transition-colors duration-150">
+          <i class="pi pi-times text-xl"></i>
         </a>
       </div>
     </ng-template>

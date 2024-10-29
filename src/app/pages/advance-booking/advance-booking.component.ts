@@ -48,6 +48,7 @@ export class AdvanceBookingComponent implements OnInit {
       FirstName: new FormControl( '', [Validators.required] ),
       LastName: new FormControl( "", [Validators.required] ),
       Address: new FormControl( "" ),
+      Status: new FormControl( { code: "Booked", name: "Booked" } ),
       Gender: new FormControl( { name: 'MALE', code: 'MALE' } ),
       PhoneNo: new FormControl( '', [Validators.required] ),
       Email: new FormControl( '' ),
@@ -56,6 +57,7 @@ export class AdvanceBookingComponent implements OnInit {
       CheckOutDate: new FormControl<Date | null>( null ),
       BookingDate: new FormControl<Date | null>( null ),
       NoOfGuests: new FormControl( 0 ),
+      BookingAmount: new FormControl( 0 ),
       tableRows: this.fb.array( this.roomTypes.map( item => this.createTableRow( item ) ) )
     } );
   }
@@ -148,6 +150,7 @@ export class AdvanceBookingComponent implements OnInit {
       if ( control.value.selected ) {
         roomCategoryIds.push( {
           Id: control.value.id,
+          Status: 'Booked',
           NoOfRooms: Number( control.value.nos )
         } );
       }
@@ -156,12 +159,15 @@ export class AdvanceBookingComponent implements OnInit {
       this.messageService.add( { severity: 'error', summary: 'Required Fields', detail: 'Room Category and Total of Rooms' } );
       return;
     }
+
     const ab: AdvanceBooking = {
       FirstName: this.advanceBookingForm.get( 'FirstName' )?.value,
       LastName: this.advanceBookingForm.get( 'LastName' )?.value,
       PhoneNo: this.advanceBookingForm.get( 'PhoneNo' )?.value,
       Email: this.advanceBookingForm.get( 'Email' )?.value,
       Address: this.advanceBookingForm.get( 'Address' )?.value,
+      BookingAmount: this.advanceBookingForm.get( 'BookingAmount' )?.value,
+      Status: this.advanceBookingForm.get( 'Status' )?.value["code"],
       BookingDate: this.advanceBookingForm.get( 'BookingDate' )?.value == null ? '' : this.datePipe.transform( this.advanceBookingForm.get( 'BookingDate' )?.value!, 'dd/MM/yyyy hh:mm a' )!.toString(),
       CheckInDate: this.advanceBookingForm.get( 'CheckInDate' )?.value == null ? '' : this.datePipe.transform( this.advanceBookingForm.get( 'CheckInDate' )?.value!, 'dd/MM/yyyy hh:mm a' )!.toString(),
       CheckOutDate: this.advanceBookingForm.get( 'CheckOutDate' )?.value == null ? '' : this.datePipe.transform( this.advanceBookingForm.get( 'CheckOutDate' )?.value!, 'dd/MM/yyyy hh:mm a' )!.toString(),
@@ -174,6 +180,9 @@ export class AdvanceBookingComponent implements OnInit {
         if ( response.StatusCode == 200 ) {
           this.messageService.add( { severity: 'success', summary: 'Saved', detail: response.Message } );
           this.advanceBookings.emit( response.Data );
+        }
+        else {
+          this.messageService.add( { severity: 'error', summary: 'Error', detail: response.Message } );
         }
       },
       error: ( error ) => {

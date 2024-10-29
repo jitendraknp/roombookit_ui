@@ -55,7 +55,7 @@
                     <div class="grid">
                         <div class="col-12 lg:col-4 xl:col-4 text-sm">
                             <label for="gender">Status</label>
-                            <p-select formControlName="Gender" [options]="bookingStatus" optionLabel="name" size="small"
+                            <p-select formControlName="Status" [options]="bookingStatus" optionLabel="name" size="small"
                                 fluid="true" styleClass="small" variant="filled" placeholder="Booking Status" />
                         </div>
                         <div class="col-12 lg:col-4 xl:col-4 text-sm">
@@ -65,6 +65,11 @@
                                 [inputStyleClass]="'text-sm'" [hourFormat]="'12'" appendTo="body"
                                 [monthNavigator]="true" aria-describedby="bookingdate-help" />
                             <small id="bookingdate-help">Booking date is optional.</small>
+                        </div>
+                        <div class="col-12 lg:col-4 xl:col-4 text-sm">
+                            <label for="email">Booking Amount</label>
+                            <input pInputText id="bookingAmount" size="small" formControlName="BookingAmount"
+                                fluid="true" />
                         </div>
                     </div>
                 </div>

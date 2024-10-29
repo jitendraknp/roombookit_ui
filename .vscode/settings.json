@@ -5,5 +5,8 @@
         "node_modules{,/**}",
         ".vscode{,/**}"
     ],
-    "appService.connections": []
+    "appService.connections": [],
+    "debug.allowBreakpointsEverywhere": true,
+    "debug.console.fontSize": 10,
+    "editor.fontSize": 14
 }

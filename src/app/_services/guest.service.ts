@@ -46,6 +46,7 @@ export class GuestService {
     return this.httpClient.put<ApiResponse>( `${ URL }update/guest`, data, this.httpOptions );
   }
   updatePd ( data: any ): Observable<ApiResponse> {
+
     return this.httpClient.patch<ApiResponse>( `${ URL }update-pd`, data, this.httpOptions );
   }
   updatePayment ( data: any ): Observable<ApiResponse> {

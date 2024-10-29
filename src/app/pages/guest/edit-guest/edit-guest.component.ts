@@ -88,8 +88,8 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
     CountryId: new FormControl( { value: "", disabled: true } ),
     PinCode: new FormControl( '' ),
     GuestId: new FormControl( null ),
-    CheckInDate: new FormControl<string | null>( null, [Validators.required, Validators.pattern( /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4} ([01][0-9]|1[0-2]):([0-5][0-9]) (AM|PM)$/ )] ),
-    CheckOutDate: new FormControl<string | null>( null, [Validators.required, Validators.pattern( /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4} ([01][0-9]|1[0-2]):([0-5][0-9]) (AM|PM)$/ )] ),
+    CheckInDate: new FormControl<string | null>( null, [Validators.required] ),
+    CheckOutDate: new FormControl<string | null>( null, [Validators.required] ),
     RoomNoId: new FormControl<string[]>( [], [Validators.required] ),
     RoomId: new FormControl( [], [Validators.required] ),
     NoOfGuests: new FormControl<number>( 0, [Validators.required] ),
@@ -182,12 +182,12 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
         this.editGuestForm.controls.StateId.setValue( result.Data.City?.States?.Name );
         this.editGuestForm.controls.CountryId.setValue( result.Data.City?.States?.Country?.Name );
         this.editGuestForm.controls.PinCode.setValue( result.Data.PinCode );
-        // this.editGuestForm.controls.CheckInDate = new FormControl(String( formatDate( result.Data.CheckInDate,'dd/MM/yyyy HH:mm AA','en-us' ) )!);
-        this.editGuestForm.controls.CheckInDate.setValue( result.Data.CheckInDate );
-        this.editGuestForm.controls.CheckOutDate.setValue( result.Data.CheckOutDate );
+        // this.editGuestForm.controls.CheckInDate = new FormControl(String(  )!);
+        this.editGuestForm.controls.CheckInDate.patchValue( result.Data.CheckInDate );
+        this.editGuestForm.controls.CheckOutDate.patchValue( result.Data.CheckOutDate );
         // this.editGuestForm.controls.CheckOutDate = new FormControl( new Date( result.Data.CheckOutDate ) );
         // this.editGuestForm.controls.RoomNoId.setValue( this.isGuidEmpty( result.Data.RoomNoId ) ? null : result.Data.RoomNoId );
-        console.log( result.Data.RoomId );
+        console.log( result.Data );
         this.editGuestForm.controls.RoomId.patchValue( result.Data.RoomId );
         this.editGuestForm.controls.TotalAmount.setValue( result.Data.AmountToPay );
         this.editGuestForm.controls.NoOfGuests.setValue( result.Data.NoOfGuests );
@@ -423,8 +423,8 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
       GuestStayDetailId: this.editGuestForm.controls.GuestStayDetailId.value!,
       PaymentDetailsId: this.editGuestForm.controls.PaymentDetailsId.value!,
       GuestId: this.guestId,
-      CheckInDate: this.editGuestForm.controls.CheckInDate.value!.toString(),
-      CheckOutDate: this.editGuestForm.controls.CheckOutDate.value!.toString(),
+      CheckInDate: this.editGuestForm.controls.CheckInDate?.value!,
+      CheckOutDate: this.editGuestForm.controls.CheckOutDate?.value!,
       Rooms: this.editGuestForm.controls.RoomId.value!,
       RatePerNight: this.editGuestForm.controls.RatePerNight.value!,
       NoOfDays: this.editGuestForm.controls.NoOfDays.value!,

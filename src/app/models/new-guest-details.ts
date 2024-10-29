@@ -122,6 +122,8 @@ export interface AdvanceBooking {
   CheckInDate?: string,
   CheckOutDate?: string,
   BookingDate?: string,
+  BookingAmount?: number,
+  Status?: string,
   NoOfGuests?: number,
   RoomCategoryId?: RoomCategory[];
 }

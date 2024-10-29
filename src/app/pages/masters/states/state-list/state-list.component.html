@@ -17,7 +17,7 @@
       </p-button>
     </p>
   </div>
-  @for (c of states | paginate: {
+  <!-- @for (c of states | paginate: {
   itemsPerPage: 5,
   currentPage: p,
   totalItems: states.length
@@ -76,5 +76,43 @@
     <ul class="ml-auto text-xs">
       <pagination-controls (pageChange)="p = $event" class="p-paginator"></pagination-controls>
     </ul>
-  </nav>
+  </nav> -->
+  <div class="grid align-start justify-center shadow-2 py-2">
+    <div *ngFor="let state of pagedStates" class="col-12 md:col-4 lg:col-3">
+      <p-card header="{{ state.Name }} ({{state.Code}})"
+        subheader="{{ state.Country?.Name }} ({{state.Country?.Code }})">
+        <ng-template pTemplate="footer">
+          <div class="grid justify-content-end gap-2">
+            <div class="col-auto">
+              <p-button icon="pi pi-file-edit" pTooltip="Edit State" tooltipPosition="top"
+                (onClick)="onStateEdit(state?.Id!)" [tooltipStyleClass]="'text-xs'" [rounded]=" true"
+                [text]="true"></p-button>
+            </div>
+            <div class="col-auto">
+              <ng-container *ngIf="state?.Is_Active; else inactive">
+                <p-button icon="pi pi-flag" pTooltip="Active State" tooltipPosition="top"
+                  [tooltipStyleClass]="'text-xs'" [rounded]="true" [text]="true"></p-button>
+              </ng-container>
+              <ng-template #inactive>
+                <p-button icon="pi pi-flag-fill" severity="warn" pTooltip="In Active State" tooltipPosition="top"
+                  [tooltipStyleClass]="'text-xs'" [rounded]="true" [text]="true"></p-button>
+              </ng-template>
+            </div>
+            <div class="col-auto">
+              <p-button icon="pi pi-trash" severity="danger" pTooltip="Delete State" tooltipPosition="top"
+                [tooltipStyleClass]="'text-xs'" [rounded]="true" [text]="true"></p-button>
+            </div>
+
+          </div>
+
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+  @if (states == null) {
+  <app-no-records-found></app-no-records-found>
+  }
+  <p-paginator [rows]="rowsPerPage" [totalRecords]="states.length" [pageLinkSize]="3" [styleClass]="'text-xs'"
+    (onPageChange)="onPageChange($event)">
+  </p-paginator>
 </div>

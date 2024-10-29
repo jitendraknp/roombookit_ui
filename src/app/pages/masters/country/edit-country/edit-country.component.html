@@ -3,10 +3,11 @@
     [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'" />
   <p-card class="pt-2">
     <ng-template pTemplate="header">
-      <div class="flex flex-row justify-between p-2">
-        <p>Edit Country</p>
-        <a (click)="onClose()" href="javascript:void(0);" class="text-sm ml-auto">
-          <i class="pi pi-times text-primary"></i>
+      <div class="flex flex-row justify-between p-2 custom-card-header">
+        <p class="text-primary-800">Edit Country</p>
+        <a (click)="onClose()" href="javascript:void(0);"
+          class="text-sm ml-auto hover:text-red-600  transition-colors duration-150">
+          <i class="pi pi-times text-secondary"></i>
         </a>
       </div>
     </ng-template>

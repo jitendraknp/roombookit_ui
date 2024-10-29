@@ -132,7 +132,7 @@ export class CityListComponent implements OnInit {
       }
     } );
   }
-  rowsPerPage = 1;
+  rowsPerPage = 10;
   currentPage = 0;
 
   // Getter for paged cities

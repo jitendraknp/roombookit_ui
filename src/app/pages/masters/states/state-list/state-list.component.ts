@@ -11,6 +11,7 @@ import { CommonService } from "../../../../_services/common.service";
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CardModule } from 'primeng/card';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component( {
   selector: 'app-state-list',
@@ -26,6 +27,7 @@ import { CardModule } from 'primeng/card';
     FloatLabelModule,
     AutoCompleteModule,
     CardModule,
+    PaginatorModule,
   ],
   templateUrl: './state-list.component.html',
   styleUrl: './state-list.component.css',
@@ -59,5 +61,17 @@ export class StateListComponent implements OnInit {
 
   onStateEdit ( id: string ) {
     this.router.navigate( ['state/edit', id] );
+  }
+  rowsPerPage = 10;
+  currentPage = 0;
+
+  // Getter for paged cities
+  get pagedStates () {
+    const start = this.currentPage * this.rowsPerPage;
+    return this.states.slice( start, start + this.rowsPerPage );
+  }
+
+  onPageChange ( event: any ) {
+    this.currentPage = event.page;
   }
 }

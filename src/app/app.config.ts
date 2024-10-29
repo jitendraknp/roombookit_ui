@@ -1,4 +1,4 @@
-import { ApplicationConfig, importProvidersFrom, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, LOCALE_ID, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { provideNgxMask, NgxMaskDirective } from 'ngx-mask';
 import {
   PreloadAllModules,
@@ -29,7 +29,7 @@ import { ServerErrorsInterceptor } from './_helpers/server_error/server-errors.i
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-
+import localeEn from '@angular/common/locales/en';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimationsAsync(),
@@ -72,7 +72,8 @@ export const appConfig: ApplicationConfig = {
     StorageService,
     ToastrService,
     MessageService,
-    NgxMaskDirective
+    NgxMaskDirective,
+    { provide: LOCALE_ID, useValue: 'en' }
   ]
 };
 

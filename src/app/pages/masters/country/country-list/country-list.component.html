@@ -16,7 +16,7 @@
       </p-button>
     </div>
   </div>
-  @for (c of countries | paginate: {
+  <!-- @for (c of countries | paginate: {
   itemsPerPage: 5,
   currentPage: p,
   totalItems: countries.length
@@ -69,13 +69,46 @@
       </div>
     </div>
   </p-card>
-  }
+  } -->
   @if (countries == null) {
   <app-no-records-found></app-no-records-found>
   }
-  <nav class="flex flex-row">
+  <!-- <nav class="flex flex-row">
     <ul class="ml-auto text-xs">
       <pagination-controls (pageChange)="p = $event" class="p-paginator"></pagination-controls>
     </ul>
-  </nav>
+  </nav> -->
+  <div class="grid align-start justify-center shadow-2 py-2">
+    <div *ngFor="let country of pagedCountries" class="col-12 md:col-4 lg:col-3">
+      <p-card header="{{ country.Name }}" subheader="{{ country.Code }}">
+        <!-- <img [src]="'image/room.jpg'" alt="{{ city.Name }}" class="profile-image" /> -->
+        <ng-template pTemplate="footer">
+          <div class="grid justify-content-end gap-2">
+            <div class="col-auto">
+              <p-button icon="pi pi-file-edit" pTooltip="Edit Country" tooltipPosition="top"
+                (onClick)="onCountryEdit(country?.Id!)" [tooltipStyleClass]="'text-xs'" [rounded]=" true"
+                [text]="true"></p-button>
+            </div>
+            <div class="col-auto">
+              <ng-container *ngIf="country?.Is_Active; else inactive">
+                <p-button icon="pi pi-flag" pTooltip="Active Country" tooltipPosition="top"
+                  [tooltipStyleClass]="'text-xs'" [rounded]="true" [text]="true"></p-button>
+              </ng-container>
+              <ng-template #inactive>
+                <p-button icon="pi pi-flag-fill" severity="warn" pTooltip="In Active Country" tooltipPosition="top"
+                  [tooltipStyleClass]="'text-xs'" [rounded]="true" [text]="true"></p-button>
+              </ng-template>
+            </div>
+            <div class="col-auto">
+              <p-button icon="pi pi-trash" severity="danger" pTooltip="Delete Country" tooltipPosition="top"
+                [tooltipStyleClass]="'text-xs'" [rounded]="true" [text]="true"></p-button>
+            </div>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+  <p-paginator [rows]="rowsPerPage" [totalRecords]="countries.length" [pageLinkSize]="3" [styleClass]="'text-xs'"
+    (onPageChange)="onPageChange($event)">
+  </p-paginator>
 </div>

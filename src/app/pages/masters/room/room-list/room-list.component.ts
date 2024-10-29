@@ -17,6 +17,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { DialogModule } from 'primeng/dialog';
 import { ChangeRoomAvailabilityComponent } from '../../change-room-availability/change-room-availability.component';
 import { AvatarModule } from 'primeng/avatar';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component( {
   selector: 'app-room-list',
@@ -38,6 +39,7 @@ import { AvatarModule } from 'primeng/avatar';
     DialogModule,
     BadgeModule,
     AvatarModule,
+    PaginatorModule,
     ChangeRoomAvailabilityComponent
   ],
   templateUrl: './room-list.component.html',
@@ -85,5 +87,17 @@ export class RoomListComponent implements OnInit {
   }
   changeRoomAvailability () {
     this.display = true;
+  }
+  rowsPerPage = 10;
+  currentPage = 0;
+
+  // Getter for paged cities
+  get pagedRooms () {
+    const start = this.currentPage * this.rowsPerPage;
+    return this.rooms.slice( start, start + this.rowsPerPage );
+  }
+
+  onPageChange ( event: any ) {
+    this.currentPage = event.page;
   }
 }

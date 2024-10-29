@@ -69,3 +69,4 @@ export interface RoomDetails {
   Rent?: number;
 
 }
+export type DashboardFilter = 'Today' | 'Days7' | 'Days15' | 'Days30' | 'Custom';

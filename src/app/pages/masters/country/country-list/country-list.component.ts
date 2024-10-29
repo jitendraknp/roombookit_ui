@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component( {
   selector: 'app-country-list',
@@ -26,7 +27,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
     TooltipModule,
     AutoCompleteModule,
     CardModule,
-    FloatLabelModule
+    FloatLabelModule,
+    PaginatorModule,
   ],
   templateUrl: './country-list.component.html',
   styleUrl: './country-list.component.css',
@@ -62,5 +64,17 @@ export class CountryListComponent implements OnInit {
 
   onCountryEdit ( id: string ) {
     this.router.navigate( ['country/edit', id] );
+  }
+  rowsPerPage = 10;
+  currentPage = 0;
+
+  // Getter for paged cities
+  get pagedCountries () {
+    const start = this.currentPage * this.rowsPerPage;
+    return this.countries.slice( start, start + this.rowsPerPage );
+  }
+
+  onPageChange ( event: any ) {
+    this.currentPage = event.page;
   }
 }

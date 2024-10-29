@@ -20,7 +20,8 @@
   <div
     class="flex  sm:flex-row md:flex-row md:gap-2  gap-4 md:items-center justify-content-end  flex-grow-1 align-items-baseline">
     <ng-select [items]="dateFilterOptions" class="text-sm mb-2 md:mb-0" name="filterby" [clearable]="false"
-      [bindLabel]="'label'" [(ngModel)]="selectedFilter" notFoundText="No items found" placeholder="Filter by">
+      (change)="onFilterChange()" [bindLabel]="'label'" [(ngModel)]="selectedFilter" notFoundText="No items found"
+      placeholder="Filter by">
     </ng-select>
     <p-button icon="pi pi-calendar-plus" label="Advance Booking" size="small" [raised]="true" severity="secondary"
       (onClick)="onAdvanceBookingClicked()"></p-button>
@@ -29,7 +30,9 @@
 <div class="grid py-2">
   <div class="col">
     <p-card header="Total Booking">
-      <div class="p-card-subheader text-lg">{{ totalBookings }}</div>
+      <div class="p-card-subheader text-lg">
+        <p-tag severity="info" [styleClass]="'text-lg'">{{totalBookings}}</p-tag>
+      </div>
       <div class="p-card-content flex flex-row justify-between text-sm">
         <div class="invest-data">
           <div class="invest-data-amount g-2">
@@ -49,16 +52,22 @@
   </div>
   <div class="col">
     <p-card header="Rooms Available">
-      <div class="p-card-subheader text-lg">{{availableRooms}}</div>
+      <div class="p-card-subheader text-lg">
+        <p-tag severity="info" [styleClass]="'text-lg'">{{availableRooms}}</p-tag>
+      </div>
       <div class="p-card-content flex flex-row justify-between text-sm">
         <div class="invest-data">
           <div class="invest-data-amount g-2">
             <div class="invest-data-history">
-              <div class="title">Booked (M)</div>
-              <div class="amount">{{occupiedRooms}}</div>
+              <div class="title">Total</div>
+              <div class="amount">{{occupiedRooms+availableRooms}}</div>
             </div>
             <div class="invest-data-history">
               <div class="title">Booked (W)</div>
+              <div class="amount">{{occupiedRooms}}</div>
+            </div>
+            <div class="invest-data-history">
+              <div class="title">Booked (M)</div>
               <div class="amount">{{occupiedRooms}}</div>
             </div>
           </div>
@@ -69,17 +78,19 @@
   </div>
   <div class="col">
     <p-card header="Revenue">
-      <div class="p-card-subheader text-lg">11,230</div>
+      <div class="p-card-subheader text-lg">
+        <p-tag severity="info" [styleClass]="'text-lg'">{{totalRevenue | currency:'INR':'symbol':'1.2-2'}}</p-tag>
+      </div>
       <div class="p-card-content flex flex-row justify-between text-sm">
         <div class="invest-data">
           <div class="invest-data-amount g-2">
             <div class="invest-data-history">
               <div class="title">This Month</div>
-              <div class="amount">1913</div>
+              <div class="amount">{{monthlyRevenue | currency:'INR':'symbol':'1.2-2'}}</div>
             </div>
             <div class="invest-data-history">
               <div class="title">This Week</div>
-              <div class="amount">1125</div>
+              <div class="amount">{{weeklyRevenue | currency:'INR':'symbol':'1.2-2'}}</div>
             </div>
           </div>
           <div class="invest-data-ck"> </div>
@@ -91,68 +102,30 @@
 
 <div class="grid  py-2">
   <div class="col-12 md:col-6 lg:col-6 sm:col-12 xl:col-6">
-    <!-- <p-card>
-      <ng-template pTemplate="header">
-        <div class="flex flex-row justify-between p-2">
-          <p>Reservations</p>
-          <ng-select [items]="dateFilterOptions" class="text-sm ml-auto" name="filterby" [clearable]="false"
-            [bindLabel]="'label'" [(ngModel)]="selectedFilter" notFoundText="No items found" placeholder="Filter by">
-          </ng-select>
-        </div>
-      </ng-template>
-      <p-table [value]="guestTodayDetails" [paginator]="true" [rows]="5" [autoLayout]="true" [responsive]="true"
-        [showLoader]="true" [alwaysShowPaginator]="false">
-        <ng-template pTemplate="header">
-          <tr>
-            <th class="font-semibold text-sm">#</th>
-            <th class="font-semibold text-sm">Name</th>
-            <th class="font-semibold text-sm">Check-In</th>
-            <th class="font-semibold text-sm">Email</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-          <tr>
-            <td colspan="4" class="text-center text-red-600 font-semibold">{{noRecordsMessage}}</td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
-          <tr *ngIf="guestDetails.length > 0" class="text-xs">
-            <td class="text-xs">{{ rowIndex + 1}}</td>
-            <td class="text-xs">{{ rowData.FullName }}</td>
-            <td class="text-xs">
-              <p class="text-xs">
-                {{ rowData.CheckInDate }}
-              </p>
-              <p class="text-xs italic">
-                {{ rowData.CheckInTime }}
-              </p>
-            </td>
-            <td class="text-xs">{{ rowData.Email }}</td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </p-card> -->
     <p-card>
       <ng-template pTemplate="title">
-        <p>Advance Bookings</p>
+        <p>Upcoming Bookings</p>
       </ng-template>
       <ng-template pTemplate="content">
-        <p-table [value]="advanceBookings" [paginator]="true" [rows]="5" [autoLayout]="true" [responsive]="true"
-          [scrollable]="true" scrollHeight="400px" [showLoader]="true" [rowHover]="true" [showLoader]="true"
-          [alwaysShowPaginator]="false">
+        <p-table [value]="advanceBookings" [paginator]="true" [rows]="5" [autoLayout]="true" [responsive]="true" #dt2
+          [globalFilterFields]="['FullName', 'CheckInDate']" [scrollable]="true" scrollHeight="400px"
+          [showLoader]="true" [rowHover]="true" [showLoader]="true" [alwaysShowPaginator]="false">
+
           <ng-template pTemplate="header">
             <tr>
               <th class="text-sm">#</th>
               <th class="text-sm">Name</th>
-              <th class="text-sm">Check In Date</th>
+              <th class="text-sm" pSortableColumn="CheckInDate">Check In<p-sortIcon size="small"
+                  [field]="'CheckInDate'"></p-sortIcon></th>
               <th class="text-sm">Booking Date</th>
               <th class="text-sm">Status</th>
               <th class="font-semibold text-sm">Action</th>
             </tr>
+
           </ng-template>
           <ng-template pTemplate="emptymessage">
             <tr>
-              <td colspan="6" class="text-center text-red-600 font-semibold">{{noRecordsMessage}}</td>
+              <td colspan="7" class="text-center text-red-600 font-semibold">{{noRecordsMessage}}</td>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
@@ -164,7 +137,13 @@
               </td>
               <td>{{ rowData.BookingDate }}</td>
               <td>
-                <p-tag [value]="rowData.Status" severity="info" *ngIf="rowData.Status =='Booked'"></p-tag>
+                <ng-container *ngIf="rowData.Status =='Booked'">
+                  <p-tag [value]="rowData.Status" severity="info"></p-tag>
+                </ng-container>
+                <ng-container *ngIf="rowData.Status !='Booked'">
+                  <p-tag #other [value]="rowData.Status" severity="warn"></p-tag>
+                </ng-container>
+
               </td>
               <td>
                 <p-menu #actionMenu [model]="actionItems" [popup]="true" appendTo="body"
@@ -181,7 +160,7 @@
   <div class="col-12 md:col-6 lg:col-6 sm:col-12 xl:col-6">
     <p-card>
       <ng-template pTemplate="title">
-        <p>Booking List</p>
+        <p>Guest List</p>
       </ng-template>
       <ng-template pTemplate="subtitle">
         <p class="text-xs">Guest(s) on {{ currentDate | date:'fullDate' }}</p>

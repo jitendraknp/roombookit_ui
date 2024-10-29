@@ -10,7 +10,7 @@ import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { DashboardService } from '../../_services/dashboard.service';
 import { InfoDisplayComponent } from '../../shared/info-display/info-display.component';
-import { DashboardGuestDetails } from '../../models/guest';
+import { DashboardFilter, DashboardGuestDetails } from '../../models/guest';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
@@ -28,29 +28,11 @@ import { MenuItem } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
 import { TagModule } from 'primeng/tag';
 import { UtilsService } from '../../_helpers/utils.service';
-interface Room {
-  id: number;
-  type: string;
-  price: number;
-  available: boolean;
-}
-interface RoomN {
-  id?: number;
-  type?: string;
-  price?: number;
-  totalRooms?: number;
-  availableRooms?: number;
-}
-interface ReservationData {
-  date?: string; // Date in YYYY-MM-DD format
-  totalReservations?: number;
-}
-interface Booking {
-  roomId?: number;
-  guestName?: string;
-  checkInDate?: Date;
-  checkOutDate?: Date;
-}
+import { InputTextModule } from 'primeng/inputtext';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+
+
 @Component( {
   selector: 'app-dashboard',
   standalone: true,
@@ -77,13 +59,68 @@ interface Booking {
     AdvanceBookingComponent,
     BadgeModule,
     MenuModule,
-    TagModule
+    TagModule,
+    InputTextModule,
+    IconFieldModule,
+    InputIconModule,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
   encapsulation: ViewEncapsulation.None
 } )
 export class DashboardComponent implements OnInit {
+  onFilterChange () {
+
+    let status: DashboardFilter = 'Today';
+    if ( this.selectedFilter.value == 'last7days' ) {
+      status = 'Days7';
+    }
+    if ( this.selectedFilter.value == 'Today' ) {
+      status = 'Today';
+    }
+    if ( this.selectedFilter.value == 'last15days' ) {
+      status = 'Days15';
+    }
+    if ( this.selectedFilter.value == 'last30days' ) {
+      status = 'Days30';
+    }
+    forkJoin( [
+      this.dashboardService.getDashboardData( status ),
+      this.dashboardService.getGuestsData( this.pageNumber, this.pageSize ),
+      this.bookingService.getAdvanceBooking()
+
+    ] ).subscribe( {
+      next: ( [dashboardData, guestsData, advanceBookingData] ) => {
+        this.totalBookings = dashboardData.Data?.TotalBookings?.Total;
+        // this.weeklyBookings = dashboardData.Data?.TotalBookings?.Weekly == null ? 0 : dashboardData.Data?.TotalBookings?.Weekly;
+        this.weeklyBookings = dashboardData.Data?.TotalBookings?.CurrentWeek == null ? 0 : dashboardData.Data?.TotalBookings?.CurrentWeek;
+        this.monthlyBookings = dashboardData.Data?.TotalBookings?.Monthly == null ? 0 : dashboardData.Data?.TotalBookings?.Monthly;
+
+        this.todaysCheckIn = dashboardData.Data?.TotalBookings?.TodaysCheckIn;
+        this.todaysCheckOut = dashboardData.Data?.TotalBookings?.TodaysCheckOut;
+        this.availableRooms = dashboardData.Data?.RoomsAvailability?.AvailableRooms;
+        this.occupiedRooms = dashboardData.Data?.RoomsAvailability?.OccupiedRooms;
+
+        this.totalRevenue = dashboardData.Data?.DashboardRevenue?.Total;
+
+        this.weeklyRevenue = dashboardData.Data?.DashboardRevenue?.Weekly;
+        this.monthlyRevenue = dashboardData.Data?.DashboardRevenue?.Monthly;
+        this.todayRevenue = dashboardData.Data?.DashboardRevenue?.Today;
+
+        this.guestDetails = guestsData.Data as DashboardGuestDetails[];
+        this.pageNumber = guestsData.PageNumber;
+        this.pageSize = guestsData.PageSize;
+        this.totalPages = guestsData.TotalPages;
+        this.totalRecords = guestsData.TotalRecords;
+        this.guestTodayDetails = this.guestDetails.filter( x => x.IsTodayCheckIn );
+        this.advanceBookings = advanceBookingData.Data as AdvanceBooking[];
+      },
+      error: ( err ) => {
+        console.error( 'Error loading data:', err );
+      }
+    } );
+  }
+  globalFilter: string = '';
   currentDate!: Date;
   totalBookings: number = 0;
   weeklyBookings: number | null = 0;
@@ -92,6 +129,10 @@ export class DashboardComponent implements OnInit {
   todaysCheckOut: number = 0;
   availableRooms: number = 0;
   occupiedRooms: number = 0;
+  totalRevenue: number = 0;
+  monthlyRevenue: number = 0;
+  todayRevenue: number = 0;
+  weeklyRevenue: number = 0;
   pageNumber: number = 1;
   pageSize: number = 5;
   totalPages: number = 0;
@@ -111,21 +152,10 @@ export class DashboardComponent implements OnInit {
   noRecordsMessage = 'No record exists';
   events: string[] = [];
   opened: boolean = true;
-  rooms: Room[] = [
-    { id: 1, type: 'Single Room', price: 100, available: true },
-    { id: 2, type: 'Double Room', price: 150, available: false },
-    { id: 3, type: 'Suite', price: 250, available: true },
-    { id: 4, type: 'Deluxe Suite', price: 300, available: true },
-  ];
-  roomChartData = {
-    labels: ['Available', 'Booked'],
-    datasets: [
-      {
-        data: [this.rooms.filter( room => room.available ).length, this.rooms.filter( room => !room.available ).length],
-        backgroundColor: ['#4caf50', '#f44336']
-      }
-    ]
-  };
+
+  applyFilter ( filterValue: any ) {
+    this.globalFilter = filterValue;
+  }
   constructor(
     private _formBuilder: FormBuilder,
     private dashboardService: DashboardService,
@@ -185,20 +215,30 @@ export class DashboardComponent implements OnInit {
         // command: () => this.viewDetails()
       }
     ];
+    let defaultFilter: DashboardFilter = 'Today';
     forkJoin( [
-      this.dashboardService.getDashboardData(),
+      this.dashboardService.getDashboardData( defaultFilter ),
       this.dashboardService.getGuestsData( this.pageNumber, this.pageSize ),
       this.bookingService.getAdvanceBooking()
 
     ] ).subscribe( {
       next: ( [dashboardData, guestsData, advanceBookingData] ) => {
         this.totalBookings = dashboardData.Data?.TotalBookings?.Total;
-        this.weeklyBookings = dashboardData.Data?.TotalBookings?.Weekly == null ? 0 : dashboardData.Data?.TotalBookings?.Weekly;
+        // this.weeklyBookings = dashboardData.Data?.TotalBookings?.Weekly == null ? 0 : dashboardData.Data?.TotalBookings?.Weekly;
+        this.weeklyBookings = dashboardData.Data?.TotalBookings?.CurrentWeek == null ? 0 : dashboardData.Data?.TotalBookings?.CurrentWeek;
         this.monthlyBookings = dashboardData.Data?.TotalBookings?.Monthly == null ? 0 : dashboardData.Data?.TotalBookings?.Monthly;
+
         this.todaysCheckIn = dashboardData.Data?.TotalBookings?.TodaysCheckIn;
         this.todaysCheckOut = dashboardData.Data?.TotalBookings?.TodaysCheckOut;
-        this.availableRooms = dashboardData.Data?.TotalBookings?.AvailableRooms;
-        this.occupiedRooms = dashboardData.Data?.TotalBookings?.OccupiedRooms;
+        this.availableRooms = dashboardData.Data?.RoomsAvailability?.AvailableRooms;
+        this.occupiedRooms = dashboardData.Data?.RoomsAvailability?.OccupiedRooms;
+
+        this.totalRevenue = dashboardData.Data?.DashboardRevenue?.Total;
+
+        this.weeklyRevenue = dashboardData.Data?.DashboardRevenue?.Weekly;
+        this.monthlyRevenue = dashboardData.Data?.DashboardRevenue?.Monthly;
+        this.todayRevenue = dashboardData.Data?.DashboardRevenue?.Today;
+
         this.guestDetails = guestsData.Data as DashboardGuestDetails[];
         this.pageNumber = guestsData.PageNumber;
         this.pageSize = guestsData.PageSize;
@@ -214,52 +254,6 @@ export class DashboardComponent implements OnInit {
 
   }
   options1: any;
-  roomsN: RoomN[] = [
-    { id: 1, type: 'Single Room', price: 100, totalRooms: 10, availableRooms: 10 },
-    { id: 2, type: 'Double Room', price: 150, totalRooms: 5, availableRooms: 3 },
-    { id: 3, type: 'Suite', price: 250, totalRooms: 3, availableRooms: 0 },
-    { id: 4, type: 'Deluxe Suite', price: 300, totalRooms: 2, availableRooms: 1 },
-  ];
-
-  bookings: Booking[] = [];
-  reservationData: ReservationData[] = [
-    { date: '2024-10-01', totalReservations: 2 },
-    { date: '2024-10-02', totalReservations: 4 },
-    { date: '2024-10-03', totalReservations: 3 },
-    { date: '2024-10-04', totalReservations: 5 },
-    { date: '2024-10-05', totalReservations: 6 },
-    // Add more sample data
-  ];
-
-  get reservationChartData () {
-    return {
-      labels: this.reservationData.map( data => data.date ),
-      datasets: [
-        {
-          label: 'Total Reservations',
-          data: this.reservationData.map( data => data.totalReservations ),
-          fill: true,
-          backgroundColor: 'rgba(66, 165, 245, 0.2)',
-          borderColor: '#42A5F5',
-          tension: 0.1
-        }
-      ]
-    };
-  }
-  get roomOccupancyData () {
-    const occupiedRooms = this.roomsN.map( room => room.totalRooms! - room.availableRooms! );
-    const roomTypes = this.rooms.map( room => room.type );
-
-    return {
-      labels: roomTypes,
-      datasets: [{
-        label: 'Room Occupancy',
-        data: occupiedRooms,
-        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
-      }]
-    };
-  }
-
   roomTypes: string[] = [];
   get availableRoomsChartData () {
     return {
@@ -277,8 +271,9 @@ export class DashboardComponent implements OnInit {
   }
   selectedFilter = { label: 'Today', value: 'today' };
   dateFilterOptions: any[] = [
-    { label: 'Today', value: 'today' },
+    { label: 'Today', value: 'Today' },
     { label: 'Last 7 Days', value: 'last7days' },
+    { label: 'Last 15 Days', value: 'last15days' },
     { label: 'Last 30 Days', value: 'last30days' },
     { label: 'Custom Date Range', value: 'custom' }
   ];

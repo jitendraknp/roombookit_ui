@@ -25,7 +25,7 @@
     </div>
   </div>
 
-  <div *ngIf="rooms && rooms.length > 0">
+  <!-- <div *ngIf="rooms && rooms.length > 0">
     @for (r of rooms | paginate: { itemsPerPage: 5,
     currentPage: p ,totalItems: rooms.length}; track $index) {
     <p-card class="p-card  my-2 flex">
@@ -108,7 +108,62 @@
     <ul class="ml-auto text-xs">
       <pagination-controls (pageChange)="p = $event" class="p-paginator"></pagination-controls>
     </ul>
-  </nav>
+  </nav> -->
+  <div class="grid align-start justify-center shadow-2 py-2">
+    <div *ngFor="let room of pagedRooms" class="col-12 md:col-4 lg:col-3">
+      <p-card header="{{ room.RoomNo }}" subheader="{{ room.Type }}">
+        <ng-template pTemplate="body">
+          <div class="grid">
+            <div class="col text-sm">
+              <p>Floor</p>
+              <p class="py-2">{{room.FloorNo}}</p>
+            </div>
+            <div class="col text-sm">
+              <p>Capacity</p>
+              <p class="py-2">{{room.Capacity}}</p>
+            </div>
+            <div class="col text-sm">
+              <p>Status</p>
+              <ng-container *ngIf="!room?.AvailablityStatus?.IsAvailable; else inactive">
+                <p-button icon="pi pi-times-circle" severity="warn" pTooltip="Booked" tooltipPosition="top"
+                  [tooltipStyleClass]="'text-xs'" [rounded]="true" [text]="true"></p-button>
+              </ng-container>
+              <ng-template #inactive>
+                <p-button icon="pi pi-check-circle" pTooltip="Available" tooltipPosition="top"
+                  [tooltipStyleClass]="'text-xs'" [rounded]="true" [text]="true"></p-button>
+              </ng-template>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+          <div class="grid justify-content-end gap-2">
+            <div class="col-auto">
+              <p-button icon="pi pi-file-edit" pTooltip="Edit Room" tooltipPosition="top"
+                (onClick)="onRoomEdit(room?.Id!)" [tooltipStyleClass]="'text-xs'" [rounded]=" true"
+                [text]="true"></p-button>
+            </div>
+            <div class="col-auto">
+              <ng-container *ngIf="room?.IsActive; else inactive">
+                <p-button icon="pi pi-flag" pTooltip="Active Room" tooltipPosition="top" [tooltipStyleClass]="'text-xs'"
+                  [rounded]="true" [text]="true"></p-button>
+              </ng-container>
+              <ng-template #inactive>
+                <p-button icon="pi pi-flag-fill" severity="warn" pTooltip="In Active Room" tooltipPosition="top"
+                  [tooltipStyleClass]="'text-xs'" [rounded]="true" [text]="true"></p-button>
+              </ng-template>
+            </div>
+            <div class="col-auto">
+              <p-button icon="pi pi-trash" severity="danger" pTooltip="Delete Room" tooltipPosition="top"
+                [tooltipStyleClass]="'text-xs'" [rounded]="true" [text]="true"></p-button>
+            </div>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+  <p-paginator [rows]="rowsPerPage" [totalRecords]="rooms.length" [pageLinkSize]="3" [styleClass]="'text-xs'"
+    (onPageChange)="onPageChange($event)">
+  </p-paginator>
 </div>
 <div class="card">
   <p-dialog [(visible)]="display" appendTo="body" [closable]="true" [modal]="true"

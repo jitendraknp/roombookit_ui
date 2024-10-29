@@ -85,9 +85,6 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     Company: new FormControl<string>( '' ),
     CompanyGSTIN: new FormControl<string>( '' ),
     CompanyAddress: new FormControl<string>( '' ),
-    Comments: new FormControl<string>( '' ),
-    Print_CD: new FormControl<boolean>( true ),
-    Print_Comments: new FormControl<boolean>( true ),
     FirstName: new FormControl<string>( '', [Validators.required, Validators.minLength( 3 )] ),
     LastName: new FormControl<string>( '', [Validators.required, Validators.minLength( 3 )] ),
     MobileNo: new FormControl( '', [Validators.required, Validators.minLength( 10 )] ),
@@ -98,10 +95,11 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     StateId: new FormControl( { value: "", disabled: true } ),
     CountryId: new FormControl( { value: "", disabled: true } ),
     PinCode: new FormControl( '' ),
-    CheckInDate: new FormControl<string>( '', [Validators.required,
-    Validators.pattern( /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4} ([01][0-9]|1[0-2]):([0-5][0-9]) (AM|PM)$/ )] ),
-    CheckOutDate: new FormControl<string>( '', [Validators.required,
-    Validators.pattern( /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4} ([01][0-9]|1[0-2]):([0-5][0-9]) (AM|PM)$/ )] ),
+    CheckInDate: new FormControl( null, [Validators.required] ),
+    CheckOutDate: new FormControl( null, [Validators.required] ),
+    Comments: new FormControl<string>( '' ),
+    Print_CD: new FormControl<boolean>( true ),
+    Print_Comments: new FormControl<boolean>( true ),
     RoomNoId: new FormControl( [] ),
     RoomId: new FormControl( [], [Validators.required] ),
     NoOfGuests: new FormControl<number>( 0 ),
@@ -187,9 +185,6 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
       this.newGuestForm.controls.InvoiceNo.enable();
     else
       this.newGuestForm.controls.InvoiceNo.disable();
-  }
-
-  saveGuest () {
   }
 
   confirm ( event: any ) {
@@ -290,78 +285,6 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     }
     return invalidControls;
   }
-  submitGuest () {
-    const siblingDetails = this.moreGuestForm.get( 'guests' ) as FormArray;
-    let guestSiblings: GuestSiblingDetails[] = [];
-    for ( var c of siblingDetails.controls ) {
-      guestSiblings.push( {
-        FirstName: c.get( "FirstName" )?.value!,
-        LastName: c.get( "LastName" )?.value!,
-        Gender: c.get( "Gender" )?.value!,
-        Age: c.get( "Age" )?.value!,
-      } );
-    }
-
-    let guestDetail: NewGuestDetails = {
-      FirstName: this.newGuestForm.controls.FirstName.value!,
-      LastName: this.newGuestForm.controls.LastName.value!,
-      Gender: this.newGuestForm.controls.Gender.value!,
-      PinCode: this.newGuestForm.controls.PinCode.value!,
-      EmailId: this.newGuestForm.controls.EmailId.value!,
-      MobileNo: this.newGuestForm.controls.MobileNo.value!,
-      Address: this.newGuestForm.controls.Address.value!,
-      Company: this.newGuestForm.controls.Company.value!,
-      GSTIN: this.newGuestForm.controls.CompanyGSTIN.value!,
-      CompanyAddress: this.newGuestForm.controls.CompanyAddress.value!,
-      Comments: this.newGuestForm.controls.Comments.value!,
-      Print_CD: this.newGuestForm.controls.Print_CD.value!,
-      Print_Comments: this.newGuestForm.controls.Print_Comments.value!,
-      // HotelId: "5c953e70-73fe-46cf-0267-08dcb3aa275e",
-      HotelId: this.hotelId,
-      CityId: this.newGuestForm.controls.CityId.value!,
-      StateId: this.newGuestForm.controls.StateId.value!,
-      CountryId: this.newGuestForm.controls.CountryId.value!,
-      AmountPaid: this.newGuestForm.controls.AmountPaid.value!,
-      AmountToPay: this.newGuestForm.controls.ExcGST.value!,
-      BalanceAmount: this.newGuestForm.controls.BalanceAmount.value!,
-      CheckInDate: this.datePipe.transform( this.newGuestForm.controls.CheckInDate.value!, 'yyyy-MM-dd hh:mm:ss a' )!.toString(),
-      CheckOutDate: this.datePipe.transform( this.newGuestForm.controls.CheckOutDate.value!, 'yyyy-MM-dd hh:mm:ss a' )!.toString(),
-      Discount: this.newGuestForm.controls.Discount.value!,
-      ExcGST: this.newGuestForm.controls.ExcGST.value!,
-      GSTPercentage: this.newGuestForm.controls.GSTPercentage.value!,
-      IncGST: this.newGuestForm.controls.IncGST.value!,
-      NoOfAdults: this.newGuestForm.controls.NoOfAdults.value!,
-      NoOfChildren: this.newGuestForm.controls.NoOfChildren.value!,
-      NoOfDays: this.newGuestForm.controls.NoOfDays.value!,
-      NoOfGuests: this.newGuestForm.controls.NoOfGuests.value!,
-      PaymentMode: String( this.newGuestForm.controls.PaymentMode.value! ),
-      RatePerNight: this.newGuestForm.controls.RatePerNight.value!,
-      // RoomNoId: [this.newGuestForm.controls.RoomNoId.value!],
-      IdType: this.newGuestForm.controls.IdType.value!,
-      IdNumber: this.newGuestForm.controls.IdNumber.value!,
-      ImageUrl: this.newGuestForm.controls.ImageUrl.value!,
-      IsFrontSide: true,
-      ManualInvoice: Boolean( this.newGuestForm.controls.ManualInvoice.value ),
-      TransactionNo: this.newGuestForm.controls.TransactionNo.value!,
-      InvoiceNo: this.newGuestForm.controls.InvoiceNo.value!,
-      // GuestId: this.newGuestForm.controls.PaymentMode.value!,
-      GuestSiblingDetail: guestSiblings
-    };
-    this.guestService.saveGuest( guestDetail ).subscribe( {
-      next: ( data ) => {
-        this.messageService.add( { severity: 'success', summary: 'Saved', detail: 'Guest saved successfully' } );
-        this.savedGuest.push( {
-          Id: data.Data.Id,
-          FL_Name: guestDetail.FirstName + ' ' + guestDetail.LastName
-        } );
-        console.log( 'Guest saved successfully', data );
-        // this.router.navigate( ['admin/guest'] );
-      },
-      error: ( error ) => {
-        console.error( 'Error saving guest', error );
-      }
-    } );
-  }
 
   onClose () {
     this.guestService.getAllGuest().subscribe( {
@@ -382,11 +305,13 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
       'MobileNo',
       'Address',
       'CityId',
+      'Gender'
     ] );
     if ( invalidControls.length > 0 ) {
       this.messageService.add( { severity: 'error', summary: 'Required Fields', detail: invalidControls.join( ', ' ) } );
       return;
     }
+    console.log( this.newGuestForm.controls.Gender.value );
     const guestDetails: GuestDetails = {
       Company: this.newGuestForm.controls.Company.value!,
       CompanyAddress: this.newGuestForm.controls.CompanyAddress.value!,
@@ -403,7 +328,7 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
       Print_CD: this.newGuestForm.controls.Print_CD.value!,
       Comment: this.newGuestForm.controls.Comments.value!,
     };
-    console.log( guestDetails );
+
     this.guestService.saveGuestDetails( guestDetails ).subscribe( {
       next: ( response ) => {
         console.log( response );
@@ -419,7 +344,7 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
         console.log( err );
       },
       complete: () => {
-        console.log( this.newGuestForm.controls.GuestId.value );
+
       }
     } );
   }
@@ -433,8 +358,8 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     }
     const bookingDetails: BookingDetails = {
       GuestId: this.newGuestForm.controls.GuestId.value!,
-      CheckInDate: this.newGuestForm.controls.CheckInDate.value!,
-      CheckOutDate: this.newGuestForm.controls.CheckOutDate.value!,
+      CheckInDate: this.datePipe.transform( this.newGuestForm.controls.CheckInDate?.value!, 'dd/MM/yyyy hh:mm a' )!.toString(),
+      CheckOutDate: this.datePipe.transform( this.newGuestForm.controls.CheckOutDate?.value!, 'dd/MM/yyyy hh:mm a' )!.toString(),
       Rooms: this.newGuestForm.controls.RoomId.value!,
       RatePerNight: this.newGuestForm.controls.RatePerNight.value!,
       TotalAmount: this.newGuestForm.controls.TotalAmount.value!,

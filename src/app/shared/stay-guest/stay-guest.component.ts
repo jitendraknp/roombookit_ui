@@ -35,6 +35,7 @@ import { FluidModule } from 'primeng/fluid';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { DatePickerModule } from 'primeng/datepicker';
 const ONE_DAY = 24 * 60 * 60 * 1000;
 
 @Component( {
@@ -55,15 +56,22 @@ const ONE_DAY = 24 * 60 * 60 * 1000;
     FluidModule,
     InputTextModule,
     InputNumberModule,
-    CardModule
+    CardModule,
+    DatePickerModule
   ],
   templateUrl: './stay-guest.component.html',
   styleUrls: ['./stay-guest.component.css'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DatePipe, MessageService, provideNgxMask(), { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { dateFormat: 'shortDate' } }]
+  providers: [DatePipe, MessageService, provideNgxMask(), { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { dateFormat: 'dd/MM/yyyy HH:mm a' } }]
 } )
 export class StayGuestComponent implements OnInit {
+  onCheckInDateSelect ( arg0: Date ) {
+    this.form.controls["CheckInDate"].patchValue( this.datePipe.transform( this.form.controls["CheckInDate"].value!, 'dd/MM/yyyy hh:mm a' )!.toString() );
+  }
+  onCheckOutDateSelect ( arg0: Date ) {
+    this.form.controls["CheckOutDate"].patchValue( this.datePipe.transform( this.form.controls["CheckOutDate"].value!, 'dd/MM/yyyy hh:mm a' )!.toString() );
+  }
   @Input() guestList: GuestBaseEntity[] = [];
   @Input() public form!: FormGroup;
   @Input() editGuest: boolean = false;
@@ -71,10 +79,8 @@ export class StayGuestComponent implements OnInit {
   selectedRooms: SelectedRoomsDetail[] = [];
   // @Input() public form!= FormGroup;
   stayGuestForm = new FormGroup( {
-    CheckInDate: new FormControl<string>( '', [Validators.required,
-    Validators.pattern( /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4} ([01][0-9]|1[0-2]):([0-5][0-9]) (AM|PM)$/ )] ),
-    CheckOutDate: new FormControl<string>( '', [Validators.required,
-    Validators.pattern( /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4} ([01][0-9]|1[0-2]):([0-5][0-9]) (AM|PM)$/ )] ),
+    CheckInDate: new FormControl( null, [Validators.required] ),
+    CheckOutDate: new FormControl( null, [Validators.required] ),
     RoomNoId: new FormControl( [] ),
     NoOfChildren: new FormControl<number>( 0, [Validators.required] ),
     NoOfAdults: new FormControl<number>( 0, [Validators.required] ),
@@ -125,49 +131,28 @@ export class StayGuestComponent implements OnInit {
     }
     return null;
   }
-  onChange ( $event: any ) {
-
+  getCheckinDateInputStyleClass () {
+    const control = this.form.get( 'CheckInDate' );
+    if ( control?.invalid ) {
+      return 'ng-invalid text-sm';
+    }
+    else {
+      return 'ng-valid text-sm';
+    }
+  }
+  getCheckoutDateInputStyleClass () {
+    const control = this.form.get( 'CheckOutDate' );
+    if ( control?.invalid ) {
+      return 'ng-invalid text-sm';
+    }
+    else {
+      return 'ng-valid text-sm';
+    }
   }
   get CheckInDate () {
     return this.form.get( 'CheckInDate' );
   }
-  validateDateTime () {
-    return ( control: any ) => {
-      const dateTimeStr = control.value;
 
-      // Check if the input matches the required format
-      if ( !dateTimeStr ) {
-        return null; // Allow empty string for required validation
-      }
-
-      const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{2} ([01][0-9]|1[0-2]):([0-5][0-9]) (AM|PM)$/i;
-      if ( !regex.test( dateTimeStr ) ) {
-        return { invalidDateTime: true };
-      }
-
-      // Split date and time
-      const parts = dateTimeStr.split( ' ' );
-      const datePart = parts[0].split( '/' );
-      const timePart = parts[1].split( ':' );
-
-      const month = parseInt( datePart[0], 10 );
-      const day = parseInt( datePart[1], 10 );
-      const year = parseInt( datePart[2], 10 );
-      const hour = parseInt( timePart[0], 10 );
-      const minute = parseInt( timePart[1], 10 );
-      const amPm = parts[2];
-
-      // Create a date object
-      const date = new Date( year, month - 1, day, amPm === 'PM' ? hour + 12 : hour, minute );
-
-      // Validate that the constructed date matches the input
-      if ( date.getFullYear() === year && date.getMonth() + 1 === month && date.getDate() === day ) {
-        return null; // Valid date
-      } else {
-        return { invalidDateTime: true }; // Invalid date
-      }
-    };
-  }
   onRoomChange ( $event: any ) {
 
     if ( $event == '' || $event == undefined ) {
@@ -188,13 +173,7 @@ export class StayGuestComponent implements OnInit {
       this.messageService.add( { severity: 'error', summary: 'Required Fields', detail: invalidControls.join( ', ' ) } );
       return;
     }
-    const isDateValid = this.dateRangeValidator( this.form );
 
-    if ( isDateValid?.['invalidDateRange'] ) {
-      this.messageService.add( { severity: 'error', summary: 'Date Range Error', detail: 'Start date must be before the end date' } );
-      this.form.controls["RoomId"].patchValue( null );
-      return;
-    }
     if ( !this.form.controls["CheckInDate"].valid && !this.form.controls["CheckOutDate"].valid ) {
       this.messageService.add( { severity: 'error', summary: 'Dates', detail: 'Please enter check in / out date' } );
       this.form.controls["RoomId"].patchValue( null );
@@ -216,12 +195,13 @@ export class StayGuestComponent implements OnInit {
     let roomRentRequest: RoomRentRequest = {
       Id: roomIds,
       CheckInDate: this.form.controls["CheckInDate"].value!,
-      CheckOutDate: this.form.controls["CheckOutDate"].value!
+      CheckOutDate: this.form.controls["CheckOutDate"].value!,
     };
     this.selectedRooms = [];
     this.roomService.getRoomRent( roomRentRequest ).subscribe( {
       next: ( value: any ) => {
         if ( value.StatusCode === 200 ) {
+
           this.selectedRooms = value.Data.BreakUps as SelectedRoomsDetail[];
           this.form.controls["RoomId"].patchValue( this.selectedRooms.map( room => room.Id ) );
           this.form.controls["RatePerNight"].patchValue( value.Data.Rent );
@@ -241,9 +221,9 @@ export class StayGuestComponent implements OnInit {
         } else {
           // this.toastrService.error( value.Message );
           this.messageService.add( { severity: 'error', summary: 'Error', detail: value.Message } );
+          this.form.controls["RoomId"].patchValue( null );
         }
         this.cdr.detectChanges();
-
       },
       error: ( error: any ) => {
         this.cdr.detectChanges();
@@ -355,8 +335,8 @@ export class StayGuestComponent implements OnInit {
 
   submitGuestStay () {
     let guestStayDetail: GuestStayDetail = {
-      CheckInDate: this.datePipe.transform( this.stayGuestForm.controls.CheckInDate.value!, 'yyyy-MM-dd hh:mm a' )!.toString(),
-      CheckOutDate: this.datePipe.transform( this.stayGuestForm.controls.CheckOutDate.value!, 'yyyy-MM-dd hh:mm a' )!.toString(),
+      CheckInDate: this.stayGuestForm.controls.CheckInDate.value!,
+      CheckOutDate: this.stayGuestForm.controls.CheckOutDate.value!,
       // RoomTypeId: Number( this.rooms.find( x => x.Id == this.stayGuestForm.controls.RoomNoId.value )?.Type ),
       RoomNoId: this.stayGuestForm.controls.RoomNoId.value!,
       NoOfGuests: this.stayGuestForm.controls.NoOfGuests.value ?? 0,
