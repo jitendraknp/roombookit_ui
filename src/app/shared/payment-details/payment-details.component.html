@@ -1,4 +1,6 @@
-<form class="grid" [formGroup]="form">
+<form class="grid" [formGroup]="form" #paymentDate>
+  <p-toast position="top-center" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'"
+    [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'" />
   <div class="col lg:col-6 xl:col-6 md:col-6">
     <label for="gstRate" class="form-label">GST Rate</label>
     <ng-select appearance="outline" placeholder="Select GST Rate" id="gstRate" [formControl]="gstControl"
@@ -33,7 +35,7 @@
   </div>
 
   <div class="col-12 lg:col-6 xl:col-6 md:col-6">
-    <label for="advancePayment" class="form-label">Amount Paid</label>
+    <label for="advancePayment" class="form-label">Amount Received</label>
     <p-inputnumber inputId="integeronly" mode="currency" currency="INR" currencyDisplay="symbol" locale="en-IN"
       size="small" fluid="true" id="advancePayment" formControlName="AmountPaid" placeholder="Amount Paid" />
   </div>
@@ -41,7 +43,7 @@
   <div class="col-12 lg:col-6 xl:col-6 md:col-6">
     <label for="balancePayment" class="form-label">Balance </label>
     <p-inputnumber inputId="integeronly" mode="currency" currency="INR" currencyDisplay="symbol" locale="en-IN"
-      size="small" fluid="true" id="balancePayment" formControlName="BalanceAmount" placeholder="Balance Payment" />
+      [size]="'small'" fluid="true" id="balancePayment" formControlName="BalanceAmount" placeholder="Balance Payment" />
     <p class="text-xs font-italic text-gray-400 font-semibold text-end">Total-(Advance+Discount)</p>
   </div>
   <div class="col-12 lg:col-6 xl:col-6 md:col-6">
@@ -49,7 +51,39 @@
     <input type="text" pInputText size="small" fluid="true" id="transactionNo" formControlName="TransactionNo"
       placeholder="Transaction No" />
   </div>
-  <div class="flex flex-row gap-2 px-2">
+  <div class="col-12 lg:col-6 xl:col-6 md:col-6">
+    <label for="paymentDate" class="form-label">Payment Date</label>
+    <p-datepicker formControlName="PaymentDate" size="small" [showTime]="true" fluid="true" [dateFormat]="'dd/mm/yy'"
+      [showIcon]="true" [showOnFocus]="true" [required]="true" [showOtherMonths]="true" [autofocus]="false"
+      [inputStyle]="{'line-height':'12px'}" [placeholder]="'Payment Date'" [hourFormat]="'12'" appendTo="paymentDate"
+      [monthNavigator]="true" aria-describedby="checkoutdate-help" />
+  </div>
+  <div class="col-12 lg:col-6 xl:col-6 md:col-6" *ngIf="payments">
+    <label class="form-label text-green-700">Payment History</label>
+    <p-table [value]="payments" styleClass="p-datatable-striped" selectionMode="single">
+      <!-- <ng-template pTemplate="caption">
+        <div class="table-caption">
+          <h3>Payment History</h3>
+          <p>Total Bookings: {{ payments.length }}</p>
+        </div>
+      </ng-template> -->
+      <ng-template pTemplate="header">
+        <tr class="text-sm font-semibold">
+          <th class="text-xs font-semibold">#</th>
+          <th class="text-xs font-semibold">Date</th>
+          <th class="text-xs  font-semibold">Amount</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-payment let-i="rowIndex">
+        <tr>
+          <td class="text-xs  font-normal">{{ i + 1 }}</td>
+          <td class="text-xs  font-normal">{{ payment.PaymentDate }}</td>
+          <td class="text-xs  font-normal">{{ payment.Amount | currency:'INR':'symbol':'1.1-1' }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div class="flex flex-row gap-2 px-2" *ngIf="showGSTDetailInputs">
     <div class="flex-1">
       <label for="CGST" class="form-label">CGST (&#8377;)</label>
       <p-inputnumber inputId="integeronly" mode="currency" currency="INR" currencyDisplay="symbol" locale="en-IN"

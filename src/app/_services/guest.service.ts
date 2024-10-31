@@ -65,13 +65,14 @@ export class GuestService {
   saveIdentificationDetails ( data: IdentificationDetail ): Observable<ApiResponse> {
     return this.httpClient.post<ApiResponse>( `${ URL }save/identification-details`, data, this.httpOptions );
   }
-  generateInvoice ( id: string ) {
-    return this.httpClient.get( `${ URL }generate-invoice/${ id }`, { responseType: 'blob' } );
-  }
+
   getExistingDetailsById ( id: string ): Observable<ApiResponse> {
     return this.httpClient.get<ApiResponse>( `${ URL }guest/${ id }/details`, this.httpOptions );
   }
   saveBookingDetails ( data: BookingDetails ): Observable<ApiResponse> {
     return this.httpClient.post<ApiResponse>( `${ URL }save/booking-details`, data, this.httpOptions );
+  }
+  getPaymentHistory ( id: string ): Observable<ApiResponse> {
+    return this.httpClient.get<ApiResponse>( `${ URL }pd-history/${ id }`, this.httpOptions );
   }
 }

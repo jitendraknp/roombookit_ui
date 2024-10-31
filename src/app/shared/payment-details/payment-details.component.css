@@ -1,0 +1,22 @@
+.table-caption {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9f9f9;
+    /* Light background for caption */
+    border-bottom: 1px solid #ddd;
+    /* Divider line */
+}
+
+.table-caption h3 {
+    margin: 0;
+    /* Remove default margin */
+}
+
+.table-caption p {
+    /* Small margin for description */
+    font-size: 12px;
+    /* Smaller font for description */
+    color: #666;
+    /* Lighter text color */
+}

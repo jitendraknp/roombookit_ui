@@ -144,11 +144,11 @@ export class DashboardComponent implements OnInit {
   @Input() advanceBookings: AdvanceBooking[] = [];
   actionItems: MenuItem[] = [];
   bookingListActionItems: MenuItem[] = [];
-  options = this._formBuilder.group( {
-    bottom: 0,
-    fixed: false,
-    top: 68,
-  } );
+  // options = this._formBuilder.group( {
+  //   bottom: 0,
+  //   fixed: false,
+  //   top: 68,
+  // } );
   noRecordsMessage = 'No record exists';
   events: string[] = [];
   opened: boolean = true;
@@ -157,7 +157,7 @@ export class DashboardComponent implements OnInit {
     this.globalFilter = filterValue;
   }
   constructor(
-    private _formBuilder: FormBuilder,
+
     private dashboardService: DashboardService,
     private bookingService: BookingService,
     private utilsService: UtilsService,
@@ -190,6 +190,8 @@ export class DashboardComponent implements OnInit {
     console.log( data );
     this.advanceBookings = data;
   }
+  totalRooms: number = 0;
+  roomsMonthly: number = 0;
   ngOnInit (): void {
     this.actionItems = [
       {
@@ -231,7 +233,9 @@ export class DashboardComponent implements OnInit {
         this.todaysCheckIn = dashboardData.Data?.TotalBookings?.TodaysCheckIn;
         this.todaysCheckOut = dashboardData.Data?.TotalBookings?.TodaysCheckOut;
         this.availableRooms = dashboardData.Data?.RoomsAvailability?.AvailableRooms;
+        this.totalRooms = dashboardData.Data?.RoomsAvailability?.Total;
         this.occupiedRooms = dashboardData.Data?.RoomsAvailability?.OccupiedRooms;
+        this.roomsMonthly = dashboardData.Data?.RoomsAvailability?.Monthly;
 
         this.totalRevenue = dashboardData.Data?.DashboardRevenue?.Total;
 

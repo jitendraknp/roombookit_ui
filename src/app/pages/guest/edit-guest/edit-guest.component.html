@@ -121,14 +121,15 @@
                     <ng-template pTemplate="title">Stay Details</ng-template>
                     <ng-template pTemplate="content" class="p-1">
                       <app-stay-guest [form]="editGuestForm" [guestList]="savedGuest"
-                        [isEditForm]="true"></app-stay-guest></ng-template>
+                        [paymentDetailsForm]="editGuestForm" [isEditForm]="true"></app-stay-guest></ng-template>
                   </p-card>
                 </div>
                 <div class="col-12 md:col-6 lg:col-6 sm:col-12 xl:col-6">
                   <p-card>
                     <ng-template pTemplate="title">Payment Details</ng-template>
                     <ng-template pTemplate="content">
-                      <app-payment-details [form]="editGuestForm"></app-payment-details></ng-template>
+                      <app-payment-details [form]="editGuestForm"
+                        [isEditForm]="true"></app-payment-details></ng-template>
                   </p-card>
                 </div>
               </div>
@@ -136,12 +137,10 @@
             <div class="gap-2 flex justify-content-end pb-4">
               <p-button label="Back" severity="secondary" (onClick)="activateCallback(1)" class="w-8rem"
                 styleClass="w-8rem" size="small" [raised]="true" />
-              <p-button label="Save" class="w-8rem" styleClass="w-8rem" [size]="'small'" [raised]="true"
+              <p-button label="Update" class="w-8rem" styleClass="w-8rem" [size]="'small'" [raised]="true"
                 (onClick)="updateBooking()" />
-              <p-button label="Invoice" severity="secondary" class="w-8rem" styleClass="w-8rem" [size]="'small'"
+              <p-button label="Invoice" severity="warn" class="w-8rem" styleClass="w-8rem" [size]="'small'"
                 [raised]="true" (onClick)="generateInvoice()" />
-              <!-- <p-button label="Next" severity="secondary" class="w-8rem" [outlined]="true" [size]="'small'"
-                                                        (onClick)="activateCallback(2)" styleClass="w-8rem" /> -->
             </div>
 
           </ng-template>

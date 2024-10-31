@@ -19,4 +19,7 @@ export class InvoiceService {
   generateInvoiceMpci ( id: string, invoiceNo?: string ) {
     return this.httpClient.get( `${ URL }${ id }/invoice-mpci/${ invoiceNo }`, { responseType: 'blob' } );
   }
+  generate ( id: string ) {
+    return this.httpClient.get( `${ URL }generate-invoice/${ id }`, { responseType: 'blob' } );
+  }
 }

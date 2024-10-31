@@ -18,6 +18,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { MenuModule } from 'primeng/menu';
 import { OverlayPanelModule } from "primeng/overlaypanel";
 import { AuthService } from '../../authentication/services/auth.service';
+import { PanelModule } from 'primeng/panel';
 // export interface MenuItem {
 //   id: string;
 //   name: string;
@@ -42,7 +43,8 @@ import { AuthService } from '../../authentication/services/auth.service';
     BreadcrumbComponent,
     MenuModule,
     AvatarModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    PanelModule
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
@@ -104,7 +106,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
   transformToPrimeNgMenu ( menuItems: any[] ): any {
-    console.log( menuItems );
+
     return menuItems.map( ( item ) => {
       const transformedItem: any = {
         label: item.Name,

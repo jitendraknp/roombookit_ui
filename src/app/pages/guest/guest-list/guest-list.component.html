@@ -4,22 +4,28 @@
   <p-card class="w-full">
     <ng-template pTemplate="header" class="custom-card-header">
       <div class="flex flex-row justify-between align-items-center">
-        <p class="px-2 text-primary text-sm">
-          {{guestDetails?.FirstName }} {{guestDetails?.LastName}}
+        <p class="px-2  text-p-button-primary-background text-sm">
+          {{guestDetails?.FirstName | uppercase}} {{guestDetails?.LastName | uppercase}}
         </p>
-        @if(guestDetails?.Invoice?.[0]?.Status!=="Pending"){
-        <p class="text-sm text-red-500 pe-2">
-          <i pTooltip="{{guestDetails?.Invoice?.[0]?.Status}}" [tooltipPosition]="'top'"
-            [tooltipStyleClass]="'text-xs text-danger'" class="pi pi-exclamation-circle" style="color: red"></i>
-        </p>
-        }
-        @else {
-        <p class="text-sm" style="color: var(--primary-color)">
-          {{ guestDetails?.Invoice?.[0]?.Status }}
-        </p>
-        }
+
 
         <div class="ml-auto flex flex-row items-center gap-3">
+          <div class="flex justify-items-center">
+
+            @if(guestDetails?.Invoice?.[0]?.Status==="Paid"){
+
+            <p-button icon="pi pi-check-circle" pTooltip="{{guestDetails?.Invoice?.[0]?.Status}}" tooltipPosition="top"
+              [severity]="'contrast'" [size]="'small'" [routerLink]="['edit',guestDetails?.Id]"
+              [tooltipStyleClass]="'text-xs  flex items-center'" [rounded]="true" [text]="true"
+              class="p-button-icon-only p-0"></p-button>
+            }
+            @else {
+            <p-button icon="pi pi-exclamation-circle" pTooltip="{{guestDetails?.Invoice?.[0]?.Status}}"
+              tooltipPosition="top" [severity]="'warn'" [size]="'small'" [routerLink]="['edit',guestDetails?.Id]"
+              [tooltipStyleClass]="'text-xs  flex items-center'" [rounded]="true" [text]="true"
+              class="p-button-icon-only p-0"></p-button>
+            }
+          </div>
           <!-- Edit button with pencil icon, ensure icon is vertically centered -->
           <div class="flex justify-items-center">
             <p-button icon="pi pi-pencil" [pTooltip]="'Edit guest'" tooltipPosition="top" [severity]="'primary'"
@@ -58,7 +64,7 @@
               <div class="custom-card-header">
                 Contact Details
                 <div class="ml-auto flex flex-row items-center gap-3">
-                  <a href="#" pTooltip="Edit Address">
+                  <a href="#" pTooltip="Edit Address" [tooltipStyleClass]="'text-xs'">
                     <i class="pi pi-file-edit" style="color: var(--primary-color);font-size: 0.8rem"></i>
                   </a>
                 </div>
@@ -82,7 +88,7 @@
                     <div class="col-6 items-start py-1 sm:col-12 xs:col-12 md:col-6 lg:col-6  xl:col-6">
                       <p class="text-muted text-xs">
                         <!-- <ion-icon name="call"></ion-icon> -->
-                        <i class="pi pi-phone" style="color: var(--primary-color)"></i>
+                        <i class="pi pi-phone" style="color: var(--p-button-primary-background) "></i>
                         {{guestDetails?.MobileNo}}
                       </p>
                     </div>
@@ -90,7 +96,8 @@
                       @if(guestDetails?.EmailId!=null || guestDetails?.EmailId!=""){
                       <div class="d-inline" *ngIf="guestDetails?.EmailId">
                         <p class="job_post text-muted text-sm">
-                          <i class="pi pi-inbox" style="color: var(--primary-color)"></i> {{guestDetails?.EmailId}}
+                          <i class="pi pi-inbox" style="color: var(--p-button-primary-background) "></i>
+                          {{guestDetails?.EmailId}}
                         </p>
                       </div>
                       }
@@ -109,7 +116,7 @@
             <ng-template pTemplate="body">
               <div class="grid">
                 <!-- Invoice No Section -->
-                <div class="col-12 border-bottom-1 border-secondary py-1">
+                <div class="col-12   py-1">
                   <div class="grid items-center">
                     <div class="col-6 py-0">
                       <p class="text-sm text-muted">Invoice No</p>
@@ -131,7 +138,7 @@
                 </div>
 
                 <!-- Check-In Section -->
-                <div class="col-12 border-bottom-1 border-secondary pt-1 pb-1">
+                <div class="col-12    pt-1 pb-1">
                   <div class="grid items-center p-0">
                     <div class="col-6 flex justify-end items-center pb-0">
                       <p class="text-sm text-muted">Check-In</p>
@@ -149,7 +156,7 @@
                   </div>
                 </div>
                 <!-- Check-Out Section -->
-                <div class="col-12 border-bottom-1 border-secondary pt-1 pb-1">
+                <div class="col-12  pt-1 pb-1">
                   <div class="grid items-center p-0">
                     <div class="col-6 flex justify-end items-center pb-0">
                       <p class="text-sm text-muted">Check-Out</p>

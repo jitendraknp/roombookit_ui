@@ -48,12 +48,12 @@ export class AppComponent {
     } );
     this.config.ripple.set( true );
     this.config.zIndex = {
-      modal: 1000,    // Default z-index for modals (e.g., dialogs)
-      overlay: 1000,  // Default z-index for overlays (e.g., dropdowns, tooltips)
-      menu: 1000,     // Default z-index for menus
-      tooltip: 1000,  // Default z-index for tooltips
-      toast: 1000,    // Default z-index for toasts
-      panel: 1000,    // z-index for panels
+      modal: 2000,    // Default z-index for modals (e.g., dialogs)
+      overlay: 2000,  // Default z-index for overlays (e.g., dropdowns, tooltips)
+      menu: 2000,     // Default z-index for menus
+      tooltip: 2000,  // Default z-index for tooltips
+      toast: 2000,    // Default z-index for toasts
+      panel: 2000,    // z-index for panels
 
     };
   }

@@ -4,26 +4,6 @@
 @import "@ng-select/ng-select/themes/default.theme.css";
 @import "../node_modules/primeflex/primeflex.css";
 @import "../node_modules/primeicons/primeicons.css";
-@layer tailwind-base, primeng, tailwind-utilities;
-
-@layer tailwind-base {
-  @tailwind base;
-}
-
-@layer tailwind-utilities {
-  @tailwind components;
-  @tailwind utilities;
-}
-
-@layer base {
-  @font-face {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url(/fonts/Roboto.woff2) format('woff2');
-  }
-}
 
 body {
   font-family: 'Roboto', sans-serif !important;
@@ -572,18 +552,6 @@ display: inline-block; */
    ===============================================*/
 
 
-#content {
-  /* position: relative;
-  transition: all 0.3s; */
-
-}
-
-.top-navbar {
-  /* width: 100%;
-  z-index: 9;
-  position: relative; */
-}
-
 
 .main-content {
   padding: 10px 20px 0px 20px;
@@ -594,28 +562,6 @@ display: inline-block; */
   overflow-x: hidden;
   overflow-y: auto;
   background: aliceblue;
-}
-
-
-.navbar {
-  /* background-color: #2196F3;//#03A9F4 */
-  /* background-color: #01579B;
-  color: black; */
-  /* background-color: var(--current-color) !important; */
-}
-
-.navbar-brand {
-  /* color: #FFFFFF;
-  font-weight: 600; */
-}
-
-.navbar button {
-  /* background-color: transparent;
-  border: none; */
-}
-
-.navbar button span {
-  /* color: #fff; */
 }
 
 ol,
@@ -648,16 +594,6 @@ a {
 }
 
 
-.navbar-nav>li.active {
-  /* color: #FFFFFF;
-  border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.08); */
-}
-
-.navbar-nav>li>a {
-  /* color: #FFFFFF; */
-}
-
 
 .navbar .notification {
   position: absolute;
@@ -674,35 +610,6 @@ a {
   height: 15px;
   border-radius: 2px;
   line-height: 14px; */
-}
-
-
-.navbar-nav>li.show .dropdown-menu {
-  /* transform: translate3d(0, 0, 0);
-  opacity: 1;
-  visibility: visible; */
-}
-
-
-.dropdown-menu li>a {
-  /* font-size: 13px;
-  padding: 10px 20px;
-  margin: 0 5px;
-  border-radius: 2px;
-  font-weight: 400;
-  transition: all 150ms linear; */
-}
-
-.navbar-nav>.active>a:focus {
-  /* color: #FFFFFF;
-  background-color: rgba(0, 0, 0, 0.08); */
-}
-
-
-.navbar-nav li a {
-  /* position: relative;
-  display: block;
-  padding: 10px 15px !important; */
 }
 
 /* .card { */
@@ -978,7 +885,7 @@ a {
     overflow: visible !important;
     top: 0 !important;
     z-index: 666;
-    float: left !important;
+    /* float: left !important; */
     bottom: 0 !important;
   }
 
@@ -998,12 +905,15 @@ a {
     transition: all 0.5s ease;
   }
 
-  #content {
+  /* #content {
     width: calc(100% - 260px);
     position: relative;
     float: right;
     transition: all 0.3s;
-    /* background-color: #EEEEEE; */
+ 
+  } */
+  p {
+    margin: 2px !important;
   }
 
   #content.active {

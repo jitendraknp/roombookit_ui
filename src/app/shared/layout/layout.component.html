@@ -1,34 +1,33 @@
 <div class="flex flex-column min-h-screen">
-  <header class="sticky top-0 p-2 border-bottom-1">
-    <div class="top-navbar fixed-top">
-      <div class="navbar navbar-expand-lg bg-inherit">
-        <div class="flex grow justify-between gap-4 items-center py-0">
-          <button class="d-xl-block d-lg-block d-md-mone d-none" id="sidebarCollapse" (click)="toggleSidebar1()"
-            type="button">
-            <svg class="bi bi-list" fill="var(--p-button-primary-background)" height="25" viewBox="0 0 16 16" width="25"
-              xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
-                fill-rule="evenodd" />
-            </svg>
-          </button>
-          <div class="flex-1 flex">
-            <p class="justify-start">
-              <span class="italic"> {{ hotelName }}</span>
-            </p>
-          </div>
-          <div class="px-2">
-            <p-menu #menu [model]="profile_items" appendTo="body" popup="true"></p-menu>
-            <p-avatar (click)="menu.toggle($event)" class="pointer-cursor" label="SA"
-              [style]="{ 'background-color': '#dee9fc', color: '#1a2551' }" shape="circle"
-              [styleClass]="'text-primary mr-2 text-xs'"></p-avatar>
-          </div>
-        </div>
+  <p-panel [style]="{ 'border-bottom': '1px solid bg-secondary' }" [showHeader]="false">
+    <div class="flex items-center py-1"> <!-- Use padding instead of fixed height -->
+      <!-- Hamburger Button -->
+      <div class="mr-2"> <!-- Margin for spacing -->
+        <p-button type="button" (click)="toggleSidebar1()" size="small" severity="secondary">
+          <i class="pi pi-bars"></i> <!-- Hamburger icon -->
+        </p-button>
+      </div>
+
+      <!-- Hotel Name -->
+      <div class="flex-1 flex justify-center items-center"> <!-- Center vertically -->
+        <p class="text-center  mt-1 mb-0">
+          <span class="italic">{{ hotelName }}</span>
+        </p>
+      </div>
+
+      <!-- Profile Menu and Avatar -->
+      <div class="flex items-center ml-2"> <!-- Margin for spacing -->
+        <p-menu #menu [model]="profile_items" appendTo="body" popup="true"></p-menu>
+        <p-avatar (click)="menu.toggle($event)" class="pointer-cursor" label="SA"
+          [style]="{ 'background-color': '#dee9fc', color: '#1a2551' }" shape="circle"
+          [styleClass]="'text-primary mr-2 text-xs'">
+        </p-avatar>
       </div>
     </div>
-  </header>
-  <div class="flex flex-row overflow-hidden">
-    <aside class="bg-secondary pl-1 h-auto overflow-y-auto"
+  </p-panel>
+
+  <div class="flex flex-row overflow-hidden custom-border">
+    <aside class="bg-secondary  h-auto overflow-y-auto"
       [ngClass]="isCompressed ? 'compressed-sidebar' : 'expanded-sidebar'">
       <!-- <div class="sidebar-header px-2">
         <h3 class="flex flex-row items-center">

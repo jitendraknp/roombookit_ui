@@ -12,3 +12,9 @@ export interface PaymentDetail {
   ExcGST: number;
   Discount: number;
 }
+
+export interface PaymentHistory {
+  Id?: string;
+  PaymentDate?: string;
+  Amount?: Number;
+}

@@ -9,7 +9,7 @@
         <!-- Title -->
         <p class="text-lg font-semibold text-gray-700">Add Guest</p>
         <!-- Close Button -->
-        <a (click)="onClose()" href="javascript:void(0);"
+        <a (click)="confirm($event)" href="javascript:void(0);"
           class="text-gray-500 hover:text-red-600 ml-auto transition-colors duration-150">
           <i class="pi pi-times text-xl"></i>
         </a>
@@ -25,7 +25,7 @@
             <ng-template #content let-activateCallback="activateCallback">
               <div>
                 <div class="grid text-sm">
-                  <div class="col-12 md:col-6 lg:col-4 sm:col-12 xl:col-4">
+                  <div class="col-12 md:col-6 lg:col-4 sm:col-12 xl:col-4 pb-1">
                     <p-card>
                       <ng-template pTemplate="title">Personal Details</ng-template>
                       <ng-template pTemplate="content">
@@ -60,19 +60,19 @@
 
                     </p-card>
                   </div>
-                  <div class="col-12 md:col-6 lg:col-4 sm:col-12  xl:col-4">
+                  <div class="col-12 md:col-6 lg:col-4 sm:col-12  xl:col-4 pb-1">
                     <p-card>
                       <ng-template pTemplate="title">Contact Details</ng-template>
                       <ng-template pTemplate="content">
                         <div class="grid">
                           <div class="col-12">
-                            <app-address [form]="newGuestForm"></app-address>
+                            <app-address [form]="contactDetailsFormGroup"></app-address>
                           </div>
                         </div>
                       </ng-template>
                     </p-card>
                   </div>
-                  <div class="col-12 md:col-6 lg:col-4 sm:col-12 xl:col-4">
+                  <div class="col-12 md:col-6 lg:col-4 sm:col-12 xl:col-4 pb-1 gap-2">
                     <p-card>
                       <ng-template pTemplate="title"> Guest Company Details</ng-template>
                       <div class="grid">
@@ -91,52 +91,39 @@
                           <input pInputText formControlName="CompanyAddress" id="companyAddress"
                             placeholder="Company Address" type="text" size="small" fluid="true" />
                         </div>
-                      </div>
-                      <!-- <ng-template pTemplate="footer">
-                        <div class="flex gap-4 mt-1">
-                          <p-button label="Cancel" severity="secondary" class="w-full" [outlined]="true" [size]="'small'"
-                            styleClass="w-full" />
-                          <p-button label="Save" class="w-full" styleClass="w-full" [size]="'small'" />
+                        <div class="col-12">
+                          <p-card>
+                            <ng-template pTemplate="body" class="p-2">
+                              <div class="grid">
+                                <div class="col-12">
+                                  <label class="form-label" for="invoiceNo">Invoice No</label>
+                                  <input pInputText formControlName="InvoiceNo" id="invoiceNo" placeholder="Invoice No"
+                                    type="text" size="small" fluid="true" />
+                                </div>
+                                <div class="col-12">
+                                  <label class="form-label" for="comments">Comment</label>
+                                  <input pInputText formControlName="Comments" id="comments" placeholder="Comments"
+                                    type="text" size="small" fluid="true" />
+                                </div>
+                              </div>
+                            </ng-template>
+                          </p-card>
                         </div>
-                      </ng-template> -->
+                      </div>
                       <p class="text-xs font-italic  font-semibold">For internal use :
-                        {{newGuestForm.controls.GuestId.value}}
+                        {{newGuestForm.controls['GuestId'].value}}
                       </p>
                     </p-card>
-                  </div>
 
+                  </div>
                 </div>
               </div>
-              <div class="gap-2 flex justify-content-end pb-2">
-
+              <div class="gap-2 flex justify-content-end pb-1 pt-2">
                 <p-button label="Save" class="w-8rem" styleClass="w-8rem" [size]="'small'" [raised]="true"
-                  (onClick)="onGuestSave()" />
+                  (onClick)="onGuestSave()" [disabled]="isGuestDataSaved" />
                 <p-button label="Next" severity="secondary" class="w-8rem" [size]="'small'" [raised]="true"
                   (onClick)="activateCallback(2)" styleClass="w-8rem" />
               </div>
-              <!-- <div class="grid">
-              <div class="col-4">
-                <p-card header="Card 1" subheader="Subheader 1">
-                  <ng-template pTemplate="content">
-                    <p>This is the content of the first card.</p>
-                  </ng-template>
-                </p-card>
-              </div>
-              <div class="col-4">
-                <p-card header="Card 2" subheader="Subheader 2">
-                  <ng-template pTemplate="content">
-                    <p>This is the content of the second card.</p>
-                  </ng-template>
-                </p-card>
-              </div>
-              <div class="col-4">
-                <p-card header="Card 3" subheader="Subheader 3">
-                  <ng-template pTemplate="content">
-                    <p>This is the content of the third card.</p>
-                  </ng-template>
-                </p-card>
-              </div>
-            </div> -->
             </ng-template>
           </p-step-panel>
         </p-step-item>
@@ -152,7 +139,8 @@
                     <p-card>
                       <ng-template pTemplate="title">Stay Details</ng-template>
                       <ng-template pTemplate="content">
-                        <app-stay-guest [form]="newGuestForm" [guestList]="savedGuest"
+                        <app-stay-guest [form]="stayDetailsFormGroup" [guestList]="savedGuest"
+                          [paymentDetailsForm]="paymentDetailsFormGroup"
                           [isEditForm]="false"></app-stay-guest></ng-template>
                     </p-card>
                   </div>
@@ -160,19 +148,20 @@
                     <p-card>
                       <ng-template pTemplate="title">Payment Details</ng-template>
                       <ng-template pTemplate="content">
-                        <app-payment-details [form]="newGuestForm"></app-payment-details></ng-template>
+                        <app-payment-details [form]="paymentDetailsFormGroup"
+                          [isEditForm]="false"></app-payment-details></ng-template>
                     </p-card>
                   </div>
                 </div>
               </div>
-              <div class="gap-2 flex justify-content-end pb-4">
+              <div class="gap-2 flex justify-content-end pb-2">
                 <p-button label="Back" severity="secondary" (onClick)="activateCallback(1)" class="w-8rem"
                   styleClass="w-8rem" size="small" [raised]="true" />
                 <p-button label="Save" class="w-8rem" styleClass="w-8rem" [size]="'small'" [raised]="true"
-                  (onClick)="onSaveBooking($event)" />
-                <p-button label="Invoice" severity="secondary" class="w-8rem" styleClass="w-8rem" [size]="'small'"
+                  (onClick)="onSaveBooking($event)" [disabled]="isStayDetailsSaved" />
+                <p-button label="Invoice" severity="warn" class="w-8rem" styleClass="w-8rem" [size]="'small'"
                   [raised]="true"
-                  (onClick)="onInvoiceClick(newGuestForm.controls.GuestId.value!, newGuestForm.controls.InvoiceNo.value!)" />
+                  (onClick)="onInvoiceClick(newGuestForm.controls['GuestId'].value!, newGuestForm.controls['InvoiceNo'].value!)" />
                 <!-- <p-button label="Next" severity="secondary" class="w-8rem" [outlined]="true" [size]="'small'"
                                                     (onClick)="activateCallback(2)" styleClass="w-8rem" /> -->
               </div>

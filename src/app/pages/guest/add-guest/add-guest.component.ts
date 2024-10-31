@@ -68,7 +68,6 @@ import { SelectModule } from 'primeng/select';
 } )
 export class AddGuestComponent implements OnInit, AfterContentChecked {
   onContinue ( $event: any ) {
-    console.log( $event );
   }
   loading: boolean = false;
   gender = [
@@ -80,60 +79,10 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
   isBookigDataSaved: boolean = false;
   hotelId: string = '5c953e70-73fe-46cf-0267-08dcb3aa275e';
   moreGuestForm: FormGroup;
-  newGuestForm = this.formBuilder.group( {
-    GuestId: new FormControl<string>( '' ),
-    Company: new FormControl<string>( '' ),
-    CompanyGSTIN: new FormControl<string>( '' ),
-    CompanyAddress: new FormControl<string>( '' ),
-    FirstName: new FormControl<string>( '', [Validators.required, Validators.minLength( 3 )] ),
-    LastName: new FormControl<string>( '', [Validators.required, Validators.minLength( 3 )] ),
-    MobileNo: new FormControl( '', [Validators.required, Validators.minLength( 10 )] ),
-    EmailId: new FormControl<string>( '' ),
-    Gender: new FormControl( 'MALE', [Validators.required] ),
-    Address: new FormControl( '', [Validators.required, Validators.minLength( 3 )] ),
-    CityId: new FormControl( null, [Validators.required] ),
-    StateId: new FormControl( { value: "", disabled: true } ),
-    CountryId: new FormControl( { value: "", disabled: true } ),
-    PinCode: new FormControl( '' ),
-    CheckInDate: new FormControl( null, [Validators.required] ),
-    CheckOutDate: new FormControl( null, [Validators.required] ),
-    Comments: new FormControl<string>( '' ),
-    Print_CD: new FormControl<boolean>( true ),
-    Print_Comments: new FormControl<boolean>( true ),
-    RoomNoId: new FormControl( [] ),
-    RoomId: new FormControl( [], [Validators.required] ),
-    NoOfGuests: new FormControl<number>( 0 ),
-    NoOfAdults: new FormControl<number>( 0, [Validators.required] ),
-    NoOfChildren: new FormControl<number>( 0, [Validators.required] ),
-    RatePerNight: new FormControl<number>( 0 ),
-    Discount: new FormControl<number>( 0 ),
-    TotalAmount: new FormControl<number>( 0 ),
-    NoOfDays: new FormControl<number>( 0 ),
-    AmountToPay: new FormControl<number>( 0 ),
-    GSTPercentage: new FormControl<number>( 12 ),
-    IncGST: new FormControl( 0 ),
-    ExcGST: new FormControl( 0 ),
-    CGST: new FormControl( 0 ),
-    SGST: new FormControl( 0 ),
-    UTGST: new FormControl( 0 ),
-    IGST: new FormControl( 0 ),
-    PaymentMode: new FormControl( 1, [Validators.required] ),
-    AmountPaid: new FormControl<number>( 0, [Validators.required] ),
-    BalanceAmount: new FormControl<number>( 0 ),
-    TransactionNo: new FormControl<string>( '' ),
-    IdType: new FormControl( "" ),
-    IdNumber: new FormControl( "" ),
-    ImageUrl: new FormControl( "" ),
-    InvoiceNo: new FormControl( { value: "", disabled: true } ),
-    IsFrontSide: new FormControl( false ),
-    ManualInvoice: new FormControl( false ),
-    // dateTimeInput: new FormControl( '', [
-    //   Validators.required,
-    //   this.validateDateTime()
-    // ] ),
-  },
-    { validators: this.dateRangeValidator( 'CheckInDate', 'CheckOutDate' ) }
-  );
+  newGuestForm!: FormGroup;
+  ContactDetails!: FormGroup;
+  isGuestDataSaved: Boolean = false;
+  isStayDetailsSaved: Boolean = false;
 
   dateRangeValidator ( startControlName: string, endControlName: string ): ValidatorFn {
     return ( formGroup: AbstractControl ): { [key: string]: any; } | null => {
@@ -171,7 +120,67 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     this.moreGuestForm = this.fb.group( {
       guests: this.fb.array( [] )
     } );
+
     this.moreGuestForm.setValidators( this.dateRangeValidator( 'CheckInDate', 'CheckOutDate' ) );
+    this.newGuestForm = this.formBuilder.group( {
+      GuestId: new FormControl<string>( '' ),
+      Company: new FormControl<string>( '' ),
+      CompanyGSTIN: new FormControl<string>( '' ),
+      CompanyAddress: new FormControl<string>( '' ),
+      FirstName: new FormControl<string>( '', [Validators.required, Validators.minLength( 3 )] ),
+      LastName: new FormControl<string>( '', [Validators.required, Validators.minLength( 3 )] ),
+      MobileNo: new FormControl( '', [Validators.required, Validators.minLength( 10 )] ),
+      EmailId: new FormControl<string>( '' ),
+      Gender: new FormControl( 'MALE', [Validators.required] ),
+      ContactDetails: this.formBuilder.group( {
+        GuestId: new FormControl<string>( '' ),
+        Address: new FormControl( '', [Validators.required, Validators.minLength( 3 )] ),
+        CityId: new FormControl( null, [Validators.required] ),
+        StateId: new FormControl( { value: "", disabled: true } ),
+        CountryId: new FormControl( { value: "", disabled: true } ),
+        PinCode: new FormControl( '' ),
+      } ),
+      StayDetails: this.formBuilder.group( {
+        GuestId: new FormControl<string>( '' ),
+        CheckInDate: new FormControl( null, [Validators.required] ),
+        CheckOutDate: new FormControl( null, [Validators.required] ),
+        RoomNoId: new FormControl( [] ),
+        RoomId: new FormControl( [], [Validators.required] ),
+        NoOfGuests: new FormControl<number>( 0 ),
+        NoOfAdults: new FormControl<number>( 0, [Validators.required] ),
+        NoOfChildren: new FormControl<number>( 0, [Validators.required] ),
+        RatePerNight: new FormControl<number>( 0 ),
+        Discount: new FormControl<number>( 0 ),
+        TotalAmount: new FormControl<number>( 0 ),
+        NoOfDays: new FormControl<number>( 0 ),
+        AmountPaid: new FormControl<number>( 0 ),
+      } ),
+      PaymentDetails: this.formBuilder.group( {
+        PaymentDetailsId: new FormControl( '' ),
+        GuestId: new FormControl<string>( '' ),
+        AmountToPay: new FormControl<number>( 0 ),
+        GSTPercentage: new FormControl<number>( 12 ),
+        IncGST: new FormControl( 0 ),
+        ExcGST: new FormControl( 0 ),
+        CGST: new FormControl( 0 ),
+        SGST: new FormControl( 0 ),
+        UTGST: new FormControl( 0 ),
+        IGST: new FormControl( 0 ),
+        PaymentMode: new FormControl( 1, [Validators.required] ),
+        AmountPaid: new FormControl<number>( 0, [Validators.required] ),
+        BalanceAmount: new FormControl<number>( 0 ),
+        TransactionNo: new FormControl<string>( '' ),
+        PaymentDate: new FormControl( new Date(), [Validators.required] ),
+      } ),
+      InvoiceNo: new FormControl( { value: "", disabled: true } ),
+      ManualInvoice: new FormControl( false ),
+      Comments: new FormControl<string>( '' ),
+      Print_CD: new FormControl<boolean>( true ),
+      Print_Comments: new FormControl<boolean>( true ),
+    },
+      { validators: this.dateRangeValidator( 'CheckInDate', 'CheckOutDate' ) }
+    );
+
   }
 
   get guests () {
@@ -179,14 +188,16 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
   }
 
   onManualInvoiceChange () {
-    let mValue = this.newGuestForm.controls.ManualInvoice.value;
-    console.log( mValue );
-    if ( mValue )
-      this.newGuestForm.controls.InvoiceNo.enable();
-    else
-      this.newGuestForm.controls.InvoiceNo.disable();
-  }
+    let mValue = this.newGuestForm.controls['ManualInvoice'].value;
 
+    if ( mValue )
+      this.newGuestForm.controls['InvoiceNo'].enable();
+    else
+      this.newGuestForm.controls['InvoiceNo'].disable();
+  }
+  get contactDetailsFormGroup (): FormGroup {
+    return this.newGuestForm.get( 'ContactDetails' ) as FormGroup;
+  }
   confirm ( event: any ) {
     this.confirmationService.confirm( {
       target: event.target as EventTarget,
@@ -210,7 +221,7 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
 
   generateInvoice () {
     this.loading = true;
-    this.guestService.generateInvoice( this.savedGuest[0].Id! ).subscribe( {
+    this.invoiceService.generateInvoice( this.savedGuest[0].Id! ).subscribe( {
       next: ( result ) => {
         saveAs( result, `${ this.savedGuest[0].Id! }.pdf` );
       },
@@ -242,7 +253,7 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     this.guests.push( this.createGuest() );
     this.customMessageService.sendNoOfGuests( this.guests.length );
     // this.guestForm.controls.GuestStayDetail.controls.TotalAmount.patchValue( this.guests.length );
-    console.log( this.guests.length );
+
   }
 
   removeUser ( index: number ) {
@@ -250,8 +261,15 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     this.customMessageService.clearNoOfGuests();
     this.customMessageService.sendNoOfGuests( this.guests.length );
   }
+  get stayDetailsFormGroup (): FormGroup {
 
+    return this.newGuestForm.get( 'StayDetails' ) as FormGroup;
+  }
+  get paymentDetailsFormGroup (): FormGroup {
+    return this.newGuestForm.get( 'PaymentDetails' ) as FormGroup;
+  }
   ngOnInit (): void {
+
     let storageData = this.storageService.getData( "auth-user" );
     if ( storageData != null || storageData != undefined ) {
       let resp = storageData as ApiResponse;
@@ -261,7 +279,8 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     }
     this.guestService.getNewInvoiceNo( this.hotelId ).subscribe( {
       next: ( resp ) => {
-        this.newGuestForm.controls.InvoiceNo.setValue( resp.Data );
+        this.newGuestForm.controls['InvoiceNo'].setValue( resp.Data.invoiceNo );
+        console.log( resp.Data );
       },
       error: ( err ) => {
         console.log( err );
@@ -286,18 +305,9 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
     return invalidControls;
   }
 
-  onClose () {
-    this.guestService.getAllGuest().subscribe( {
-      next: ( result ) => {
-        this.router.navigate( ['admin/guest'] ).then( ( resolve ) => {
-          this.customMessageService.sendMessage( true );
-        } );
-      }
-    } );
-  }
 
   onGuestSave () {
-    console.log( this.newGuestForm.value );
+
     const invalidControls = this.utilsService.validateAndGetInvalidControls( this.newGuestForm, [
       'FirstName',
       'LastName',
@@ -305,36 +315,38 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
       'MobileNo',
       'Address',
       'CityId',
-      'Gender'
     ] );
     if ( invalidControls.length > 0 ) {
       this.messageService.add( { severity: 'error', summary: 'Required Fields', detail: invalidControls.join( ', ' ) } );
       return;
     }
-    console.log( this.newGuestForm.controls.Gender.value );
+    console.log( this.newGuestForm.controls['Gender'].value );
     const guestDetails: GuestDetails = {
-      Company: this.newGuestForm.controls.Company.value!,
-      CompanyAddress: this.newGuestForm.controls.CompanyAddress.value!,
-      GsTin: this.newGuestForm.controls.CompanyGSTIN.value!,
-      FirstName: this.newGuestForm.controls.FirstName.value!,
-      LastName: this.newGuestForm.controls.LastName.value!,
-      Email: this.newGuestForm.controls.EmailId.value!,
-      Gender: this.newGuestForm.controls.Gender.value!,
-      MobileNo: this.newGuestForm.controls.MobileNo.value!,
-      Address: this.newGuestForm.controls.Address.value!,
-      CityId: this.newGuestForm.controls.CityId.value!,
-      InvoiceNo: this.newGuestForm.controls.InvoiceNo.value!,
-      IsManualInv: this.newGuestForm.controls.ManualInvoice.value!,
-      Print_CD: this.newGuestForm.controls.Print_CD.value!,
-      Comment: this.newGuestForm.controls.Comments.value!,
+      Company: this.newGuestForm.controls['Company'].value!,
+      CompanyAddress: this.newGuestForm.controls['CompanyAddress'].value!,
+      GsTin: this.newGuestForm.controls['CompanyGSTIN'].value!,
+      FirstName: this.newGuestForm.controls['FirstName'].value!,
+      LastName: this.newGuestForm.controls['LastName'].value!,
+      Email: this.newGuestForm.controls['EmailId'].value!,
+      Gender: this.newGuestForm.controls['Gender'].value!,
+      MobileNo: this.newGuestForm.controls['MobileNo'].value!,
+      Address: this.contactDetailsFormGroup.controls['Address'].value!,
+      CityId: this.contactDetailsFormGroup.controls['CityId'].value!,
+      PinCode: this.contactDetailsFormGroup.controls['PinCode'].value,
+      InvoiceNo: this.newGuestForm.controls['InvoiceNo'].value!,
+      IsManualInv: this.newGuestForm.controls['ManualInvoice'].value!,
+      Print_CD: this.newGuestForm.controls['Print_CD'].value!,
+      Comment: this.newGuestForm.controls['Comments'].value!,
     };
 
     this.guestService.saveGuestDetails( guestDetails ).subscribe( {
       next: ( response ) => {
-        console.log( response );
+
         if ( response.StatusCode == 200 ) {
           this.messageService.add( { severity: 'success', summary: 'Saved', detail: response.Message } );
-          this.newGuestForm.controls.GuestId.patchValue( response.Data.Id );
+          this.newGuestForm.controls['GuestId'].patchValue( response.Data.Id );
+          this.isGuestDataSaved = true;
+          return;
         }
         if ( response.StatusCode == 9 )
           this.messageService.add( { severity: 'error', summary: 'Error', detail: `An error occurred while saving data` } );
@@ -342,6 +354,7 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
       error: ( err ) => {
         this.messageService.add( { severity: 'error', summary: 'Error', detail: `An error occurred while saving data - ${ err }` } );
         console.log( err );
+        this.isGuestDataSaved = false;
       },
       complete: () => {
 
@@ -357,53 +370,66 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
       return;
     }
     const bookingDetails: BookingDetails = {
-      GuestId: this.newGuestForm.controls.GuestId.value!,
-      CheckInDate: this.datePipe.transform( this.newGuestForm.controls.CheckInDate?.value!, 'dd/MM/yyyy hh:mm a' )!.toString(),
-      CheckOutDate: this.datePipe.transform( this.newGuestForm.controls.CheckOutDate?.value!, 'dd/MM/yyyy hh:mm a' )!.toString(),
-      Rooms: this.newGuestForm.controls.RoomId.value!,
-      RatePerNight: this.newGuestForm.controls.RatePerNight.value!,
-      TotalAmount: this.newGuestForm.controls.TotalAmount.value!,
-      Discount: this.newGuestForm.controls.Discount.value!,
-      NoOfDays: this.newGuestForm.controls.NoOfDays.value!,
-      NoOfAdults: this.newGuestForm.controls.NoOfAdults.value!,
-      NoOfChild: this.newGuestForm.controls.NoOfChildren.value!,
-      NoOfGuests: this.newGuestForm.controls.NoOfGuests.value!,
-      AmountIncludingGst: this.newGuestForm.controls.ExcGST.value!,
-      AmountPaid: this.newGuestForm.controls.AmountPaid.value!,
-      Balance: this.newGuestForm.controls.BalanceAmount.value!,
-      PaymentMode: String( this.newGuestForm.controls.PaymentMode.value! ),
-      TransactionNo: this.newGuestForm.controls.TransactionNo.value!,
-      CGST: this.newGuestForm.controls.CGST.value!,
-      SGST: this.newGuestForm.controls.CGST.value!,
-      UTGST: this.newGuestForm.controls.CGST.value!,
-      IGST: this.newGuestForm.controls.IGST.value!,
-      InvoiceNo: this.newGuestForm.controls.InvoiceNo.value!,
-      TotalDays: this.newGuestForm.controls.NoOfDays.value!,
+      GuestId: this.newGuestForm.controls['GuestId'].value!,
+      // CheckInDate: this.datePipe.transform( this.stayDetailsFormGroup.controls['CheckInDate']?.value!, 'dd/MM/yyyy hh:mm a' )!.toString(),
+      // CheckOutDate: this.datePipe.transform( this.stayDetailsFormGroup.controls['CheckOutDate']?.value!, 'dd/MM/yyyy hh:mm a' )!.toString(),
+      CheckInDate: this.stayDetailsFormGroup.controls['CheckInDate']?.value!,
+      CheckOutDate: this.stayDetailsFormGroup.controls['CheckOutDate']?.value!,
+      Rooms: this.stayDetailsFormGroup.controls['RoomId'].value!,
+      RatePerNight: this.stayDetailsFormGroup.controls['RatePerNight'].value!,
+      TotalAmount: this.stayDetailsFormGroup.controls['TotalAmount'].value!,
+      Discount: this.stayDetailsFormGroup.controls['Discount'].value!,
+      NoOfDays: this.stayDetailsFormGroup.controls['NoOfDays'].value!,
+      NoOfAdults: this.stayDetailsFormGroup.controls['NoOfAdults'].value!,
+      NoOfChild: this.stayDetailsFormGroup.controls['NoOfChildren'].value!,
+      NoOfGuests: this.stayDetailsFormGroup.controls['NoOfGuests'].value!,
+      AmountIncludingGst: this.paymentDetailsFormGroup.controls['ExcGST'].value!,
+      AmountPaid: this.paymentDetailsFormGroup.controls['AmountPaid'].value!,
+      Balance: this.paymentDetailsFormGroup.controls['BalanceAmount'].value!,
+      PaymentMode: String( this.paymentDetailsFormGroup.controls['PaymentMode'].value! ),
+      TransactionNo: this.paymentDetailsFormGroup.controls['TransactionNo'].value!,
+      CGST: this.paymentDetailsFormGroup.controls['CGST'].value!,
+      SGST: this.paymentDetailsFormGroup.controls['CGST'].value!,
+      UTGST: this.paymentDetailsFormGroup.controls['CGST'].value!,
+      IGST: this.paymentDetailsFormGroup.controls['IGST'].value!,
+      InvoiceNo: this.newGuestForm.controls['InvoiceNo'].value!,
+      TotalDays: this.stayDetailsFormGroup.controls['NoOfDays'].value!,
     };
-    console.log( bookingDetails );
+
     this.bookingService.saveBookingDetails( bookingDetails ).subscribe( {
       next: ( response ) => {
         if ( response.StatusCode == 200 ) {
           this.isBookigDataSaved = true;
-          this.messageService.add( { severity: 'success', summary: 'Success', detail: `${ response.Message } with invoice no ${ this.newGuestForm.controls.InvoiceNo.value! }` } );
+          this.isStayDetailsSaved = true;
+          this.messageService.add( { severity: 'success', summary: 'Success', detail: `${ response.Message } with invoice no ${ this.newGuestForm.controls['InvoiceNo'].value! }` } );
+          return;
         }
         if ( response.StatusCode == 400 ) {
           this.isBookigDataSaved = true;
           this.messageService.add( { severity: 'error', summary: 'Error', detail: `An error occured while saving and generating invoice.` } );
+          this.isStayDetailsSaved = false;
         }
       },
       error: ( err ) => {
         console.log( err );
+        this.isStayDetailsSaved = false;
       },
       complete: () => {
-        // this.newGuestForm.reset();
+        if ( this.isStayDetailsSaved ) {
+          this.newGuestForm.reset();
+          this.isGuestDataSaved = false;
+          this.isStayDetailsSaved = false;
+        }
       }
 
     } );
 
   }
   onInvoiceClick ( id: string, invoiceNo?: string ) {
-
+    if ( id === '' || invoiceNo === '' ) {
+      this.messageService.add( { severity: 'error', summary: 'Error', detail: `Missing guest details or invoice no.` } );
+      return;
+    }
     this.invoiceService.generateInvoice( id, invoiceNo ).subscribe( {
       next: ( response ) => {
         saveAs( response, `${ id }.pdf` );
@@ -421,7 +447,7 @@ export class AddGuestComponent implements OnInit, AfterContentChecked {
   // Method to handle the step change event
   onStepChange ( event: any ) {
     const stepIndex = event.index; // Get the current step index
-    console.log( 'Step changed to:', stepIndex );
+
 
     // You can perform any local actions you want here without emitting data
     this.handleStepChangeLocally( stepIndex );

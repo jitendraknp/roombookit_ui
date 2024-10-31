@@ -29,6 +29,7 @@ import { UtilsService } from '../../../_helpers/utils.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { SelectModule } from 'primeng/select';
+import { InvoiceService } from '../../../_services/invoice.service';
 
 @Component( {
   selector: 'app-edit-guest',
@@ -118,7 +119,8 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
     GuestStayDetailId: new FormControl( '' ),
     InvoiceNo: new FormControl( { value: "", disabled: true } ),
     ManualInvoice: new FormControl( { value: false, disabled: true } ),
-    PaymentDetailsId: new FormControl( '' )
+    PaymentDetailsId: new FormControl( '' ),
+    PaymentDate: new FormControl( new Date(), [Validators.required] ),
   } );
   moreGuestForm: FormGroup;
   active: number | undefined = 0;
@@ -132,6 +134,7 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
     private confirmationService: ConfirmationService,
     private customMessageService: CustomMessageService,
     private guetsService: GuestService,
+    private invoiceService: InvoiceService,
     private router: Router,
     private datePipe: DatePipe,
     private storageService: StorageService,
@@ -254,8 +257,12 @@ export class EditGuestComponent implements OnInit, AfterContentChecked {
   }
 
   generateInvoice () {
+    if ( this.guestId === '' ) {
+      this.messageService.add( { severity: 'error', summary: 'Error', detail: `Missing guest details.` } );
+      return;
+    }
     this.loading = true;
-    this.guestService.generateInvoice( this.guestId ).subscribe( {
+    this.invoiceService.generate( this.guestId ).subscribe( {
       next: ( result ) => {
         saveAs( result, `${ this.guestId }.pdf` );
       },

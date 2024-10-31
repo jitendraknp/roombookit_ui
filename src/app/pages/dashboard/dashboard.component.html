@@ -60,7 +60,7 @@
           <div class="invest-data-amount g-2">
             <div class="invest-data-history">
               <div class="title">Total</div>
-              <div class="amount">{{occupiedRooms+availableRooms}}</div>
+              <div class="amount">{{totalRooms}}</div>
             </div>
             <div class="invest-data-history">
               <div class="title">Booked (W)</div>
@@ -68,7 +68,7 @@
             </div>
             <div class="invest-data-history">
               <div class="title">Booked (M)</div>
-              <div class="amount">{{occupiedRooms}}</div>
+              <div class="amount">{{roomsMonthly}}</div>
             </div>
           </div>
           <div class="invest-data-ck"> </div>
@@ -79,7 +79,7 @@
   <div class="col">
     <p-card header="Revenue">
       <div class="p-card-subheader text-lg">
-        <p-tag severity="info" [styleClass]="'text-lg'">{{totalRevenue | currency:'INR':'symbol':'1.2-2'}}</p-tag>
+        <p-tag severity="info" [styleClass]="'text-lg'">{{todayRevenue | currency:'INR':'symbol':'1.2-2'}}</p-tag>
       </div>
       <div class="p-card-content flex flex-row justify-between text-sm">
         <div class="invest-data">
