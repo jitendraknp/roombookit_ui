@@ -87,6 +87,10 @@
     }
   },
   "cli": {
-    "analytics": false
+    "analytics": false,
+    "packageManager": "bun",
+    "schematicCollections": [
+      "@ngrx/schematics"
+    ]
   }
 }

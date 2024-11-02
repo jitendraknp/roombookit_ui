@@ -17,6 +17,7 @@
 
       <!-- Profile Menu and Avatar -->
       <div class="flex items-center ml-2"> <!-- Margin for spacing -->
+        <app-notification></app-notification>
         <p-menu #menu [model]="profile_items" appendTo="body" popup="true"></p-menu>
         <p-avatar (click)="menu.toggle($event)" class="pointer-cursor" label="SA"
           [style]="{ 'background-color': '#dee9fc', color: '#1a2551' }" shape="circle"
@@ -47,7 +48,7 @@
     </aside>
     <main class="w-full overflow-x-hidden overflow-y-auto px-2 shadow-1 ml-2 mb-4 my-1" style="display: flex;
     flex-direction: column;
-    min-height: 88vh;">
+    min-height: 80vh;">
       <router-outlet></router-outlet>
     </main>
   </div>

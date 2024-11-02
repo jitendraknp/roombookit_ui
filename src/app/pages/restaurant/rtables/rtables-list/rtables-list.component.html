@@ -1,1 +1,61 @@
-<p>rtables-list works!</p>
+<div class="flex flex-column  pb-1">
+    <p-confirmpopup />
+    <div class="flex p-field w-full pt-4">
+        <p-floatLabel class="flex-grow-1 w-full">
+            <p-autoComplete [field]="'Name'" [inputStyleClass]="'w-full text-sm'" [showClear]="true" [size]="'small'"
+                [itemSize]="10" placeholder=" "></p-autoComplete>
+            <label for="table">Search table</label>
+        </p-floatLabel>
+    </div>
+    <!-- </p-card> -->
+    <div class="flex flex-row py-2 px-1">
+        <p class="flex-1 text-sm content-center">
+            Total Table : <span class="text-xs py-0.5 px-1"><p-badge value="{{tables.length}}" /></span>
+        </p>
+        <div class="justify-end flex-grow mr-auto">
+            <p-button label="Add Table" size="small" (onClick)="addTable()">
+            </p-button>
+        </div>
+    </div>
+</div>
+<div class="grid align-start justify-center  py-2">
+    <div class="col-12 md:col-4 lg:col-3" *ngFor="let table of pagedTables">
+        <p-card header="{{ table.TableNumber | uppercase}}" [styleClass]="'shadow-2xl'">
+            <ng-template pTemplate="body">
+                <div class="grid">
+                    <div class="col text-sm">
+                        <!-- <p class="text-color-primary text-md font-semibold">Status</p> -->
+                        <p-tag severity="info" [styleClass]="'text-sm'">{{table.Status}}</p-tag>
+                    </div>
+                    <div class="col text-sm   flex justify-content-end">
+                        <!-- <p>Capacity</p> -->
+                        <p-badge pTooltip="Capacity" [tooltipStyleClass]="'text-xs'" value="{{table.Capacity}}"
+                            badgeSize="small" />
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <div class="grid justify-content-end gap-2">
+                    <div class="col-auto">
+                        <p-button icon="pi pi-file-edit" pTooltip="Edit Table" tooltipPosition="top"
+                            (onClick)="onEditClick(table?.Id)" [tooltipStyleClass]="'text-xs'" [rounded]=" true"
+                            [text]="true"></p-button>
+                    </div>
+                    <div class="col-auto">
+                        <p-button icon="pi pi-trash" severity="danger" pTooltip="Delete Table" tooltipPosition="top"
+                            [tooltipStyleClass]="'text-xs'" [rounded]="true" [text]="true"
+                            (onClick)="confirmDelete($event,table.Id)"></p-button>
+                    </div>
+                </div>
+            </ng-template>
+        </p-card>
+    </div>
+</div>
+@defer(on immediate){
+@if (tables == null || tables.length==0) {
+<app-no-records-found></app-no-records-found>
+}
+}
+<p-paginator [rows]="rowsPerPage" [totalRecords]="tables.length" [pageLinkSize]="5" [styleClass]="'text-xs'"
+    (onPageChange)="onPageChange($event)">
+</p-paginator>

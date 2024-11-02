@@ -1,1 +1,55 @@
-<p>edit-rtables works!</p>
+<form [formGroup]="editTableForm" (ngSubmit)="updateTable()">
+    <p-toast key="tUpdateTable" position="top-center" [showTransformOptions]="'translateY(100%)'"
+        [showTransitionOptions]="'500ms'" [hideTransitionOptions]="'500ms'"
+        [showTransformOptions]="'translateX(100%)'" />
+    <p-card>
+        <ng-template pTemplate="header">
+            <div
+                class="flex flex-row items-center justify-between p-2 border-b border-gray-200 bg-gray-50 rounded-t-lg shadow-sm">
+                <!-- Title -->
+                <p class="text-lg font-semibold text-gray-700">Edit Restaurant Table</p>
+                <!-- Close Button -->
+                <a (click)="onClose($event)" href="#" pTooltip="Close" [tooltipStyleClass]="'text-xs'"
+                    class="text-gray-500 hover:text-red-600 ml-auto transition-colors duration-150">
+                    <i class="pi pi-times text-md"></i>
+                </a>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="body">
+            <div class="grid text-sm">
+                <div class="col-12 lg:col-3 md:col-6  sm:col-12">
+                    <div class="field">
+                        <label for="tableNo">Table No</label>
+                        <input pInputText id="tableNo" placeholder="Table No" size="small" type="text" class="w-full"
+                            formControlName="TableNumber" />
+                    </div>
+                </div>
+                <div class="col-12 lg:col-3 md:col-6  sm:col-12">
+                    <div class="field">
+                        <label for="capacity">Capacity</label>
+                        <input pInputText id="capacity" placeholder="Capacity" size="small" type="text" class="w-full"
+                            formControlName="Capacity" />
+                    </div>
+
+                </div>
+                <div class="col-12 lg:col-3 md:col-6  sm:col-12">
+                    <div class="field">
+                        <label for="status">Status</label>
+                        <p-select optionLabel="name" placeholder="Status" class="w-full md:w-56" optionLabel="name"
+                            optionValue="code" formControlName="Status" [options]="tableStatus" size="small" />
+                    </div>
+                </div>
+                <div class="col-12 lg:col-3 md:col-6  sm:col-12  align-content-center gap-1">
+                    <p-checkbox inputId="isActive" formControlName="Is_Active" [binary]="true" />
+                    <label for="isActive" class="ml-2">Is Active</label>
+                </div>
+            </div>
+            <div class="flex   flex-row">
+                <div class=" ml-auto">
+                    <p-button label="Update" severity="primary" size="small" type="submit"></p-button>
+                </div>
+            </div>
+        </ng-template>
+    </p-card>
+
+</form>

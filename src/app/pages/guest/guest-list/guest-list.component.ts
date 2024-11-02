@@ -12,6 +12,7 @@ import { InvoiceService } from '../../../_services/invoice.service';
 import { ToastModule } from 'primeng/toast';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
+import { AvatarModule } from 'primeng/avatar';
 @Component( {
   selector: 'app-guest-list',
   standalone: true,
@@ -25,7 +26,8 @@ import { InputTextModule } from 'primeng/inputtext';
     ImageModule,
     ToastModule,
     CardModule,
-    InputTextModule
+    InputTextModule,
+    AvatarModule,
   ],
   templateUrl: './guest-list.component.html',
   styleUrl: './guest-list.component.css',

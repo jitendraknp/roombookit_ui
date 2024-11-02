@@ -1,4 +1,4 @@
-import { ApplicationConfig, importProvidersFrom, LOCALE_ID, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, LOCALE_ID, provideExperimentalZonelessChangeDetection, isDevMode } from '@angular/core';
 import { provideNgxMask, NgxMaskDirective } from 'ngx-mask';
 import {
   PreloadAllModules,
@@ -30,6 +30,9 @@ import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import localeEn from '@angular/common/locales/en';
+import { provideStore } from '@ngrx/store';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimationsAsync(),
@@ -41,20 +44,13 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom( NgHttpLoaderModule.forRoot() ),
     provideExperimentalZonelessChangeDetection(),
     provideHttpClient( withFetch(), withInterceptors( [authInterceptor, loggingInterceptor] ) ),
-    provideRouter( routes,
-      withComponentInputBinding(),
-      withPreloading( PreloadAllModules )
-    ),
+    provideRouter( routes, withComponentInputBinding(), withPreloading( PreloadAllModules ) ),
     // provideClientHydration(withHttpTransferCacheOptions({
     //   includePostRequests: true
     // }), withEventReplay()),
     provideHttpClient(),
     provideAnimationsAsync(),
-    provideNgxWebstorage(
-      withNgxWebstorageConfig( { separator: ':', caseSensitive: true } ),
-      withLocalStorage(),
-      withSessionStorage()
-    ),
+    provideNgxWebstorage( withNgxWebstorageConfig( { separator: ':', caseSensitive: true } ), withLocalStorage(), withSessionStorage() ),
     provideHttpClient( withInterceptorsFromDi() ),
     {
       provide: HTTP_INTERCEPTORS,
@@ -73,7 +69,10 @@ export const appConfig: ApplicationConfig = {
     ToastrService,
     MessageService,
     NgxMaskDirective,
-    { provide: LOCALE_ID, useValue: 'en' }
+    { provide: LOCALE_ID, useValue: 'en' },
+    provideStore(),
+    provideStoreDevtools( { maxAge: 25, logOnly: !isDevMode() } ),
+
   ]
 };
 

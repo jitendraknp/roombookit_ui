@@ -5,7 +5,7 @@ import { ExistingGuestDetails, Guest, RoomDetails } from '../../models/guest';
 import { GuestListComponent } from "./guest-list/guest-list.component";
 import { TooltipDirective } from '../../_directives/tooltip.directive';
 import { NgxPaginationModule, PaginationInstance } from 'ngx-pagination';
-import { NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { debounceTime, distinctUntilChanged, forkJoin, Subscription } from 'rxjs';
 import { CustomMessageService } from '../../_services/custom-message.service';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -31,6 +31,7 @@ import { FluidModule } from 'primeng/fluid';
 
 @Component( {
   imports: [
+    CommonModule,
     RouterOutlet,
     RouterModule,
     NoRecordsFoundComponent,
@@ -159,6 +160,7 @@ export class GuestComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit (): void {
     this.guestService.getAllGuestWithPaging( this.guestPageNumber, this.guestPageSize ).subscribe( {
       next: ( response ) => {
+        console.log( response );
         this.guests = response.Data as Guest[];
         this.guestPageNumber = response.PageNumber;
         this.guestPageSize = response.PageSize;

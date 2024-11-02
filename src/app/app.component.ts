@@ -10,6 +10,7 @@ import { PrimeNGConfig } from "primeng/api";
 import { Aura } from 'primeng/themes/aura';
 import { Lara } from 'primeng/themes/lara';
 import { Stepper } from 'primeng/stepper';
+import { SignalRService } from './_services/common/signal-r.service';
 @Component( {
   selector: 'app-root',
   standalone: true,
@@ -29,7 +30,7 @@ import { Stepper } from 'primeng/stepper';
 export class AppComponent {
   title = 'RD Residency';
 
-  constructor( private config: PrimeNGConfig ) {
+  constructor( private config: PrimeNGConfig, private signalRService: SignalRService ) {
 
   }
 

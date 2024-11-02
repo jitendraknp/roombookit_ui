@@ -19,6 +19,7 @@ import { MenuModule } from 'primeng/menu';
 import { OverlayPanelModule } from "primeng/overlaypanel";
 import { AuthService } from '../../authentication/services/auth.service';
 import { PanelModule } from 'primeng/panel';
+import { NotificationComponent } from '../notification/notification.component';
 // export interface MenuItem {
 //   id: string;
 //   name: string;
@@ -44,7 +45,8 @@ import { PanelModule } from 'primeng/panel';
     MenuModule,
     AvatarModule,
     OverlayPanelModule,
-    PanelModule
+    PanelModule,
+    NotificationComponent
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
